@@ -1,0 +1,155 @@
+import type { Metadata } from "next";
+import { SITE } from "./constants";
+import type { FaqItem, Product } from "@/services/cms/types";
+
+const absolute = (path: string) => new URL(path, SITE.url).toString();
+
+export interface SeoInput {
+  title: string;
+  description: string;
+  /** Site-relative, e.g. "/products/aryabhata" */
+  path: string;
+  image?: string;
+  type?: "website" | "article";
+  noIndex?: boolean;
+}
+
+export function buildMetadata({
+  title,
+  description,
+  path,
+  image,
+  type = "website",
+  noIndex = false,
+}: SeoInput): Metadata {
+  const url = absolute(path);
+  const ogImage = image ? absolute(image) : undefined;
+
+  return {
+    title,
+    description,
+    /* Self-referential absolute canonical on every page. Faceted product URLs
+       canonical back to /products — the single most important technical SEO
+       decision here, because 8 facets combinatorially generate thousands of
+       near-duplicate URLs that would otherwise eat the crawl budget. */
+    alternates: { canonical: url },
+    robots: noIndex
+      ? { index: false, follow: false }
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1,
+          },
+        },
+    openGraph: {
+      type,
+      url,
+      title,
+      description,
+      siteName: SITE.name,
+      locale: SITE.locale,
+      ...(ogImage
+        ? { images: [{ url: ogImage, width: 1200, height: 630, alt: title }] }
+        : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(ogImage ? { images: [ogImage] } : {}),
+    },
+  };
+}
+
+/* --- Structured data ----------------------------------------------------- */
+
+export function organizationJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": ["Organization", "EducationalOrganization"],
+    "@id": `${SITE.url}#organization`,
+    name: SITE.name,
+    url: SITE.url,
+    slogan: SITE.tagline,
+    description:
+      "Gamified experiential learning kits and teacher training for schools in India.",
+    telephone: SITE.phones,
+    email: SITE.email,
+    areaServed: { "@type": "State", name: "Gujarat" },
+    sameAs: [SITE.social.instagram, SITE.social.facebook, SITE.social.x],
+  };
+}
+
+export function websiteJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE.url}#website`,
+    url: SITE.url,
+    name: SITE.name,
+    publisher: { "@id": `${SITE.url}#organization` },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE.url}/products?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+
+export function breadcrumbJsonLd(trail: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: trail.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: absolute(item.path),
+    })),
+  };
+}
+
+/**
+ * Product schema WITHOUT an `offers` block.
+ *
+ * Decision D7 makes products a portfolio with no public pricing. Emitting a
+ * fabricated price to win a rich result would be lying to both Google and the
+ * reader, so the offer is simply absent.
+ */
+export function productJsonLd(product: Product) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.descriptionInstitutional,
+    url: absolute(`/products/${product.slug}`),
+    brand: { "@type": "Brand", name: SITE.name },
+    category: "Educational game kit",
+    audience: {
+      "@type": "EducationalAudience",
+      educationalRole: "student",
+      suggestedMinAge: product.ageMin,
+      suggestedMaxAge: product.ageMax,
+    },
+  };
+}
+
+export function faqJsonLd(items: FaqItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+}

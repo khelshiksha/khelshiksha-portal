@@ -1,0 +1,270 @@
+/* =============================================================================
+   Khel Shiksha — design tokens
+   Spec: docs/architecture/03-design-system.md
+
+   Every contrast ratio below was computed against the WCAG 2.1 relative
+   luminance formula, not estimated. Do not change a value without re-checking.
+
+   THIS IS THE ONLY FILE IN THE CODEBASE THAT MAY CONTAIN A HEX COLOUR.
+   ========================================================================== */
+
+/* --- Semantic tokens: runtime-switchable, theme-aware --------------------- */
+:root {
+  --paper: #fdfbf6;
+  --surface: #ffffff;
+  --sunken: #f7f3ea;
+
+  --ink: #161a2b; /* 16.69:1 on paper */
+  --ink-muted: #565d75; /* 6.31:1  on paper */
+  --ink-subtle: #666d87; /* 4.95:1  on paper */
+
+  --rule: #e2ddd1; /* decorative dividers only */
+  --rule-strong: #8a8674; /* 3.54:1 — input borders, non-text UI */
+
+  --brand: #1f5fd1; /* 5.62:1 on paper · white on it 5.81:1 */
+  --brand-deep: #17489f; /* 8.24:1 on paper · white on it 8.52:1 */
+  --brand-tint: #e7f0fd;
+  --on-brand: #ffffff;
+
+  --accent: #f5c518; /* ink on it 10.59:1 — NEVER carries text < 18px */
+  --on-accent: #161a2b;
+
+  --success: #177552; /* white on it 5.67:1 */
+  --energy: #c24f0b; /* white on it 4.75:1 — fills only */
+  --energy-text: #a8430a; /* 5.85:1 on paper — orange used AS text */
+  --magenta: #a81d57; /* white on it 7.05:1 */
+
+  /* Pillar tints — backgrounds only. Ink on each clears 14.6:1. */
+  --tint-sky: #e7f0fd;
+  --tint-blush: #fdecef;
+  --tint-mint: #e2f3eb;
+  --tint-peach: #fdeee2;
+  --tint-lavender: #eeeafb;
+
+  --pillar-sky: #1f5fd1;
+  --pillar-blush: #a81d57;
+  --pillar-mint: #177552;
+  --pillar-peach: #c24f0b;
+  --pillar-lavender: #5b4bc4;
+
+  --glass: rgb(253 251 246 / 0.72);
+
+  --shadow-sm: 0 1px 2px rgb(46 38 20 / 0.05), 0 1px 3px rgb(46 38 20 / 0.04);
+  --shadow-md: 0 4px 12px rgb(46 38 20 / 0.06), 0 2px 4px rgb(46 38 20 / 0.04);
+  --shadow-lg: 0 12px 32px rgb(46 38 20 / 0.09), 0 4px 8px rgb(46 38 20 / 0.04);
+  --shadow-xl: 0 24px 64px rgb(46 38 20 / 0.12);
+}
+
+/* Dark: warm near-black, not blue-black. Not a naive inversion. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #12131a;
+    --surface: #1b1d27;
+    --sunken: #171922;
+
+    --ink: #f2efe8; /* 16.13:1 on paper */
+    --ink-muted: #a5aac0; /* 8.04:1 */
+    --ink-subtle: #8e94ac;
+
+    --rule: #2e3140;
+    --rule-strong: #5c6178;
+
+    --brand: #8db4f7; /* 8.82:1 — and paper on it 8.82:1 for filled buttons */
+    --brand-deep: #b4cdfa;
+    --brand-tint: #1a2740;
+    --on-brand: #12131a;
+
+    --accent: #f5c518; /* 11.36:1 */
+    --on-accent: #12131a;
+
+    --success: #5fd3a0; /* 9.98:1 */
+    --energy: #ff9552; /* 8.53:1 */
+    --energy-text: #ff9552;
+    --magenta: #f58cb4;
+
+    --tint-sky: #1a2740;
+    --tint-blush: #38202c;
+    --tint-mint: #17302a;
+    --tint-peach: #3a2618;
+    --tint-lavender: #262046;
+
+    --pillar-sky: #8db4f7;
+    --pillar-blush: #f58cb4;
+    --pillar-mint: #5fd3a0;
+    --pillar-peach: #ff9552;
+    --pillar-lavender: #a99cf5;
+
+    --glass: rgb(18 19 26 / 0.76);
+
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-md: 0 4px 14px rgb(0 0 0 / 0.45);
+    --shadow-lg: 0 12px 34px rgb(0 0 0 / 0.5);
+    --shadow-xl: 0 24px 64px rgb(0 0 0 / 0.55);
+  }
+}
+
+/* An explicit toggle must win over the media query in BOTH directions. */
+:root[data-theme="dark"] {
+  --paper: #12131a;
+  --surface: #1b1d27;
+  --sunken: #171922;
+  --ink: #f2efe8;
+  --ink-muted: #a5aac0;
+  --ink-subtle: #8e94ac;
+  --rule: #2e3140;
+  --rule-strong: #5c6178;
+  --brand: #8db4f7;
+  --brand-deep: #b4cdfa;
+  --brand-tint: #1a2740;
+  --on-brand: #12131a;
+  --accent: #f5c518;
+  --on-accent: #12131a;
+  --success: #5fd3a0;
+  --energy: #ff9552;
+  --energy-text: #ff9552;
+  --magenta: #f58cb4;
+  --tint-sky: #1a2740;
+  --tint-blush: #38202c;
+  --tint-mint: #17302a;
+  --tint-peach: #3a2618;
+  --tint-lavender: #262046;
+  --pillar-sky: #8db4f7;
+  --pillar-blush: #f58cb4;
+  --pillar-mint: #5fd3a0;
+  --pillar-peach: #ff9552;
+  --pillar-lavender: #a99cf5;
+  --glass: rgb(18 19 26 / 0.76);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 14px rgb(0 0 0 / 0.45);
+  --shadow-lg: 0 12px 34px rgb(0 0 0 / 0.5);
+  --shadow-xl: 0 24px 64px rgb(0 0 0 / 0.55);
+}
+
+:root[data-theme="light"] {
+  --paper: #fdfbf6;
+  --surface: #ffffff;
+  --sunken: #f7f3ea;
+  --ink: #161a2b;
+  --ink-muted: #565d75;
+  --ink-subtle: #666d87;
+  --rule: #e2ddd1;
+  --rule-strong: #8a8674;
+  --brand: #1f5fd1;
+  --brand-deep: #17489f;
+  --brand-tint: #e7f0fd;
+  --on-brand: #ffffff;
+  --accent: #f5c518;
+  --on-accent: #161a2b;
+  --success: #177552;
+  --energy: #c24f0b;
+  --energy-text: #a8430a;
+  --magenta: #a81d57;
+  --tint-sky: #e7f0fd;
+  --tint-blush: #fdecef;
+  --tint-mint: #e2f3eb;
+  --tint-peach: #fdeee2;
+  --tint-lavender: #eeeafb;
+  --pillar-sky: #1f5fd1;
+  --pillar-blush: #a81d57;
+  --pillar-mint: #177552;
+  --pillar-peach: #c24f0b;
+  --pillar-lavender: #5b4bc4;
+  --glass: rgb(253 251 246 / 0.72);
+  --shadow-sm: 0 1px 2px rgb(46 38 20 / 0.05), 0 1px 3px rgb(46 38 20 / 0.04);
+  --shadow-md: 0 4px 12px rgb(46 38 20 / 0.06), 0 2px 4px rgb(46 38 20 / 0.04);
+  --shadow-lg: 0 12px 32px rgb(46 38 20 / 0.09), 0 4px 8px rgb(46 38 20 / 0.04);
+  --shadow-xl: 0 24px 64px rgb(46 38 20 / 0.12);
+}
+
+/* --- Tailwind theme: `inline` so utilities resolve the vars at runtime ----- */
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
+
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-tint: var(--brand-tint);
+  --color-on-brand: var(--on-brand);
+
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+
+  --color-success: var(--success);
+  --color-energy: var(--energy);
+  --color-energy-text: var(--energy-text);
+  --color-magenta: var(--magenta);
+
+  --color-tint-sky: var(--tint-sky);
+  --color-tint-blush: var(--tint-blush);
+  --color-tint-mint: var(--tint-mint);
+  --color-tint-peach: var(--tint-peach);
+  --color-tint-lavender: var(--tint-lavender);
+
+  --color-pillar-sky: var(--pillar-sky);
+  --color-pillar-blush: var(--pillar-blush);
+  --color-pillar-mint: var(--pillar-mint);
+  --color-pillar-peach: var(--pillar-peach);
+  --color-pillar-lavender: var(--pillar-lavender);
+
+  /* Type — Plus Jakarta Sans for everything, Fraunces italic for accents */
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Fluid scale, 320 → 1440px */
+  --text-display-1: clamp(2.75rem, 1.6rem + 5.6vw, 5.5rem);
+  --text-display-1--line-height: 0.98;
+  --text-display-1--letter-spacing: -0.03em;
+
+  --text-display-2: clamp(2.25rem, 1.5rem + 3.7vw, 4rem);
+  --text-display-2--line-height: 1.03;
+  --text-display-2--letter-spacing: -0.025em;
+
+  --text-h1: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.02em;
+
+  --text-h2: clamp(1.625rem, 1.3rem + 1.6vw, 2.25rem);
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.015em;
+
+  --text-h3: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --text-h3--line-height: 1.25;
+  --text-h3--letter-spacing: -0.01em;
+
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.65;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.7;
+
+  --text-body-sm: 0.9375rem;
+  --text-body-sm--line-height: 1.6;
+
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.06em;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 40px;
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
