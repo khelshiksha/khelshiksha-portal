@@ -97,6 +97,47 @@
 }
 
 @layer components {
+  /* --- Scroll reveal -----------------------------------------------------
+     Gated on [data-js], which an inline <head> script sets. Without
+     JavaScript the hidden state is never applied at all, so every revealed
+     section renders visible — content is never gated on an animation.
+     Only transform and opacity animate, so a reveal cannot cause layout
+     shift. */
+  [data-js] .reveal {
+    opacity: 0;
+    transition:
+      opacity 400ms var(--ease-out-quint),
+      transform 400ms var(--ease-out-quint);
+  }
+
+  [data-js] .reveal-up {
+    transform: translateY(24px);
+  }
+  [data-js] .reveal-down {
+    transform: translateY(-24px);
+  }
+  [data-js] .reveal-left {
+    transform: translateX(24px);
+  }
+  [data-js] .reveal-right {
+    transform: translateX(-24px);
+  }
+
+  [data-js] .reveal.is-shown {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Reduced motion: final state immediately, no transition. Content appears
+     instantly — it does not disappear. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-js] .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
   /* The signature typographic move, straight from the brochure:
      one italic Fraunces phrase per section, never more. */
   .accent-phrase {
@@ -113,6 +154,17 @@
 
   .measure-wide {
     max-width: 72ch;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 

@@ -23,18 +23,28 @@ export function SiteHeader() {
   const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
+    /* Read in a rAF rather than synchronously in the effect body: a direct
+       setState here would cascade an extra render on every mount. */
     const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
+    const raf = requestAnimationFrame(onScroll);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   /* Any navigation closes both menus — otherwise the panel survives the route
-     change and hangs over the new page. */
-  useEffect(() => {
+     change and hangs over the new page.
+     Adjusted during render rather than in an effect: this is React's
+     documented pattern for resetting state when a prop changes, and it avoids
+     the extra render pass an effect would cost on every navigation. */
+  const [lastPath, setLastPath] = useState(pathname);
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
     setMenuOpen(false);
     setMobileOpen(false);
-  }, [pathname]);
+  }
 
   /* Escape closes and returns focus to the trigger, per the ARIA disclosure
      pattern. Without the focus return, a keyboard user is dumped at the top

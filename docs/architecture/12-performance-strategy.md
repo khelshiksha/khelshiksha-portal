@@ -15,9 +15,31 @@ and most parents are holding. Every budget below is set against that device, thr
 | INP | < 150ms | > 200ms |
 | CLS | < 0.05 | > 0.1 |
 | TTFB | < 400ms | > 800ms |
-| JS (first load, homepage) | < 110KB gz | > 150KB |
-| JS (product detail) | < 130KB gz | > 170KB |
+| JS (first load, homepage) | < 215KB gz | > 240KB |
+| JS (product detail) | < 220KB gz | > 245KB |
 | Total page weight | < 900KB | > 1.5MB |
+
+> **The JS budget was revised upward after measurement, and the reason matters.**
+>
+> The original figures (110KB / 130KB) were written against Next.js 15. The project ships on
+> **Next.js 16 + React 19**, whose framework floor measures **199KB gzipped** on the leanest
+> route in the repo (`/privacy`). No amount of application discipline gets below that number;
+> a budget under it would have been decorative.
+>
+> The budget is now set as *floor + headroom*: **199KB baseline + ~16KB of application code.**
+> Measured on the production build, gzipped, summing every script the page loads:
+>
+> | Route | First-load JS |
+> |---|---|
+> | `/privacy` (framework floor) | 199.1KB |
+> | `/` | 205.8KB |
+> | `/schools` | 206.7KB |
+> | `/products/aryabhata` | 206.4KB |
+> | `/products` (filter UI) | 207.4KB |
+>
+> **~7KB of application JavaScript on the homepage** is the number that reflects our own
+> choices, and that is the one to defend in review. If it starts climbing, the cause is a new
+> client boundary — not the framework.
 
 Accessibility and Best Practices are set at 100 because unlike Performance they are
 deterministic — there is no reason to score less, so anything below is a defect.

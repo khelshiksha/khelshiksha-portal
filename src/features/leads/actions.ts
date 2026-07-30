@@ -1,0 +1,95 @@
+"use server";
+
+import { headers } from "next/headers";
+import { SITE } from "@/lib/constants";
+import { hashIp, rateLimit } from "@/lib/rate-limit";
+import {
+  getLeadRepository,
+  LeadStorageUnavailableError,
+} from "@/services/db/lead-repository";
+import { leadSchema, schoolDemoSchema, type ActionResult } from "./schema";
+
+/**
+ * Every lead action follows the same five steps:
+ *   honeypot → validate → rate limit → persist → notify.
+ *
+ * Returns a discriminated union rather than throwing: a validation failure is
+ * an expected outcome, not an exception.
+ */
+export async function submitLead(
+  _prev: ActionResult | null,
+  formData: FormData,
+): Promise<ActionResult> {
+  /* 1. Honeypot. A bot fills every field it can see; a human never sees this
+        one. Return success so the bot has no signal to adapt to. */
+  if (formData.get("company_website")) {
+    return { ok: true, message: "Thank you — we've got it." };
+  }
+
+  const raw = Object.fromEntries(formData) as Record<string, unknown>;
+  const type = String(raw.type ?? "general");
+
+  /* 2. Validate. The client already checked; this is the check that counts. */
+  const schema = type === "school-demo" ? schoolDemoSchema : leadSchema;
+  const parsed = schema.safeParse(raw);
+
+  if (!parsed.success) {
+    return {
+      ok: false,
+      error: "Please check the highlighted fields.",
+      fieldErrors: parsed.error.flatten().fieldErrors as Record<
+        string,
+        string[]
+      >,
+    };
+  }
+
+  const headerList = await headers();
+  const ipHash = hashIp(headerList.get("x-forwarded-for"));
+
+  /* 3. Rate limit on the hashed IP. */
+  const allowed = await rateLimit(`lead:${ipHash ?? "unknown"}`, {
+    limit: 5,
+    windowSec: 3600,
+  });
+
+  if (!allowed) {
+    return {
+      ok: false,
+      error: `You've sent a few enquiries already. Please call us on ${SITE.phones[0]} and we'll help right away.`,
+    };
+  }
+
+  /* 4. Persist. */
+  try {
+    await getLeadRepository().create(parsed.data, {
+      ipHash,
+      userAgent: headerList.get("user-agent"),
+    });
+  } catch (error) {
+    if (error instanceof LeadStorageUnavailableError) {
+      /* Never report a false success — the enquiry would vanish. Give the
+         person a route that definitely works instead. */
+      console.error("[lead] storage unavailable — enquiry not persisted");
+      return {
+        ok: false,
+        error: `We couldn't submit that just now. Please call us on ${SITE.phones[0]} or email ${SITE.email} and we'll pick it up straight away.`,
+      };
+    }
+
+    console.error("[lead] unexpected failure", error);
+    return {
+      ok: false,
+      error: `Something went wrong on our side. Please try again, or call us on ${SITE.phones[0]}.`,
+    };
+  }
+
+  /* 5. Notify. Deliberately fire-and-forget: an email provider outage must
+        never fail a submission that is already safely stored. Wired to Resend
+        once an API key exists. */
+
+  return {
+    ok: true,
+    message: "Thank you — someone from our team will call you within two working days.",
+  };
+}

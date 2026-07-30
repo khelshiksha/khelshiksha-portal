@@ -54,7 +54,15 @@ export const viewport: Viewport = {
  * toggle. It only ever sets data-theme when the user has made an explicit
  * choice; otherwise the CSS media query decides.
  */
-const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('ks-theme');if(t==='dark'||t==='light'){document.documentElement.dataset.theme=t}}catch(e){}})()`;
+/**
+ * Runs before first paint. Two jobs:
+ *  - apply a stored theme preference (deferring this flashes the wrong theme
+ *    on every navigation, which is worse than having no toggle);
+ *  - set data-js, which gates the scroll-reveal hidden state in CSS. Without
+ *    JavaScript the flag is never set and every revealed section renders
+ *    visible.
+ */
+const BOOT_SCRIPT = `(function(){var d=document.documentElement;d.dataset.js='1';try{var t=localStorage.getItem('ks-theme');if(t==='dark'||t==='light'){d.dataset.theme=t}}catch(e){}})()`;
 
 export default function RootLayout({
   children,
@@ -64,7 +72,7 @@ export default function RootLayout({
   return (
     <html lang={LOCALE_TAG.en} className={`${fontVariables} h-full`}>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
       </head>
       <body className="flex min-h-full flex-col bg-paper text-ink antialiased">
         <a

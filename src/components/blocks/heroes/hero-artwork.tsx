@@ -1,50 +1,76 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, useReducedMotion, useSpring, useTransform } from "motion/react";
 
 /**
  * The hero composition: three layers that drift with the cursor at different
  * depths. Entirely decorative, so the whole thing is aria-hidden.
  *
+ * Written against rAF + CSS transforms rather than an animation library. A
+ * three-layer parallax is ~40 lines here; pulling in Framer Motion for it cost
+ * ~50KB gzipped on the site's most important page.
+ *
  * Parallax runs ONLY on a desktop-class pointer and ONLY when reduced motion
- * is off. On touch there is no cursor to parallax against, so the listener is
- * never attached and the springs simply stay at 0 — the artwork renders
- * identically, minus the movement.
+ * is off. On touch the listener is never attached, so the artwork renders
+ * identically minus the movement — no wasted battery, no wasted bytes.
  *
  * Placeholder artwork: geometric forms in the brand palette, standing in for
  * real classroom photography (blocker #3).
  */
 export function HeroArtwork() {
-  const reduced = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
-
-  /* Hooks are unconditional — depth is applied via useTransform, never by
-     conditionally creating springs. */
-  const px = useSpring(0, { stiffness: 120, damping: 30 });
-  const py = useSpring(0, { stiffness: 120, damping: 30 });
-
-  const backX = useTransform(px, (v) => v * 3);
-  const backY = useTransform(py, (v) => v * 3);
-  const midX = useTransform(px, (v) => v * 6);
-  const midY = useTransform(py, (v) => v * 6);
-  const frontX = useTransform(px, (v) => v * 12);
-  const frontY = useTransform(py, (v) => v * 12);
+  /* Three explicit refs rather than a ref-array with a callback: assigning
+     into a ref array from a render-time closure reads as a ref access during
+     render, and this is clearer anyway. */
+  const backRef = useRef<HTMLDivElement>(null);
+  const midRef = useRef<HTMLDivElement>(null);
+  const frontRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (reduced) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    const layers: [HTMLDivElement | null, number][] = [
+      [backRef.current, 3],
+      [midRef.current, 6],
+      [frontRef.current, 12],
+    ];
+
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let frame = 0;
 
     const onMove = (e: MouseEvent) => {
       const rect = ref.current?.getBoundingClientRect();
       if (!rect) return;
-      px.set(((e.clientX - (rect.left + rect.width / 2)) / rect.width) * 2);
-      py.set(((e.clientY - (rect.top + rect.height / 2)) / rect.height) * 2);
+      targetX = ((e.clientX - (rect.left + rect.width / 2)) / rect.width) * 2;
+      targetY = ((e.clientY - (rect.top + rect.height / 2)) / rect.height) * 2;
+    };
+
+    const tick = () => {
+      /* Critically damped-ish easing toward the cursor, so the layers glide
+         rather than snap. */
+      currentX += (targetX - currentX) * 0.08;
+      currentY += (targetY - currentY) * 0.08;
+
+      for (const [node, depth] of layers) {
+        if (!node) continue;
+        node.style.transform = `translate3d(${currentX * depth}px, ${currentY * depth}px, 0)`;
+      }
+
+      frame = requestAnimationFrame(tick);
     };
 
     window.addEventListener("mousemove", onMove, { passive: true });
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [reduced, px, py]);
+    frame = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
 
   return (
     <div
@@ -53,21 +79,21 @@ export function HeroArtwork() {
       className="relative mx-auto aspect-square w-full max-w-[460px] lg:max-w-none"
     >
       {/* Back — soft organic blobs, the brochure's background language */}
-      <motion.div
-        style={{ x: backX, y: backY }}
-        className="absolute inset-0 flex items-center justify-center"
+      <div
+        ref={backRef}
+        className="absolute inset-0 flex items-center justify-center will-change-transform"
       >
         <svg viewBox="0 0 400 400" className="size-full">
           <circle cx="140" cy="130" r="118" fill="var(--tint-blush)" />
           <circle cx="278" cy="252" r="126" fill="var(--tint-sky)" />
           <circle cx="150" cy="290" r="86" fill="var(--tint-peach)" />
         </svg>
-      </motion.div>
+      </div>
 
       {/* Middle — the kit */}
-      <motion.div
-        style={{ x: midX, y: midY }}
-        className="absolute inset-0 flex items-center justify-center"
+      <div
+        ref={midRef}
+        className="absolute inset-0 flex items-center justify-center will-change-transform"
       >
         <svg viewBox="0 0 400 400" className="size-[76%]">
           <rect
@@ -99,12 +125,12 @@ export function HeroArtwork() {
             fill="var(--tint-mint)"
           />
         </svg>
-      </motion.div>
+      </div>
 
       {/* Front — dice and counters, closest and fastest-moving */}
-      <motion.div
-        style={{ x: frontX, y: frontY }}
-        className="absolute inset-0 flex items-center justify-center"
+      <div
+        ref={frontRef}
+        className="absolute inset-0 flex items-center justify-center will-change-transform"
       >
         <svg viewBox="0 0 400 400" className="size-full">
           <g transform="rotate(-14 108 292)">
@@ -124,7 +150,7 @@ export function HeroArtwork() {
           <circle cx="304" cy="118" r="26" fill="var(--magenta)" opacity="0.9" />
           <circle cx="330" cy="300" r="18" fill="var(--success)" opacity="0.9" />
         </svg>
-      </motion.div>
+      </div>
     </div>
   );
 }

@@ -1,65 +1,79 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 type Direction = "up" | "down" | "left" | "right" | "none";
 
-const OFFSET: Record<Direction, { x?: number; y?: number }> = {
-  up: { y: 24 },
-  down: { y: -24 },
-  left: { x: 24 },
-  right: { x: -24 },
-  none: {},
+const DIRECTION_CLASS: Record<Direction, string> = {
+  up: "reveal-up",
+  down: "reveal-down",
+  left: "reveal-left",
+  right: "reveal-right",
+  none: "",
 };
 
 /**
  * THE single scroll-reveal primitive. Everything scroll-triggered on the site
- * goes through this component, which is what keeps Framer Motion out of the
- * content components' bundles.
+ * goes through it.
  *
- * Reveals exist to establish reading order and pace — not to make scrolling
- * feel busy. Fires at 15% visibility, never re-fires, and caps at 400ms so it
- * never makes a user wait to read.
+ * IntersectionObserver + CSS, under 1KB. Framer Motion cost ~50KB gzipped on
+ * every page for this one behaviour; motion now stays out of the bundle
+ * entirely.
  *
- * With reduced motion, children render at their final position with no
- * transition at all — content appears instantly, it does not disappear.
+ * Two properties worth preserving if this is ever changed:
+ *   1. The hidden state lives in CSS behind [data-js], so WITHOUT JavaScript
+ *      the content simply renders visible. A reveal must never be able to
+ *      hide content permanently.
+ *   2. The observer toggles a class through a ref rather than setting React
+ *      state — syncing React to the DOM is what an effect is for, and it
+ *      avoids a re-render per revealed element.
  */
 export function Reveal({
   children,
   direction = "up",
   delay = 0,
   className,
-  as = "div",
+  as: Tag = "div",
 }: {
   children: React.ReactNode;
   direction?: Direction;
-  /** Milliseconds. Stagger with index * 60, capped at 240 total. */
+  /** Milliseconds. Stagger with staggerDelay(index) from @/lib/motion. */
   delay?: number;
   className?: string;
   as?: "div" | "li" | "section";
 }) {
-  const reduced = useReducedMotion();
-  const MotionTag = motion[as];
+  const ref = useRef<HTMLElement>(null);
 
-  if (reduced) {
-    const Tag = as;
-    return <Tag className={className}>{children}</Tag>;
-  }
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+      node.classList.add("is-shown");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        node.classList.add("is-shown");
+        observer.disconnect();
+      },
+      { threshold: 0.15 },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <MotionTag
-      className={cn(className)}
-      initial={{ opacity: 0, ...OFFSET[direction] }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{
-        duration: 0.4,
-        delay: delay / 1000,
-        ease: [0.22, 1, 0.36, 1],
-      }}
+    <Tag
+      ref={ref as React.Ref<never>}
+      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+      className={cn("reveal", DIRECTION_CLASS[direction], className)}
     >
       {children}
-    </MotionTag>
+    </Tag>
   );
 }

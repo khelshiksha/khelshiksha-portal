@@ -1,31 +1,57 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 import { getDictionary } from "@/lib/i18n";
 
 type Theme = "light" | "dark";
 
 /**
- * Renders nothing until mounted. The server cannot know the user's OS
- * preference, so rendering an icon during SSR guarantees it is wrong for half
- * of visitors and then visibly swaps — worse than a brief absence.
+ * The theme lives in two external systems — localStorage and the OS media
+ * query — so it is read with useSyncExternalStore rather than mirrored into
+ * component state via an effect. That avoids the cascading render an
+ * effect-plus-setState would cause, and keeps the toggle correct if the OS
+ * preference changes mid-session.
+ *
+ * getServerSnapshot returns null: the server cannot know the preference, and
+ * guessing would render the wrong icon for half of visitors before swapping.
  */
+function subscribe(onChange: () => void) {
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  media.addEventListener("change", onChange);
+  window.addEventListener("storage", onChange);
+  return () => {
+    media.removeEventListener("change", onChange);
+    window.removeEventListener("storage", onChange);
+  };
+}
+
+function getSnapshot(): Theme {
+  const explicit = document.documentElement.dataset.theme;
+  if (explicit === "dark" || explicit === "light") return explicit;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
 export function ThemeToggle({ className }: { className?: string }) {
   const t = getDictionary();
-  const [theme, setTheme] = useState<Theme | null>(null);
+  const theme = useSyncExternalStore<Theme | null>(
+    subscribe,
+    getSnapshot,
+    () => null,
+  );
 
-  useEffect(() => {
-    const stored = localStorage.getItem("ks-theme");
-    if (stored === "dark" || stored === "light") {
-      setTheme(stored);
-      return;
+  const toggle = useCallback(() => {
+    const next: Theme = getSnapshot() === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try {
+      localStorage.setItem("ks-theme", next);
+    } catch {
+      /* Private browsing — the toggle still works for this session. */
     }
-    setTheme(
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light",
-    );
+    /* `storage` does not fire in the tab that wrote it, so nudge subscribers. */
+    window.dispatchEvent(new Event("storage"));
   }, []);
 
   if (theme === null) {
@@ -33,21 +59,11 @@ export function ThemeToggle({ className }: { className?: string }) {
     return <div className={className} style={{ width: 44, height: 44 }} />;
   }
 
-  const next: Theme = theme === "dark" ? "light" : "dark";
-
   return (
     <button
       type="button"
-      onClick={() => {
-        document.documentElement.dataset.theme = next;
-        try {
-          localStorage.setItem("ks-theme", next);
-        } catch {
-          /* Private browsing — the toggle still works for this session. */
-        }
-        setTheme(next);
-      }}
-      aria-label={next === "dark" ? t.theme.toDark : t.theme.toLight}
+      onClick={toggle}
+      aria-label={theme === "dark" ? t.theme.toLight : t.theme.toDark}
       className={`inline-flex size-11 items-center justify-center rounded-[var(--radius-md)] text-ink-muted transition-colors hover:bg-sunken hover:text-ink ${className ?? ""}`}
     >
       {theme === "dark" ? (

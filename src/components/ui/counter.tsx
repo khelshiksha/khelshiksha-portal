@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView, useReducedMotion } from "motion/react";
 import { formatCount } from "@/lib/utils";
 
 /**
@@ -9,8 +8,10 @@ import { formatCount } from "@/lib/utils";
  *
  * The final value is rendered in the SSR HTML, so "12,000+" is simply there
  * with JavaScript disabled, before hydration, and under reduced motion. The
- * animation is an enhancement over correct content — never a replacement for
- * it. Counting only starts once, on first entry into view.
+ * animation is an enhancement over correct content — never a replacement.
+ *
+ * Uses a bare IntersectionObserver + rAF rather than an animation library:
+ * counting from 0 to N is not worth 50KB of dependency.
  */
 export function Counter({
   to,
@@ -22,33 +23,50 @@ export function Counter({
   durationMs?: number;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const reduced = useReducedMotion();
-  const inView = useInView(ref, { once: true, amount: 0.4 });
   const [value, setValue] = useState(to);
-  const started = useRef(false);
 
   useEffect(() => {
-    if (reduced || !inView || started.current) return;
-    started.current = true;
+    const node = ref.current;
+    if (!node) return;
 
-    // Small numbers read as broken when animated — 1 counting to 1 is a flicker.
+    /* Small numbers read as broken when animated — 1 counting to 1 is a
+       flicker, not an animation. */
     if (to <= 5) return;
 
+    if (
+      typeof IntersectionObserver === "undefined" ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
     let frame = 0;
-    setValue(0);
-    const start = performance.now();
+    let start = 0;
 
     const tick = (now: number) => {
+      if (!start) start = now;
       const t = Math.min((now - start) / durationMs, 1);
-      // ease-out-quint, matching --ease-out-quint in the token set
-      const eased = 1 - Math.pow(1 - t, 5);
-      setValue(Math.round(to * eased));
+      /* ease-out-quint, matching --ease-out-quint in the token set */
+      setValue(Math.round(to * (1 - Math.pow(1 - t, 5))));
       if (t < 1) frame = requestAnimationFrame(tick);
     };
 
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [inView, reduced, to, durationMs]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        frame = requestAnimationFrame(tick);
+      },
+      { threshold: 0.4 },
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, [to, durationMs]);
 
   return (
     <span ref={ref} className="tabular">

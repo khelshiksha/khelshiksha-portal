@@ -41,12 +41,37 @@ distance + long duration reads as lag.
 
 | Tool | Used for | Budget |
 |---|---|---|
-| **CSS** (transition/animation) | Hover, focus, colour, accordion, skeletons, marquee | Free. **Default choice.** |
-| **Framer Motion** | Scroll reveals, layout (FLIP) transitions, `AnimatePresence`, counters, drawer physics | ~34KB gz. Isolated to `Reveal`, `Counter`, and drawer components. |
-| **GSAP + ScrollTrigger** | Exactly two things: the homepage 5-benefit scroll story, and the `/schools` timeline line-draw. | ~28KB gz. **Dynamically imported, desktop-only, non-blocking.** |
+| **CSS** (transition/animation) | Hover, focus, colour, accordion, skeletons, card lift, filter-grid fade | Free. **Default choice.** |
+| **IntersectionObserver + CSS** | Scroll reveals, animated counters | < 1KB, hand-written. |
+| **rAF + CSS transforms** | Hero parallax | < 1KB, hand-written. |
+| ~~Framer Motion~~ | — | **Removed. See below.** |
+| **GSAP + ScrollTrigger** | Reserved for the `/schools` timeline line-draw if it is ever built as a true scroll-scrubbed effect. | ~28KB gz. Not currently used. **If added: dynamically imported, desktop-only, non-blocking.** |
 
-GSAP is not loaded on mobile at all — both effects degrade to static layouts there, so the
-bytes would be pure waste on the connection least able to afford them.
+### Why Framer Motion was removed
+
+The original plan budgeted ~34KB for Framer Motion, justified by `Reveal`, `Counter`, and the
+product-grid FLIP. Measured on the production build it cost **~50KB gzipped on every page**,
+because `Reveal` appears on all of them.
+
+Re-examined against what it actually bought:
+
+- **`Reveal`** — a fade-and-rise on scroll. An `IntersectionObserver` toggling one CSS class
+  does this in under 1KB.
+- **`Counter`** — counting 0→N. A `requestAnimationFrame` loop, ~20 lines.
+- **Hero parallax** — three layers tracking the cursor. ~40 lines of rAF and `translate3d`.
+- **Product-grid FLIP** — the only genuinely hard one. But the catalogue is **six kits**;
+  paying 50KB on every page so that six cards reposition smoothly on one page is not a trade
+  worth making. It is now a CSS fade.
+
+Net effect: **~50KB removed from every route**, with no capability the site actually used
+lost. The dependency is uninstalled, not just unimported.
+
+**Revisit if** the catalogue grows past ~24 kits and reshuffling becomes disorienting, or a
+genuinely physics-driven interaction (drag, spring-following drawer) is specified. At that
+point, import it *on the one route that needs it*, dynamically — never in a shared component.
+
+The general lesson, worth keeping: a library justified by one shared component is a library
+paid for on every page.
 
 ---
 

@@ -2,12 +2,17 @@ import { DEFAULT_LOCALE, type Locale } from "./config";
 import { en, type Dictionary } from "./dictionaries/en";
 
 /**
- * Dictionary access. Synchronous while `en` is the only active locale; when
- * `gu` lands this becomes a dynamic import keyed on locale and the call sites
- * (which already go through `getDictionary`) do not change.
+ * Dictionary access. Every locale maps here; `gu` intentionally falls back to
+ * `en` until Gujarati copy exists, so adding it later is a one-line change in
+ * this map rather than a hunt through components (decision D8).
  */
-export function getDictionary(_locale: Locale = DEFAULT_LOCALE): Dictionary {
-  return en;
+const DICTIONARIES: Record<Locale, Dictionary> = {
+  en,
+  gu: en,
+};
+
+export function getDictionary(locale: Locale = DEFAULT_LOCALE): Dictionary {
+  return DICTIONARIES[locale] ?? en;
 }
 
 export type { Dictionary };
