@@ -16,7 +16,7 @@
 
   --ink: #161a2b; /* 16.69:1 on paper */
   --ink-muted: #565d75; /* 6.31:1  on paper */
-  --ink-subtle: #666d87; /* 4.95:1  on paper */
+  --ink-subtle: #5e657e; /* 4.89:1 worst case — see note below */
 
   --rule: #e2ddd1; /* decorative dividers only */
   --rule-strong: #8a8674; /* 3.54:1 — input borders, non-text UI */
@@ -34,17 +34,33 @@
   --energy-text: #a8430a; /* 5.85:1 on paper — orange used AS text */
   --magenta: #a81d57; /* white on it 7.05:1 */
 
-  /* Pillar tints — backgrounds only. Ink on each clears 14.6:1. */
+  /* Contrast bands — FIXED across both themes on purpose.
+     `bg-ink`/`text-paper` inverts in dark mode, which turned the Game Corner
+     band into a light band and dropped its yellow accent to 1.41:1. A band
+     whose whole job is to interrupt the page rhythm must not flip with the
+     theme, so these do not participate in theming. */
+  --band-dark: #161a2b; /* paper on it 16.69:1 · accent 10.59:1 */
+  --on-band-dark: #fdfbf6;
+  --band-brand: #1b54bc; /* white on it 6.91:1 · accent 4.24:1 */
+  --on-band-brand: #ffffff;
+
+  /* Pillar tints — backgrounds only. Ink on each clears 14.6:1.
+     NOTE: --ink-subtle must clear 4.5:1 against EVERY tint here, not just
+     against paper. The original #666D87 passed on paper (4.95) and failed on
+     mint and sky (4.34/4.45) — caught by the axe sweep, not by inspection. */
   --tint-sky: #e7f0fd;
   --tint-blush: #fdecef;
   --tint-mint: #e2f3eb;
   --tint-peach: #fdeee2;
   --tint-lavender: #eeeafb;
 
+  /* Each accent must clear 4.5:1 against ITS OWN TINT — that is where it is
+     actually used (an accent chip sits on the tinted card, not on paper).
+     Verified: sky 5.06 · blush 6.19 · mint 4.93 · peach 5.16 · lavender 5.48. */
   --pillar-sky: #1f5fd1;
   --pillar-blush: #a81d57;
   --pillar-mint: #177552;
-  --pillar-peach: #c24f0b;
+  --pillar-peach: #ad430a;
   --pillar-lavender: #5b4bc4;
 
   --glass: rgb(253 251 246 / 0.72);
@@ -146,7 +162,7 @@
   --sunken: #f7f3ea;
   --ink: #161a2b;
   --ink-muted: #565d75;
-  --ink-subtle: #666d87;
+  --ink-subtle: #5e657e;
   --rule: #e2ddd1;
   --rule-strong: #8a8674;
   --brand: #1f5fd1;
@@ -167,7 +183,7 @@
   --pillar-sky: #1f5fd1;
   --pillar-blush: #a81d57;
   --pillar-mint: #177552;
-  --pillar-peach: #c24f0b;
+  --pillar-peach: #ad430a;
   --pillar-lavender: #5b4bc4;
   --glass: rgb(253 251 246 / 0.72);
   --shadow-sm: 0 1px 2px rgb(46 38 20 / 0.05), 0 1px 3px rgb(46 38 20 / 0.04);
@@ -201,6 +217,11 @@
   --color-energy: var(--energy);
   --color-energy-text: var(--energy-text);
   --color-magenta: var(--magenta);
+
+  --color-band-dark: var(--band-dark);
+  --color-on-band-dark: var(--on-band-dark);
+  --color-band-brand: var(--band-brand);
+  --color-on-band-brand: var(--on-band-brand);
 
   --color-tint-sky: var(--tint-sky);
   --color-tint-blush: var(--tint-blush);

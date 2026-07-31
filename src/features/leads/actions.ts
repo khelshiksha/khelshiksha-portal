@@ -7,6 +7,7 @@ import {
   getLeadRepository,
   LeadStorageUnavailableError,
 } from "@/services/db/lead-repository";
+import { sendLeadNotification } from "@/services/email";
 import { leadSchema, schoolDemoSchema, type ActionResult } from "./schema";
 
 /**
@@ -47,11 +48,19 @@ export async function submitLead(
   const headerList = await headers();
   const ipHash = hashIp(headerList.get("x-forwarded-for"));
 
-  /* 3. Rate limit on the hashed IP. */
-  const allowed = await rateLimit(`lead:${ipHash ?? "unknown"}`, {
-    limit: 5,
-    windowSec: 3600,
-  });
+  /* 3. Rate limit on the hashed IP.
+
+     When the client cannot be identified (no x-forwarded-for — direct origin
+     access, a misconfigured proxy, some corporate egress), an "unknown"
+     bucket would put EVERY anonymous visitor on one shared 5/hour limit and
+     lock out legitimate enquiries site-wide. Caught by the E2E suite, where
+     the sixth submission of the run started failing.
+
+     So: per-client limit when we can identify them, a generous global ceiling
+     when we cannot. A burst is still contained; normal traffic is not. */
+  const allowed = ipHash
+    ? await rateLimit(`lead:${ipHash}`, { limit: 5, windowSec: 3600 })
+    : await rateLimit("lead:unidentified", { limit: 200, windowSec: 3600 });
 
   if (!allowed) {
     return {
@@ -61,11 +70,13 @@ export async function submitLead(
   }
 
   /* 4. Persist. */
+  let leadId: string;
   try {
-    await getLeadRepository().create(parsed.data, {
+    const lead = await getLeadRepository().create(parsed.data, {
       ipHash,
       userAgent: headerList.get("user-agent"),
     });
+    leadId = lead.id;
   } catch (error) {
     if (error instanceof LeadStorageUnavailableError) {
       /* Never report a false success — the enquiry would vanish. Give the
@@ -84,9 +95,13 @@ export async function submitLead(
     };
   }
 
-  /* 5. Notify. Deliberately fire-and-forget: an email provider outage must
-        never fail a submission that is already safely stored. Wired to Resend
-        once an API key exists. */
+  /* 5. Notify. Deliberately fire-and-forget: the enquiry is already stored,
+        so an email provider outage must never fail a submission the visitor
+        has completed. sendLeadNotification never throws, but the catch is
+        kept so a future change to it cannot turn a success into an error. */
+  void sendLeadNotification(parsed.data, leadId).catch((error) => {
+    console.error("[lead] notification failed", error);
+  });
 
   return {
     ok: true,

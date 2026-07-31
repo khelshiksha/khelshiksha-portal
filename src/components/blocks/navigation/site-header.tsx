@@ -170,20 +170,29 @@ export function SiteHeader() {
           >
             {t.cta.bookDemo}
           </ButtonLink>
-          <button
-            type="button"
-            onClick={() => setMobileOpen((v) => !v)}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-nav"
-            aria-label={mobileOpen ? t.nav.closeMenu : t.nav.openMenu}
-            className="inline-flex size-11 items-center justify-center rounded-[var(--radius-md)] text-ink lg:hidden"
+          {/* A <details> rather than a button + React state.
+              With JavaScript disabled an onClick handler does nothing, which
+              left mobile visitors — the majority of our teacher and parent
+              traffic — unable to navigate from the header at all. <details>
+              opens natively with no JS, and brings correct keyboard and
+              screen-reader semantics with it. */}
+          <details
+            open={mobileOpen}
+            onToggle={(e) => setMobileOpen(e.currentTarget.open)}
+            className="lg:hidden"
           >
-            {mobileOpen ? (
-              <X size={22} aria-hidden="true" />
-            ) : (
-              <Menu size={22} aria-hidden="true" />
-            )}
-          </button>
+            <summary
+              aria-label={mobileOpen ? t.nav.closeMenu : t.nav.openMenu}
+              className="inline-flex size-11 cursor-pointer list-none items-center justify-center rounded-[var(--radius-md)] text-ink [&::-webkit-details-marker]:hidden"
+            >
+              {mobileOpen ? (
+                <X size={22} aria-hidden="true" />
+              ) : (
+                <Menu size={22} aria-hidden="true" />
+              )}
+            </summary>
+            <MobileNav onNavigate={() => setMobileOpen(false)} />
+          </details>
         </div>
       </Container>
 
@@ -225,7 +234,6 @@ export function SiteHeader() {
         </div>
       ) : null}
 
-      {mobileOpen ? <MobileNav onNavigate={() => setMobileOpen(false)} /> : null}
     </header>
   );
 }

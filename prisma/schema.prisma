@@ -1,0 +1,163 @@
+// Khel Shiksha — transactional data.
+// Spec: docs/architecture/06-database-schema.md
+//
+// SCOPE RULE: Postgres owns transactional and user-generated data ONLY.
+// Products, pillars, pages and posts live in the CMS and are NEVER mirrored
+// here. Where a row references CMS content it stores a string id and resolves
+// it at read time. That costs one extra fetch in reporting and removes an
+// entire class of sync bugs.
+//
+// This file covers what the site actually submits today (leads and demo
+// bookings). Users, resource downloads, newsletter and AI telemetry are
+// specified in the architecture doc and land with the features that need
+// them — an unused table is a migration you have to maintain for nothing.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+// Prisma 7 moved connection URLs out of the schema. They live in
+// prisma.config.ts for migrations, and the client is constructed with a
+// driver adapter — see src/services/db/client.ts.
+datasource db {
+  provider = "postgresql"
+}
+
+enum LeadType {
+  SCHOOL_DEMO
+  SCHOOL_ENQUIRY
+  TEACHER
+  PARENT
+  GOVERNMENT
+  NGO
+  PRODUCT_ENQUIRY
+  GENERAL
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL_SENT
+  WON
+  LOST
+  SPAM
+}
+
+enum PreferredSlot {
+  MORNING
+  AFTERNOON
+  EITHER
+}
+
+model Lead {
+  id     String     @id @default(cuid())
+  type   LeadType
+  status LeadStatus @default(NEW)
+
+  // Only `name` and one contact channel are ever required. A parent form asks
+  // for three fields; a government form can ask for eight.
+  name          String
+  phone         String
+  email         String?
+  organisation  String?
+  role          String?
+  district      String?
+  state         String?        @default("Gujarat")
+  preferredSlot PreferredSlot?
+
+  message String? @db.Text
+
+  // Interest signal — a CMS document id, deliberately not a foreign key.
+  sanityProductId String?
+
+  // Attribution: how the enquiry actually happened.
+  sourcePath  String?
+  referrer    String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+
+  // Explicit, timestamped, never defaulted to true and never pre-checked.
+  consentMarketing Boolean   @default(false)
+  consentAt        DateTime?
+
+  // Anti-abuse. The IP itself is never stored — only SHA-256(ip + APP_SALT).
+  ipHash    String?
+  userAgent String? @db.Text
+
+  assignedTo String?
+  notes      LeadNote[]
+  booking    DemoBooking?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type, status, createdAt(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
+  @@index([email])
+  @@index([district])
+  @@map("leads")
+}
+
+model LeadNote {
+  id     String @id @default(cuid())
+  leadId String
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  author    String
+  body      String   @db.Text
+  createdAt DateTime @default(now())
+
+  @@index([leadId, createdAt(sort: Desc)])
+  @@map("lead_notes")
+}
+
+enum BookingStatus {
+  REQUESTED
+  CONFIRMED
+  RESCHEDULED
+  COMPLETED
+  NO_SHOW
+  CANCELLED
+}
+
+enum BookingMode {
+  ON_SITE
+  VIDEO_CALL
+  PHONE
+}
+
+model DemoBooking {
+  id     String        @id @default(cuid())
+  leadId String        @unique
+  lead   Lead          @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  status BookingStatus @default(REQUESTED)
+  mode   BookingMode   @default(ON_SITE)
+
+  // Schools think in slots, not timestamps — "Tuesday morning", not 10:30.
+  preferredSlot PreferredSlot?
+  scheduledFor  DateTime?
+  confirmedAt   DateTime?
+
+  attendedBy String?
+  outcome    String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, scheduledFor])
+  @@map("demo_bookings")
+}
+
+// Durable audit trail. Primary rate limiting is Upstash Redis at the edge;
+// this catches what slips past and records it.
+model RateLimitBucket {
+  key       String   @id
+  count     Int      @default(0)
+  expiresAt DateTime
+
+  @@index([expiresAt])
+  @@map("rate_limit_buckets")
+}
