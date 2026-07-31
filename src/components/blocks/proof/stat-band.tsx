@@ -30,22 +30,33 @@ export function StatBand({
           align="center"
         />
 
+        {/* A <dl> may contain <div> wrappers, but only ONE level of them, and
+            a <p> is not allowed inside at all. The previous markup nested
+            Reveal's div inside another div and put the detail in a <p>, which
+            broke the dt/dd association — invisible on screen, but it made the
+            figures unreadable as a definition list. Reveal now IS the wrapper.
+
+            DOM order is dt → dd (label, then value) so a screen reader says
+            "Educational kits delivered: 12,000+". CSS `order` flips it
+            visually so the big number still reads first. */}
         <dl className="grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
           {stats.map((stat, i) => (
-            <Reveal key={stat._id} delay={staggerDelay(i)}>
-              <div className="flex flex-col items-center gap-2 text-center">
-                <dd className="order-1 text-display-2 font-extrabold text-brand">
-                  <Counter to={stat.value} suffix={stat.suffix} />
+            <Reveal
+              key={stat._id}
+              delay={staggerDelay(i)}
+              className="flex flex-col items-center gap-2 text-center"
+            >
+              <dt className="order-2 max-w-[16ch] text-[0.9375rem] font-bold text-ink">
+                {stat.label}
+              </dt>
+              <dd className="order-1 text-display-2 font-extrabold text-brand">
+                <Counter to={stat.value} suffix={stat.suffix} />
+              </dd>
+              {stat.detail ? (
+                <dd className="order-3 max-w-[22ch] text-body-sm text-ink-muted">
+                  {stat.detail}
                 </dd>
-                <dt className="order-2 max-w-[16ch] text-[0.9375rem] font-bold text-ink">
-                  {stat.label}
-                </dt>
-                {stat.detail ? (
-                  <p className="order-3 max-w-[22ch] text-body-sm text-ink-muted">
-                    {stat.detail}
-                  </p>
-                ) : null}
-              </div>
+              ) : null}
             </Reveal>
           ))}
         </dl>

@@ -66,10 +66,23 @@ export class LeadStorageUnavailableError extends Error {
 
 export function getLeadRepository(): LeadRepository {
   /* When DATABASE_URL exists, this returns the Prisma-backed repository
-     (schema already defined in docs/architecture/06-database-schema.md).
-     Until then: file in development, hard failure in production. */
+     (schema already defined in docs/architecture/06-database-schema.md). */
+
+  /* Explicit opt-in to the file store. Needed so end-to-end tests can
+     exercise the real success path against a production build, and so a
+     staging box can run without a database.
+
+     Deliberately an opt-in rather than a fallback: if this were the default
+     when DATABASE_URL is missing, a production deploy with a mistyped
+     connection string would silently write enquiries to a disk that vanishes
+     on the next deploy. The failure has to be loud. */
+  if (process.env.LEAD_STORE === "file") {
+    return new FileLeadRepository();
+  }
+
   if (process.env.NODE_ENV === "production" && !process.env.DATABASE_URL) {
     throw new LeadStorageUnavailableError();
   }
+
   return new FileLeadRepository();
 }

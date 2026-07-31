@@ -53,3 +53,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .data/
+playwright-report/
+test-results/

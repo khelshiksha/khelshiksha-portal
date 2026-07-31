@@ -47,11 +47,19 @@ export async function submitLead(
   const headerList = await headers();
   const ipHash = hashIp(headerList.get("x-forwarded-for"));
 
-  /* 3. Rate limit on the hashed IP. */
-  const allowed = await rateLimit(`lead:${ipHash ?? "unknown"}`, {
-    limit: 5,
-    windowSec: 3600,
-  });
+  /* 3. Rate limit on the hashed IP.
+
+     When the client cannot be identified (no x-forwarded-for — direct origin
+     access, a misconfigured proxy, some corporate egress), an "unknown"
+     bucket would put EVERY anonymous visitor on one shared 5/hour limit and
+     lock out legitimate enquiries site-wide. Caught by the E2E suite, where
+     the sixth submission of the run started failing.
+
+     So: per-client limit when we can identify them, a generous global ceiling
+     when we cannot. A burst is still contained; normal traffic is not. */
+  const allowed = ipHash
+    ? await rateLimit(`lead:${ipHash}`, { limit: 5, windowSec: 3600 })
+    : await rateLimit("lead:unidentified", { limit: 200, windowSec: 3600 });
 
   if (!allowed) {
     return {
