@@ -41,11 +41,16 @@ export async function generateMetadata({
   const product = await getProductBySlug((await params).slug);
   if (!product) return {};
 
+  /* image: null hands the share card to opengraph-image.tsx alongside this
+     file, which renders a per-kit PNG. Previously this passed the hero
+     illustration's URL — an SVG, which WhatsApp, Facebook, LinkedIn and X all
+     refuse to render, so every kit shared to a staffroom group came out
+     blank. */
   return buildMetadata({
     title: product.title,
     description: product.descriptionInstitutional,
     path: `/products/${product.slug}`,
-    image: product.heroImage.src,
+    image: null,
   });
 }
 

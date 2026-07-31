@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import {
   countActive,
   EMPTY_FILTERS,
+  filtersToParams,
   matchesFilters,
   type ProductFilters,
 } from "../lib/filters";
@@ -50,17 +51,44 @@ export function ProductBrowser({
 
   const active = countActive(filters);
 
+  /**
+   * Mirror the filter state into the address bar.
+   *
+   * The page already reads these params on the server, so deep links worked
+   * inbound — but nothing ever wrote them, which made a filtered view
+   * impossible to share or bookmark. filtersToParams() existed and was unit
+   * tested; it was simply never called from the app.
+   *
+   * replaceState rather than pushState: with seven facets, pushing an entry
+   * per toggle buries "the page I came from" under a dozen history steps, and
+   * Back stops meaning what people expect it to mean. The URL stays accurate
+   * and shareable; Back still leaves the page.
+   *
+   * Native history rather than router.replace() because the filtering is
+   * entirely client-side over a catalogue already in memory — a router call
+   * would fetch an RSC payload to render a list we can already render.
+   */
+  const applyFilters = (next: ProductFilters) => {
+    setFilters(next);
+
+    const params = filtersToParams(next);
+    const query = params.toString();
+    window.history.replaceState(
+      null,
+      "",
+      query ? `${window.location.pathname}?${query}` : window.location.pathname,
+    );
+  };
+
   const toggle = <K extends keyof ProductFilters>(
     key: K,
     value: ProductFilters[K][number],
   ) => {
-    setFilters((prev) => {
-      const list = prev[key] as string[];
-      const next = list.includes(value as string)
-        ? list.filter((v) => v !== value)
-        : [...list, value as string];
-      return { ...prev, [key]: next } as ProductFilters;
-    });
+    const list = filters[key] as string[];
+    const nextList = list.includes(value as string)
+      ? list.filter((v) => v !== value)
+      : [...list, value as string];
+    applyFilters({ ...filters, [key]: nextList } as ProductFilters);
   };
 
   const groups = [
@@ -126,7 +154,7 @@ export function ProductBrowser({
             {active > 0 ? (
               <button
                 type="button"
-                onClick={() => setFilters(EMPTY_FILTERS)}
+                onClick={() => applyFilters(EMPTY_FILTERS)}
                 className="text-[0.8125rem] font-semibold text-brand-deep underline underline-offset-2"
               >
                 {t.filters.clearAll}
@@ -169,7 +197,7 @@ export function ProductBrowser({
             <Button
               variant="secondary"
               className="mt-5"
-              onClick={() => setFilters(EMPTY_FILTERS)}
+              onClick={() => applyFilters(EMPTY_FILTERS)}
             >
               {t.filters.clearAll}
             </Button>
@@ -227,7 +255,7 @@ export function ProductBrowser({
             <Button
               variant="secondary"
               className="flex-1"
-              onClick={() => setFilters(EMPTY_FILTERS)}
+              onClick={() => applyFilters(EMPTY_FILTERS)}
             >
               {t.filters.clearAll}
             </Button>

@@ -58,3 +58,7 @@ next-env.d.ts
 playwright-report/
 test-results/
 src/generated/
+
+# One-off audit harness pointed at the deployed site (screenshots, probes).
+# Kept out of the repo: it targets a specific URL and writes large PNGs.
+.audit/
