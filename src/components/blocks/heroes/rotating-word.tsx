@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { setBeatPaused, subscribeToBeat } from "@/lib/play-beat";
 
 /**
  * Cycles the italic word at the end of the hero headline.
@@ -17,13 +18,17 @@ import { useEffect, useRef } from "react";
  *     word is work with no user-visible benefit, and syncing React to the DOM
  *     is what an effect is for. Same reasoning as ui/reveal.tsx.
  *
- *  3. The interval is paused when the tab is hidden and when the pointer or
- *     keyboard focus is on the headline. WCAG 2.2.2 wants auto-updating
- *     content to be pausable; hovering the thing you are trying to read is
- *     the natural gesture, and it also stops the word changing out from under
- *     someone mid-sentence.
+ *  3. The change is driven by lib/play-beat, NOT by a timer of its own. The
+ *     hero artwork kicks a ball at the same beat and the word changes when it
+ *     lands — that only reads as cause and effect if both are the same event.
+ *     Two independent timers drift apart within seconds.
+ *
+ *  4. The beat is paused when the pointer or keyboard focus is on the
+ *     headline. WCAG 2.2.2 wants auto-updating content to be pausable;
+ *     hovering the thing you are trying to read is the natural gesture, and it
+ *     also stops the word changing out from under someone mid-sentence.
+ *     (Hidden tabs are handled inside play-beat.)
  */
-const INTERVAL_MS = 2600;
 
 export function RotatingWord({
   words,
@@ -42,53 +47,28 @@ export function RotatingWord({
     if (items.length < 2) return;
 
     let index = 0;
-    let timer: ReturnType<typeof setInterval> | null = null;
-    let paused = false;
 
-    const advance = () => {
+    const unsubscribe = subscribeToBeat((event) => {
+      if (event !== "impact") return;
       items[index].classList.remove("is-active");
       index = (index + 1) % items.length;
       items[index].classList.add("is-active");
-    };
+    });
 
-    const start = () => {
-      if (timer === null && !paused && !document.hidden) {
-        timer = setInterval(advance, INTERVAL_MS);
-      }
-    };
-    const stop = () => {
-      if (timer !== null) {
-        clearInterval(timer);
-        timer = null;
-      }
-    };
-
-    const pause = () => {
-      paused = true;
-      stop();
-    };
-    const resume = () => {
-      paused = false;
-      start();
-    };
-    /* A background tab still fires intervals; there is no reason to animate
-       for nobody. */
-    const onVisibility = () => (document.hidden ? stop() : start());
+    const pause = () => setBeatPaused(true);
+    const resume = () => setBeatPaused(false);
 
     root.addEventListener("pointerenter", pause);
     root.addEventListener("pointerleave", resume);
     root.addEventListener("focusin", pause);
     root.addEventListener("focusout", resume);
-    document.addEventListener("visibilitychange", onVisibility);
-    start();
 
     return () => {
-      stop();
+      unsubscribe();
       root.removeEventListener("pointerenter", pause);
       root.removeEventListener("pointerleave", resume);
       root.removeEventListener("focusin", pause);
       root.removeEventListener("focusout", resume);
-      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 

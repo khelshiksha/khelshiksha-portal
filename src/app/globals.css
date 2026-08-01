@@ -207,6 +207,56 @@
     }
   }
 
+  /* --- Hero scene --------------------------------------------------------
+     The ball's position is written by rAF; everything here is the CSS half:
+     the kick, the burst, and the still fallback. */
+  .hero-ball {
+    transition: none;
+  }
+
+  .hero-leg {
+    transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .hero-leg.is-kicking {
+    transform: rotate(-52deg);
+  }
+
+  .hero-burst {
+    opacity: 0;
+  }
+  .hero-burst.is-bursting {
+    animation: hero-burst 420ms var(--ease-out-quint);
+  }
+
+  @keyframes hero-burst {
+    0% {
+      opacity: 0;
+      transform: translate(2px, 148px) scale(0.4);
+    }
+    35% {
+      opacity: 1;
+      transform: translate(2px, 148px) scale(1.15);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(2px, 148px) scale(1.5);
+    }
+  }
+
+  /* Reduced motion: a still illustration. The ball rests at the foot, the leg
+     never swings, nothing bursts. The dotted arc already shows where it is
+     going, so the scene still reads. */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-leg,
+    .hero-leg.is-kicking {
+      transform: none;
+      transition: none;
+    }
+    .hero-burst.is-bursting {
+      animation: none;
+    }
+  }
+
   /* A scroll container with no visible scrollbar.
      Scrolling itself is untouched — wheel, trackpad, touch, and keyboard all
      still work, and the element keeps its overflow so it remains focusable
