@@ -1,5 +1,5 @@
 import "server-only";
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenAI } from "@google/genai";
 import { getFaqs, getPillars, getProducts } from "@/services/cms";
 import { AUDIENCE_KEYS, SITE } from "@/lib/constants";
 import { formatAgeRange, formatDuration, formatGroupSize } from "@/lib/utils";
@@ -7,13 +7,25 @@ import { formatAgeRange, formatDuration, formatGroupSize } from "@/lib/utils";
 /**
  * The AI port — decision D4.
  *
- * This is the ONLY file in the codebase that imports the Anthropic SDK. Every
- * other module talks to `answerQuestion`. Swapping provider, adding caching,
- * or putting a queue in front of it stays contained here.
+ * This is the ONLY file in the codebase that imports a model SDK. Everything
+ * else calls `answerQuestion`. That boundary is why moving from Anthropic to
+ * Gemini touched this file and nothing else — not the route handler, not the
+ * UI, not the grounding, not the rate limiting.
+ *
+ * Gemini because it is the best of the genuinely free tiers and signs in with
+ * the existing Google account. Two consequences to keep in mind:
+ *
+ *  - The free tier has a daily request cap. When it is exhausted the API
+ *    errors, the route streams its fallback, and the visitor is given the
+ *    phone number. Degraded, not broken — but worth watching.
+ *  - Free-tier prompts and responses may be used by Google to improve their
+ *    products. The privacy policy says so. This is the material difference
+ *    from a paid tier and the reason the rule below about child details is
+ *    load-bearing rather than decorative.
  */
 
-/** Opus by default; overridable without a deploy if cost needs tuning. */
-const MODEL = process.env.ANTHROPIC_MODEL ?? "claude-opus-5";
+/** Flash-class by default. Check AI Studio for the current free-tier models. */
+const MODEL = process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
 
 /* Deliberately small. Answers are two or three short paragraphs — a visitor
    wants a route to the right page, not an essay, and an unbounded budget on a
@@ -21,7 +33,7 @@ const MODEL = process.env.ANTHROPIC_MODEL ?? "claude-opus-5";
 const MAX_TOKENS = 700;
 
 export function isAssistantConfigured(): boolean {
-  return Boolean(process.env.ANTHROPIC_API_KEY);
+  return Boolean(process.env.GOOGLE_API_KEY);
 }
 
 export interface AssistantTurn {
@@ -129,27 +141,29 @@ Address the visitor directly as "you".`;
 export async function* answerQuestion(
   history: AssistantTurn[],
 ): AsyncGenerator<string> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) throw new Error("ANTHROPIC_API_KEY is not set");
+  const apiKey = process.env.GOOGLE_API_KEY;
+  if (!apiKey) throw new Error("GOOGLE_API_KEY is not set");
 
-  const client = new Anthropic({ apiKey });
+  const client = new GoogleGenAI({ apiKey });
 
-  const stream = client.messages.stream({
+  const stream = await client.models.generateContentStream({
     model: MODEL,
-    max_tokens: MAX_TOKENS,
-    system: await buildSystemPrompt(),
-    messages: history.map((turn) => ({
-      role: turn.role,
-      content: turn.content,
+    /* Gemini calls the assistant role "model", not "assistant". Mapping it
+       here rather than changing AssistantTurn keeps the provider's vocabulary
+       inside the port, which is the point of having one. */
+    contents: history.map((turn) => ({
+      role: turn.role === "assistant" ? "model" : "user",
+      parts: [{ text: turn.content }],
     })),
+    config: {
+      systemInstruction: await buildSystemPrompt(),
+      maxOutputTokens: MAX_TOKENS,
+    },
   });
 
-  for await (const event of stream) {
-    if (
-      event.type === "content_block_delta" &&
-      event.delta.type === "text_delta"
-    ) {
-      yield event.delta.text;
-    }
+  for await (const chunk of stream) {
+    /* Undefined on chunks that carry only metadata (safety ratings, usage),
+       which arrive interleaved with the text ones. */
+    if (chunk.text) yield chunk.text;
   }
 }
