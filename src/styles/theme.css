@@ -71,6 +71,58 @@
      Anything that darkens a full-bleed background must be re-checked here. */
   --glass: rgb(253 251 246 / 0.92);
 
+  /* --- KhelVerse: the hero world -----------------------------------------
+     An isometric solid needs three tones per material — a lit top face and
+     two shaded sides — or it reads flat and the illusion of depth collapses.
+     Every material below is therefore a triple, and the step between the
+     three is kept consistent across materials so one light source governs
+     the whole world.
+
+     These are illustration colours, not UI colours: nothing here ever sits
+     behind text, so they answer to art direction rather than to a contrast
+     floor. The headline sits on --paper, clear of the world.
+
+     In dark mode the world becomes dusk rather than inverting. A photographic
+     negative of a daylit landscape looks broken; the same landscape after
+     sunset does not. See the dark block below. */
+  --w-sky-high: #e8f1fc;
+  --w-sky-low: #fdf6ea;
+
+  --w-grass-top: #c2e2b6;
+  --w-grass-left: #a1cb95;
+  --w-grass-right: #86b47c;
+
+  /* The island's underside — soil and rock below the turf. */
+  --w-earth-left: #dcc9ab;
+  --w-earth-right: #c3ac8a;
+
+  --w-path-top: #f0e5d0;
+  --w-path-left: #dbcdb3;
+
+  --w-water: #a9d6ef;
+  --w-water-lit: #d3ecf9;
+
+  --w-stone-top: #f5f1e8;
+  --w-stone-left: #ded7c8;
+  --w-stone-right: #c6bdaa;
+
+  --w-wood-top: #dca972;
+  --w-wood-left: #bd8a57;
+  --w-wood-right: #a1723f;
+
+  --w-roof-top: #f3bc4f;
+  --w-roof-left: #d99e34;
+  --w-roof-right: #bb8425;
+
+  --w-leaf-top: #8dc783;
+  --w-leaf-left: #6fae6c;
+  --w-leaf-right: #5b9459;
+
+  --w-coral: #ef8a6a;
+  --w-violet: #b3a3e2;
+  --w-sky-blue: #7fb2ea;
+  --w-cloud: #ffffff;
+
   --shadow-sm: 0 1px 2px rgb(46 38 20 / 0.05), 0 1px 3px rgb(46 38 20 / 0.04);
   --shadow-md: 0 4px 12px rgb(46 38 20 / 0.06), 0 2px 4px rgb(46 38 20 / 0.04);
   --shadow-lg: 0 12px 32px rgb(46 38 20 / 0.09), 0 4px 8px rgb(46 38 20 / 0.04);
@@ -122,6 +174,48 @@
   --pillar-peach: #ff9552;
   --pillar-lavender: #a99cf5;
   --glass: rgb(18 19 26 / 0.92);
+
+  /* KhelVerse after sunset. Hues are held, value and saturation drop, and the
+     sky goes indigo — so it reads as the same place at a different hour
+     rather than as an inverted picture. Lit windows and the water keep some
+     brightness; that is what stops a dusk scene going dead. */
+  --w-sky-high: #171a2e;
+  --w-sky-low: #33283c;
+
+  --w-grass-top: #4a6b4c;
+  --w-grass-left: #3b5840;
+  --w-grass-right: #2e4634;
+
+  --w-earth-left: #4a4038;
+  --w-earth-right: #3a322c;
+
+  --w-path-top: #6b6153;
+  --w-path-left: #554d43;
+
+  --w-water: #2c5a78;
+  --w-water-lit: #4d87a8;
+
+  --w-stone-top: #6f6a60;
+  --w-stone-left: #565249;
+  --w-stone-right: #423f39;
+
+  --w-wood-top: #7a5a3c;
+  --w-wood-left: #61472f;
+  --w-wood-right: #4a3623;
+
+  --w-roof-top: #b98c34;
+  --w-roof-left: #946f27;
+  --w-roof-right: #71541c;
+
+  --w-leaf-top: #4f7a4b;
+  --w-leaf-left: #3f643e;
+  --w-leaf-right: #325031;
+
+  --w-coral: #b35c44;
+  --w-violet: #6e63a0;
+  --w-sky-blue: #4a72a8;
+  --w-cloud: #3a3550;
+
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow-md: 0 4px 14px rgb(0 0 0 / 0.45);
   --shadow-lg: 0 12px 34px rgb(0 0 0 / 0.5);
