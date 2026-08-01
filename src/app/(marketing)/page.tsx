@@ -7,6 +7,9 @@ import { FeaturedKits } from "@/components/blocks/product/featured-kits";
 import { GameCornerBand } from "@/components/blocks/content/game-corner-band";
 import { StatBand } from "@/components/blocks/proof/stat-band";
 import { CTABand } from "@/components/blocks/content/cta-band";
+import type { Metadata } from "next";
+import { SITE } from "@/lib/constants";
+import { buildMetadata } from "@/lib/seo";
 import {
   getAudienceHubs,
   getBenefits,
@@ -19,6 +22,26 @@ import {
 /* CMS-driven, changes rarely, must be instant. Webhook revalidation will make
    this a ceiling rather than a latency once Sanity is wired. */
 export const revalidate = 3600;
+
+/**
+ * The home page was the one route that never called buildMetadata, so it
+ * inherited the root layout's metadata — which carries no canonical. The most
+ * linked-to page on the site was the only one without one.
+ *
+ * `title.absolute` opts out of the layout's "%s | Khel Shiksha" template,
+ * which would otherwise render "Khel Shiksha — Learning Through Play | Khel
+ * Shiksha". Not `title: null` — that removes the <title> element altogether,
+ * which is a serious WCAG failure and exactly what the axe suite caught.
+ */
+export const metadata: Metadata = {
+  ...buildMetadata({
+    title: `${SITE.name} — ${SITE.secondary}`,
+    description:
+      "Gamified experiential learning kits, teacher training and classroom ecosystems for schools across India. Aligned to NEP 2020 and NCF 2023.",
+    path: "/",
+  }),
+  title: { absolute: `${SITE.name} — ${SITE.secondary}` },
+};
 
 export default async function HomePage() {
   const [audiences, benefits, pillars, featured, stats, partners] =
