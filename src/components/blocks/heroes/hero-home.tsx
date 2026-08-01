@@ -50,19 +50,55 @@ export function HeroHome() {
   const t = getDictionary();
 
   return (
-    <section className="kv-hero relative overflow-hidden">
-      <Container className="relative z-10 flex flex-col gap-6 pt-12 pb-4 sm:pt-16 lg:max-w-[62rem] lg:pt-20">
+    <section className="kv-hero relative flex flex-col overflow-hidden">
+      <Container className="relative z-10 flex flex-col gap-4 pt-8 sm:gap-5 sm:pt-16 lg:max-w-[62rem] lg:gap-6 lg:pt-20">
         <p className="text-label text-ink-subtle font-bold tracking-[0.16em] uppercase">
           {SITE.tagline}
         </p>
 
-        <h1 className="text-display-1 text-ink">
+        <h1 className="text-display-1 max-sm:text-[2.35rem] max-sm:leading-[1.06] text-ink">
           Learning through play.
-          <br />
+          {/* The line break is desktop-only. On a 390px screen it forced
+              "play." onto a line of its own and the headline ran to SIX lines,
+              which is most of the first screen spent on one sentence. Let it
+              flow and it settles into four. */}
+          <br className="max-sm:hidden" />{" "}
           Every classroom a hub of <RotatingWord words={WORDS} />
         </h1>
+      </Container>
 
-        <p className="measure text-body-lg text-ink-muted">
+      {/* THE WORLD SITS BETWEEN THE HEADLINE AND THE COPY ON MOBILE.
+          Below it on desktop, via order-last.
+
+          This is the whole mobile fix. With the world last, a phone visitor
+          met eyebrow + headline + paragraph + two buttons — a screen of pure
+          type — and the island only began around 1300px down. Most visitors
+          are on phones, so for most visitors the entire brand idea was below
+          the fold. Moved here, the world lands in the first screen and the
+          buttons still clear it.
+
+          Wider than the viewport on small screens on purpose: fitting the
+          whole island into 390px made every landmark about twelve pixels
+          tall, and present-but-unreadable is worse than absent. The camera
+          moves in instead, the island runs off both edges, and the section
+          clips it so nothing scrolls sideways. */}
+      <div className="relative -mx-[38%] my-1 w-[176%] overflow-hidden sm:-mx-[18%] sm:-mt-8 sm:w-[136%] lg:order-last lg:mx-0 lg:-mt-28 lg:w-full lg:overflow-visible">
+        {/* Crop the sky on small screens.
+
+            Zoomed in on a phone, the band above the island is mostly empty,
+            and a single drifting cloud sitting alone in it read as a stray
+            white blob under the headline rather than as weather. Desktop
+            keeps the full sky, where the clouds have an island and a balloon
+            to belong to. */}
+        <div className="-mt-10 sm:mt-0">
+          <KhelVerse>
+            <World />
+          </KhelVerse>
+        </div>
+      </div>
+
+      <Container className="relative z-10 flex flex-col gap-4 pb-4 sm:gap-5 lg:max-w-[62rem] lg:gap-6">
+        <p className="measure text-body sm:text-body-lg text-ink-muted">
           Gamified experiential learning kits, a Game Corner for the classroom,
           and teacher training — built for Vidyalayas and aligned to NEP 2020
           and NCF 2023.
@@ -77,20 +113,6 @@ export function HeroHome() {
           </ButtonLink>
         </div>
       </Container>
-
-      {/* Pulled up so the sky sits behind the copy, and WIDER THAN THE VIEWPORT
-          on small screens.
-
-          Fitting the whole island into 390px made every landmark about twelve
-          pixels tall — present, but unreadable, which is worse than absent. So
-          the camera moves in instead: the island overflows both edges and the
-          visitor sees the middle of a place that continues past the screen.
-          The section clips it, so nothing scrolls sideways. */}
-      <div className="relative -mt-10 -ml-[38%] w-[176%] sm:-mt-16 sm:-ml-[18%] sm:w-[136%] lg:-mt-28 lg:ml-0 lg:w-full">
-        <KhelVerse>
-          <World />
-        </KhelVerse>
-      </div>
     </section>
   );
 }
