@@ -34,6 +34,21 @@ interface Turn {
   content: string;
 }
 
+/**
+ * How much history to send back.
+ *
+ * The route caps a conversation at 12 turns and 24,000 characters. Letting
+ * the transcript grow until the server refuses it would turn a long, working
+ * conversation into a wall — the visitor's next question fails for a reason
+ * they cannot see and did nothing to cause. Trimming here keeps the request
+ * inside those limits by construction; the server checks stay as the actual
+ * guarantee, because a client-side limit is not one.
+ *
+ * The full transcript stays on screen. Only what is SENT is trimmed, so the
+ * model keeps recent context and the visitor keeps the whole thread.
+ */
+const MAX_SENT_TURNS = 10;
+
 export function AssistantPanel() {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [streaming, setStreaming] = useState("");
@@ -55,10 +70,15 @@ export function AssistantPanel() {
 
     let answer = "";
     try {
+      /* Trim from the front, then drop a leading assistant turn if the slice
+         starts on one — the exchange has to begin and end with the user. */
+      let sent = next.slice(-MAX_SENT_TURNS);
+      if (sent[0]?.role === "assistant") sent = sent.slice(1);
+
       const response = await fetch("/api/assistant", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: sent }),
       });
 
       if (!response.ok || response.body === null) {
