@@ -4,8 +4,7 @@ import { SITE } from "@/lib/constants";
 import { getDictionary } from "@/lib/i18n";
 import { KhelVerse } from "./khelverse/khelverse";
 import { World } from "./khelverse/world";
-import { RotatingWord } from "./rotating-word";
-import type { HeroWords } from "./hero-artwork";
+import { RotatingWord, type HeroWords } from "./rotating-word";
 
 /**
  * The homepage hero — the gate into KhelVerse.
@@ -82,7 +81,7 @@ export function HeroHome() {
           tall, and present-but-unreadable is worse than absent. The camera
           moves in instead, the island runs off both edges, and the section
           clips it so nothing scrolls sideways. */}
-      <div className="relative -mx-[38%] my-1 w-[176%] overflow-hidden sm:-mx-[18%] sm:-mt-8 sm:w-[136%] lg:order-last lg:mx-0 lg:-mt-28 lg:w-full lg:overflow-visible">
+      <div className="relative -mx-[38%] my-1 w-[176%] overflow-hidden sm:-mx-[18%] sm:-mt-8 sm:w-[136%] lg:order-last lg:mx-0 lg:-mt-12 lg:w-full lg:overflow-visible">
         {/* Crop the sky on small screens.
 
             Zoomed in on a phone, the band above the island is mostly empty,
@@ -97,7 +96,7 @@ export function HeroHome() {
         </div>
       </div>
 
-      <Container className="relative z-10 flex flex-col gap-4 pb-4 sm:gap-5 lg:max-w-[62rem] lg:gap-6">
+      <Container className="relative z-10 mt-2 flex flex-col gap-4 pb-4 sm:gap-5 lg:mt-7 lg:max-w-[62rem] lg:gap-6">
         <p className="measure text-body sm:text-body-lg text-ink-muted">
           Gamified experiential learning kits, a Game Corner for the classroom,
           and teacher training — built for Vidyalayas and aligned to NEP 2020

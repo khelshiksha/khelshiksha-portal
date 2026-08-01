@@ -207,49 +207,12 @@
     }
   }
 
-  /* --- Hero board --------------------------------------------------------
-     A die climbs five squares and the headline word changes where it lands.
-     The die's position and tumble are written by rAF; everything here is the
-     CSS half — the squares filling in behind it, and which pip face shows. */
-
-  /* An unfilled square is one the die has not reached; a filled one is a word
-     already played. Each square carries its own tint, matching the pillar it
-     lines up with further down the page, so the board colours in as the round
-     progresses. Values are tokens, so both states hold up in dark mode. */
-  .hero-square-face {
-    fill: var(--paper);
-    stroke: var(--rule);
-    transition:
-      fill 360ms var(--ease-out-quint),
-      stroke 360ms var(--ease-out-quint);
-  }
-  .hero-square.is-lit .hero-square-face {
-    fill: var(--sq-tint);
-    stroke: transparent;
-  }
-
-  .hero-square-pips {
-    opacity: 0;
-    transition: opacity 360ms var(--ease-out-quint);
-  }
-  .hero-square.is-lit .hero-square-pips {
-    opacity: 1;
-  }
-
-  /* Only ever one die face is shown; the rAF loop swaps them mid-hop. */
-  .hero-die-face {
-    display: none;
-  }
-  .hero-die-face.is-shown {
-    display: block;
-  }
-
-  /* Reduced motion needs no rule of its own here: the die's hop is rAF-driven
-     and suppressed in the component, and the squares' fill transition is
-     already flattened by the global reduced-motion reset at the top of this
-     file. Squares still fill, because they track the headline word, and the
-     word is content. The dotted route shows the climb, so the board reads
-     without a single moving part. */
+  /* The two earlier heroes — a child kicking a ball, then a die climbing a
+     board — left their CSS behind when KhelVerse replaced them: .hero-ball,
+     .hero-leg, .hero-burst, .hero-square*, .hero-die-face. Unused CSS is not
+     tree-shaken the way unused JS is, so it was still being downloaded and
+     parsed by every visitor. Removed along with hero-artwork.tsx, which was
+     no longer rendered anywhere. */
 
   /* The hero's sky. A CSS gradient rather than a rect inside the SVG, so it
      fills the full bleed of the section at any aspect and the world can be
@@ -285,18 +248,6 @@
     }
   }
 
-  .kv-drift {
-    animation: kv-drift 60s linear infinite;
-  }
-  @keyframes kv-drift {
-    from {
-      transform: translateX(-320px);
-    }
-    to {
-      transform: translateX(1420px);
-    }
-  }
-
   .kv-spin {
     animation: kv-spin 9s linear infinite;
   }
@@ -320,46 +271,6 @@
     100% {
       opacity: 0;
       transform: translate(-26px, 14px) scale(1.5);
-    }
-  }
-
-  /* The balloon crosses the whole sky once every couple of minutes. Long
-     enough that catching it feels like noticing something rather than
-     watching a loop. */
-  .kv-balloon {
-    animation: kv-balloon 128s linear infinite;
-  }
-  @keyframes kv-balloon {
-    from {
-      transform: translate(1360px, 250px);
-    }
-    to {
-      transform: translate(-120px, 92px);
-    }
-  }
-
-  /* Birds are absent most of the cycle and cross quickly — occasional, per the
-     brief, rather than a permanent flock. */
-  .kv-bird {
-    animation: kv-bird 30s linear infinite;
-    opacity: 0;
-  }
-  @keyframes kv-bird {
-    0%,
-    62% {
-      opacity: 0;
-      transform: translate(0, 0);
-    }
-    66% {
-      opacity: 1;
-    }
-    94% {
-      opacity: 1;
-      transform: translate(560px, -46px);
-    }
-    100% {
-      opacity: 0;
-      transform: translate(640px, -54px);
     }
   }
 
@@ -403,9 +314,21 @@
   }
 
   /* --- Zone pins ---------------------------------------------------------
-     Real links sitting above the rooftops. Always legible, not hover-only:
-     a principal must be able to see the five pillars without playing a game
-     of find-the-hotspot, and a touch device has no hover at all. */
+     Real links sitting above the rooftops.
+
+     ONE AT A TIME. Five permanent labels was the single least "simple" thing
+     on the page — a ring of chips competing with each other and with the
+     headline. Now only the zone the die is standing on is named, so the world
+     introduces its own pillars in turn and the eye is led round all five
+     without anyone doing anything.
+
+     Pointing at the world reveals ALL of them, because at the moment someone
+     reaches for it they have stopped watching and started looking for
+     something. So it is calm at rest and a map on intent.
+
+     Focus reveals the focused pin on its own, which is what keeps the labels
+     from becoming invisible keyboard traps: opacity:0 links stay focusable,
+     so a keyboard user must be able to see the one they are on. */
   .kv-pin {
     position: absolute;
     display: grid;
@@ -420,10 +343,25 @@
     text-align: center;
     text-decoration: none;
     backdrop-filter: blur(6px);
+    opacity: 0;
     transition:
+      opacity 380ms var(--ease-out-quint),
       transform 260ms var(--ease-out-quint),
       box-shadow 260ms var(--ease-out-quint),
       border-color 260ms var(--ease-out-quint);
+  }
+
+  .kv-pin.is-current,
+  .kv-root:hover .kv-pin,
+  .kv-pin:hover,
+  .kv-pin:focus-visible {
+    opacity: 1;
+  }
+
+  /* No JavaScript means no die and no is-current, so the labels would never
+     appear at all. Show them permanently instead — the map is the fallback. */
+  html:not([data-js]) .kv-pin {
+    opacity: 1;
   }
 
   /* A tail, so a pin reads as pointing at the platform beneath it. Without one
@@ -484,15 +422,9 @@
      word still changes, because that is content. */
   @media (prefers-reduced-motion: reduce) {
     .kv-sway,
-    .kv-drift,
     .kv-spin,
-    .kv-plume,
-    .kv-balloon,
-    .kv-bird {
+    .kv-plume {
       animation: none;
-    }
-    .kv-bird {
-      opacity: 0.6;
     }
   }
 

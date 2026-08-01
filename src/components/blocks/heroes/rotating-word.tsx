@@ -4,6 +4,17 @@ import { useEffect, useRef } from "react";
 import { setBeatPaused, subscribeToBeat } from "@/lib/play-beat";
 
 /**
+ * Exactly five words, because there are exactly five zones in the world and
+ * the die lands on one per word. A fixed-length tuple makes adding a sixth
+ * word without adding a sixth zone a compile error rather than a hero that
+ * silently falls out of sync.
+ *
+ * It used to live in hero-artwork.tsx, which was the only reason that file
+ * still existed after KhelVerse replaced it.
+ */
+export type HeroWords = [string, string, string, string, string];
+
+/**
  * Cycles the italic word at the end of the hero headline.
  *
  * Three properties worth preserving if this is ever changed:

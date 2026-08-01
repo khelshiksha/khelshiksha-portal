@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { fontVariables } from "@/lib/fonts";
 import { SITE } from "@/lib/constants";
 import { getDictionary } from "@/lib/i18n";
+import { NotFoundContent } from "@/components/blocks/content/not-found-content";
 import { DEFAULT_LOCALE, LOCALE_TAG } from "@/lib/i18n/config";
 import "./globals.css";
 
@@ -37,25 +38,14 @@ export default function GlobalNotFound() {
   return (
     <html lang={LOCALE_TAG[DEFAULT_LOCALE]} className={`${fontVariables} h-full`}>
       <body className="bg-paper text-ink flex min-h-full flex-col antialiased">
-        <main
-          id="main"
-          className="flex flex-1 flex-col items-center justify-center gap-6 px-6 py-24 text-center"
+        <a
+          href="#main"
+          className="bg-brand text-on-brand sr-only rounded-[var(--radius-md)] px-5 py-3 font-semibold focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100]"
         >
-          <p className="text-label text-ink-subtle font-bold tracking-[0.16em] uppercase">
-            404
-          </p>
-          <h1 className="text-display-2 text-ink max-w-[20ch]">
-            We can&rsquo;t find that page.
-          </h1>
-          <p className="measure text-body-lg text-ink-muted">
-            The link may be out of date, or the address may have a typo in it.
-          </p>
-          <a
-            href="/"
-            className="bg-brand text-on-brand rounded-[var(--radius-md)] px-7 py-3.5 text-base font-semibold"
-          >
-            {t.nav.home}
-          </a>
+          {t.nav.skipToContent}
+        </a>
+        <main id="main" className="flex flex-1 items-center">
+          <NotFoundContent />
         </main>
       </body>
     </html>

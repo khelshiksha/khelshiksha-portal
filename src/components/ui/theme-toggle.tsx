@@ -2,7 +2,7 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
-import { getDictionary } from "@/lib/i18n";
+import { useDictionary } from "@/lib/i18n/locale-context";
 
 type Theme = "light" | "dark";
 
@@ -29,7 +29,7 @@ function getSnapshot(): Theme {
 }
 
 export function ThemeToggle({ className }: { className?: string }) {
-  const t = getDictionary();
+  const t = useDictionary();
   const theme = useSyncExternalStore<Theme | null>(
     subscribe,
     getSnapshot,

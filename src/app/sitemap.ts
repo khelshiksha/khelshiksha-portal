@@ -9,7 +9,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getPillarSlugs(),
   ]);
 
-  const now = new Date();
   const url = (path: string) => new URL(path, SITE.url).toString();
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -30,6 +29,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: url(ROUTES.terms), changeFrequency: "yearly", priority: 0.2 },
   ];
 
+  /* No lastModified. It used to be `new Date()` on every entry, which meant
+     all 26 URLs claimed to have changed at the moment of the last deploy —
+     including the privacy policy. Google treats an unreliable lastmod as a
+     reason to stop trusting the field, so an absent one is strictly better
+     than a wrong one. It comes back when the content layer carries real
+     dates (Sanity has _updatedAt). */
   return [
     ...staticRoutes,
     ...productSlugs.map((slug) => ({
@@ -42,5 +47,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
-  ].map((entry) => ({ lastModified: now, ...entry }));
+  ];
 }

@@ -32,14 +32,15 @@ export const ORIGIN_Y = 160;
  *
  * Not "0 0 1280 580": the island only occupies part of that box, and the slack
  * showed up as a dead band of empty sky between the buttons and the world.
- * This is cropped to the island's actual extents plus room for the clouds, so
- * the world fills the frame instead of sitting in the middle of it.
+ * This is cropped to the island's actual extents. It tightened again when the
+ * clouds were removed: the band they occupied was then just empty space, and
+ * empty space at the top of the frame is what made the hero too tall.
  *
  * Every consumer — both SVGs and the HTML pins layered over them — derives its
  * geometry from this one constant, so the crop can be retuned in a single
  * place without the labels drifting off the rooftops.
  */
-export const VIEW = { x: 96, y: 62, w: 1096, h: 486 } as const;
+export const VIEW = { x: 96, y: 104, w: 1096, h: 444 } as const;
 export const VIEW_BOX = `${VIEW.x} ${VIEW.y} ${VIEW.w} ${VIEW.h}`;
 
 export type Point = { x: number; y: number };

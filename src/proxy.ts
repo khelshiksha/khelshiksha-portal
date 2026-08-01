@@ -4,6 +4,10 @@ import { ACTIVE_LOCALES, DEFAULT_LOCALE } from "@/lib/i18n/config";
 /**
  * Maps clean URLs onto the [locale] route segment.
  *
+ * Named proxy.ts, not middleware.ts: Next 16.2 deprecated the middleware file
+ * convention and warns about it on every dev boot. Same behaviour, same
+ * matcher — only the file name and the exported function name change.
+ *
  * Every page lives under app/[locale], so the router needs a locale in the
  * path. But English must stay unprefixed — see the note in lib/i18n/routing —
  * which leaves three cases:
@@ -23,7 +27,7 @@ import { ACTIVE_LOCALES, DEFAULT_LOCALE } from "@/lib/i18n/config";
  * breaks caching and confuses crawlers. The language switcher is explicit and
  * the choice is in the URL.
  */
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const prefixed = ACTIVE_LOCALES.find(
