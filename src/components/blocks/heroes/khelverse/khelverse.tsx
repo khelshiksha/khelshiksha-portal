@@ -151,8 +151,14 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
       die.style.transform = `translate(${p.x}px, ${p.y}px)`;
     };
 
+    /* Light the platform AND name it. The label follows the die so the world
+       introduces its own pillars one at a time — see .kv-pin in globals.css
+       for why five permanent labels were the least simple thing here. */
     const lightOnly = (slug: string) => {
       for (const [key, el] of zoneEls) el.classList.toggle("is-active", key === slug);
+      for (const pin of root.querySelectorAll("[data-zone-link]")) {
+        pin.classList.toggle("is-current", pin.getAttribute("data-zone-link") === slug);
+      }
     };
 
     /* The die sits half a cube's width off the platform centre so it reads as
@@ -241,7 +247,16 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
 
   return (
     <div ref={rootRef} className="kv-root relative w-full">
-      <div className="relative aspect-[1096/486] w-full">
+      {/* Aspect comes from the camera crop itself, so the two can never drift
+          apart. They already did once: the crop was tightened to VIEW.h 444
+          while this box stayed at 486, which letterboxed the SVG inside it —
+          leaving a band of dead cream under the island and knocking every pin
+          slightly out of line, since pins are positioned as a percentage of
+          THIS box. */}
+      <div
+        className="relative w-full"
+        style={{ aspectRatio: `${VIEW.w} / ${VIEW.h}` }}
+      >
         {children}
 
         <svg

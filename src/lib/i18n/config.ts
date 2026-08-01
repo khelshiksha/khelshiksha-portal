@@ -28,8 +28,28 @@ export const DEFAULT_LOCALE: Locale = "en";
  * speaking principal — and would do more damage to credibility than having no
  * Gujarati at all. So the machinery ships dark and this array is the switch.
  *
- * Adding "gu" here is the only change needed to turn it on, which is exactly
- * what the scaffolding promised on day one (decision D8).
+ * BEFORE ADDING "gu" HERE, two things must be done, in this order:
+ *
+ *  1. Translate the 288 prose strings in src/content, and give the CMS
+ *     boundary (services/cms) a locale argument so pages read the right set.
+ *
+ *  2. Pass a locale into the four SERVER components that still call
+ *     getDictionary() with no argument, which means they silently render
+ *     English whatever the URL says:
+ *
+ *       app/[locale]/(marketing)/products/[slug]/page.tsx
+ *       components/blocks/navigation/breadcrumbs.tsx
+ *       components/blocks/heroes/hero-home.tsx
+ *       components/blocks/product/featured-kits.tsx
+ *
+ *     Client components no longer have this problem — they read the locale
+ *     from LocaleProvider via useDictionary(). Server components cannot,
+ *     because React context does not cross the server boundary, so the
+ *     locale has to be handed down as a prop from the page.
+ *
+ * This list is here rather than in a ticket because the failure mode is
+ * silent: the page would render, in the wrong language, and look fine to
+ * anyone who does not read Gujarati.
  */
 export const ACTIVE_LOCALES: readonly Locale[] = ["en"];
 

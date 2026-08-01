@@ -12,6 +12,15 @@ import { PLATFORM, PLATFORM_H, PLAZA, PLAZA_CENTRE, ZONES, zoneCentre } from "./
 /**
  * The static geometry of KhelVerse.
  *
+ * NO SKY. There were drifting clouds, a hot-air balloon and occasional birds
+ * here. They went for two reasons, and the first is a bug: on desktop the
+ * world is pulled up behind the copy, so a cloud would drift through the
+ * middle of the paragraph and read as a rendering artifact next to "NCF
+ * 2023". The second is the brief — "simple yet attractive". The island still
+ * breathes through swaying trees, a turning windmill and the die; a sky full
+ * of extra moving parts was noise competing with the one thing worth
+ * watching.
+ *
  * A SERVER component on purpose. This is the largest markup on the site, and
  * none of it is interactive — shipping it as a client component would put
  * every polygon in the JavaScript bundle of the page whose load time matters
@@ -221,8 +230,6 @@ export function World() {
       aria-hidden="true"
       focusable="false"
     >
-      <Sky />
-
       <Island />
 
       {FILLER.map((spot, i) => {
@@ -323,78 +330,6 @@ function ZonePlatform({ slug }: { slug: string }) {
           <Landmark gx={zone.gx} gy={zone.gy} gz={PLATFORM_H} />
         </g>
       </g>
-    </g>
-  );
-}
-
-/** Clouds, a balloon and birds. Everything drifts on its own timing. */
-function Sky() {
-  return (
-    <g className="kv-sky">
-      {[
-        { x: 120, y: 70, s: 1.0, seed: 3 },
-        { x: 520, y: 40, s: 0.72, seed: 9 },
-        { x: 880, y: 96, s: 1.15, seed: 17 },
-        { x: 1120, y: 46, s: 0.62, seed: 23 },
-      ].map((c) => (
-        <g
-          key={c.seed}
-          className="kv-drift"
-          style={{
-            animationDuration: `${randRange(c.seed, 46, 82)}s`,
-            animationDelay: `-${randRange(c.seed + 1, 0, 40)}s`,
-          }}
-        >
-          <g transform={`translate(${c.x} ${c.y}) scale(${c.s})`} opacity="0.9">
-            <ellipse cx="0" cy="0" rx="42" ry="20" fill="var(--w-cloud)" />
-            <ellipse cx="-30" cy="6" rx="26" ry="14" fill="var(--w-cloud)" />
-            <ellipse cx="30" cy="7" rx="30" ry="15" fill="var(--w-cloud)" />
-            <ellipse cx="6" cy="-14" rx="24" ry="15" fill="var(--w-cloud)" />
-          </g>
-        </g>
-      ))}
-
-      {/* Hot air balloon — the one object that crosses the whole sky, on a very
-          long loop so it is a surprise rather than a metronome. */}
-      <g className="kv-balloon">
-        <g transform="translate(0 0)">
-          <path
-            d="M0-26 a26 30 0 0 1 26 30 c0 14 -12 24 -26 40 c-14 -16 -26 -26 -26 -40 a26 30 0 0 1 26 -30 z"
-            fill="var(--w-coral)"
-          />
-          <path
-            d="M0-26 a26 30 0 0 1 13 4 c4 20 2 40 -13 66 c-4 -6 -7 -11 -10 -16 c6 -20 9 -38 10 -54 z"
-            fill="var(--w-roof-top)"
-            opacity="0.85"
-          />
-          <rect x="-7" y="46" width="14" height="10" rx="3" fill="var(--w-wood-left)" />
-          <path d="M-8 44 l3 -6 M8 44 l-3 -6" stroke="var(--w-wood-right)" strokeWidth="1.6" />
-        </g>
-      </g>
-
-      {[
-        { x: 300, y: 128, seed: 41 },
-        { x: 340, y: 112, seed: 47 },
-        { x: 372, y: 134, seed: 53 },
-      ].map((b) => (
-        <g
-          key={b.seed}
-          className="kv-bird"
-          style={{
-            animationDuration: `${randRange(b.seed, 26, 38)}s`,
-            animationDelay: `-${randRange(b.seed + 1, 0, 26)}s`,
-          }}
-        >
-          <path
-            d={`M${b.x} ${b.y} q 7 -6 14 0 q 7 -6 14 0`}
-            fill="none"
-            stroke="var(--w-stone-right)"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            opacity="0.6"
-          />
-        </g>
-      ))}
     </g>
   );
 }

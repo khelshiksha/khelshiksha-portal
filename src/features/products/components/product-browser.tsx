@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { ProductCard } from "@/components/blocks/product/product-card";
 import { Button } from "@/components/ui/button";
-import { getDictionary } from "@/lib/i18n";
+import { useDictionary } from "@/lib/i18n/locale-context";
 import {
   AGE_BANDS,
   DURATION_BANDS,
@@ -40,7 +40,7 @@ export function ProductBrowser({
   pillars: Pillar[];
   initialFilters: ProductFilters;
 }) {
-  const t = getDictionary();
+  const t = useDictionary();
   const [filters, setFilters] = useState<ProductFilters>(initialFilters);
   const [sheetOpen, setSheetOpen] = useState(false);
 

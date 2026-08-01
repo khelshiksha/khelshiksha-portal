@@ -4,7 +4,7 @@ import { useActionState, useId } from "react";
 import { useFormStatus } from "react-dom";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getDictionary } from "@/lib/i18n";
+import { useDictionary } from "@/lib/i18n/locale-context";
 import { submitLead } from "../actions";
 import type { ActionResult, LeadType } from "../schema";
 
@@ -36,7 +36,7 @@ export function EnquiryForm({
   showMessage?: boolean;
   submitLabel?: string;
 }) {
-  const t = getDictionary();
+  const t = useDictionary();
   const [state, formAction] = useActionState<ActionResult | null, FormData>(
     submitLead,
     null,
@@ -205,7 +205,7 @@ export function EnquiryForm({
 }
 
 function SubmitButton({ label }: { label: string }) {
-  const t = getDictionary();
+  const t = useDictionary();
   const { pending } = useFormStatus();
 
   return (
@@ -231,7 +231,7 @@ function Field({
   required?: boolean;
   className?: string;
 } & React.ComponentPropsWithoutRef<"input">) {
-  const t = getDictionary();
+  const t = useDictionary();
 
   return (
     <div className={`flex flex-col gap-1.5 ${className ?? ""}`}>
