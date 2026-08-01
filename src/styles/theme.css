@@ -63,7 +63,13 @@
   --pillar-peach: #ad430a;
   --pillar-lavender: #5b4bc4;
 
-  --glass: rgb(253 251 246 / 0.72);
+  /* 0.92, not 0.72. The sticky header is translucent, so when it scrolls over
+     the dark Game Corner / assistant panels or the blue CTA band, the nav
+     links were composited against THAT and fell to 3.44:1 — below the 4.5:1
+     AA floor. Measured, not guessed: 0.92 gives 5.39:1 over the dark panels
+     and 5.60:1 over the brand band, and the blur is still clearly visible.
+     Anything that darkens a full-bleed background must be re-checked here. */
+  --glass: rgb(253 251 246 / 0.92);
 
   --shadow-sm: 0 1px 2px rgb(46 38 20 / 0.05), 0 1px 3px rgb(46 38 20 / 0.04);
   --shadow-md: 0 4px 12px rgb(46 38 20 / 0.06), 0 2px 4px rgb(46 38 20 / 0.04);
@@ -115,7 +121,7 @@
   --pillar-mint: #5fd3a0;
   --pillar-peach: #ff9552;
   --pillar-lavender: #a99cf5;
-  --glass: rgb(18 19 26 / 0.76);
+  --glass: rgb(18 19 26 / 0.92);
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow-md: 0 4px 14px rgb(0 0 0 / 0.45);
   --shadow-lg: 0 12px 34px rgb(0 0 0 / 0.5);
@@ -151,7 +157,13 @@
   --pillar-mint: #177552;
   --pillar-peach: #ad430a;
   --pillar-lavender: #5b4bc4;
-  --glass: rgb(253 251 246 / 0.72);
+  /* 0.92, not 0.72. The sticky header is translucent, so when it scrolls over
+     the dark Game Corner / assistant panels or the blue CTA band, the nav
+     links were composited against THAT and fell to 3.44:1 — below the 4.5:1
+     AA floor. Measured, not guessed: 0.92 gives 5.39:1 over the dark panels
+     and 5.60:1 over the brand band, and the blur is still clearly visible.
+     Anything that darkens a full-bleed background must be re-checked here. */
+  --glass: rgb(253 251 246 / 0.92);
   --shadow-sm: 0 1px 2px rgb(46 38 20 / 0.05), 0 1px 3px rgb(46 38 20 / 0.04);
   --shadow-md: 0 4px 12px rgb(46 38 20 / 0.06), 0 2px 4px rgb(46 38 20 / 0.04);
   --shadow-lg: 0 12px 32px rgb(46 38 20 / 0.09), 0 4px 8px rgb(46 38 20 / 0.04);

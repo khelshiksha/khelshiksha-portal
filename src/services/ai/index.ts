@@ -66,7 +66,19 @@ function isModelUnavailable(error: unknown): boolean {
 /* Deliberately small. Answers are two or three short paragraphs — a visitor
    wants a route to the right page, not an essay, and an unbounded budget on a
    public endpoint is an unbounded bill. */
-const MAX_TOKENS = 700;
+/**
+ * 700 was too tight and answers were being cut off mid-sentence in
+ * production — "...particularly to" and "4. **" both landed on screen.
+ *
+ * Two things eat this budget. The obvious one is the answer. The other is
+ * that Gemini 3 models think before answering and those tokens count against
+ * the same ceiling, so a 700 limit could leave only a few hundred for the
+ * visible reply. The ceiling is a safety net against a runaway generation,
+ * not a length target — the system prompt is what keeps answers to two or
+ * three paragraphs, and it does that far more reliably than truncation, which
+ * produces a broken sentence rather than a shorter answer.
+ */
+const MAX_TOKENS = 2000;
 
 export function isAssistantConfigured(): boolean {
   return Boolean(process.env.GOOGLE_API_KEY);
@@ -159,11 +171,24 @@ Demo booking: /contact?type=school-demo
 6. Answer in the language the visitor writes in. If they write in Gujarati,
    answer entirely in Gujarati.
 
+## Format — the panel renders your reply as PLAIN TEXT
+
+It does not render Markdown. Asterisks, hashes and backticks appear on screen
+exactly as you type them, so a bolded kit name arrives as **Aryabhata** and
+reads as a mistake.
+
+- No Markdown of any kind: no **bold**, no *italics*, no \`code\`, no # headings.
+- No numbered or bulleted lists. If you are comparing kits, use a short
+  paragraph per kit and start it with the kit's name followed by a dash.
+- No headings, no labels like "Call to action:" or "Summary:". Those are notes
+  to yourself, not something a visitor should ever read.
+- Write kit and page paths bare: /products/aryabhata
+
 ## Style
-Two or three short paragraphs at most, plain sentences, no marketing
-adjectives, no emoji, no bullet lists unless comparing kits. Refer to pages by
-their path (for example /products/aryabhata) so the interface can link them.
-Address the visitor directly as "you".`;
+Two or three short paragraphs at most. Plain sentences, no marketing
+adjectives, no emoji. Address the visitor directly as "you". Finish your last
+sentence — a complete short answer is better than a longer one that stops
+mid-thought.`;
 }
 
 /**

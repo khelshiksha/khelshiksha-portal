@@ -57,6 +57,36 @@ export function AssistantPanel() {
   const inputRef = useRef<HTMLInputElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * Follow the answer down only while the visitor is already at the bottom.
+   *
+   * Scrolling to the bottom on every chunk fought anyone who scrolled up to
+   * re-read something — the next token dragged them straight back down — and
+   * slammed the container to the end the moment an answer finished. Reading
+   * an answer while it is still being written is a completely normal thing to
+   * do and the panel should not punish it.
+   *
+   * The 48px tolerance is what makes this feel right rather than literal:
+   * "close enough to the bottom that they are clearly still following along"
+   * is the actual intent, and an exact comparison fails on sub-pixel heights
+   * at some zoom levels anyway.
+   */
+  const isPinnedToBottom = () => {
+    const el = logRef.current;
+    if (el === null) return true;
+    return el.scrollHeight - el.scrollTop - el.clientHeight < 48;
+  };
+
+  const scrollToBottom = () => {
+    const el = logRef.current;
+    if (el === null) return;
+    /* rAF so the measurement happens after React has painted the new chunk;
+       scrolling to a height that does not exist yet lands short. */
+    requestAnimationFrame(() => {
+      el.scrollTop = el.scrollHeight;
+    });
+  };
+
   async function ask(question: string) {
     const trimmed = question.trim();
     if (trimmed === "" || busy) return;
@@ -67,6 +97,9 @@ export function AssistantPanel() {
     setBusy(true);
     setAnnounce("");
     if (inputRef.current) inputRef.current.value = "";
+    /* Unconditional, unlike the streaming case: they just pressed Ask, so
+       showing them what they asked is the point. */
+    scrollToBottom();
 
     let answer = "";
     try {
@@ -93,9 +126,13 @@ export function AssistantPanel() {
         for (;;) {
           const { done, value } = await reader.read();
           if (done) break;
+          /* Whether to follow the text down is decided BEFORE React paints
+             the new chunk — once the content has grown, "are we at the
+             bottom" is already false and the answer is always no. */
+          const pinned = isPinnedToBottom();
           answer += decoder.decode(value, { stream: true });
           setStreaming(answer);
-          logRef.current?.scrollTo({ top: logRef.current.scrollHeight });
+          if (pinned) scrollToBottom();
         }
       }
     } catch {
@@ -161,7 +198,20 @@ export function AssistantPanel() {
       <div className="border-on-band-dark/15 bg-on-band-dark/[0.06] flex flex-col gap-3 rounded-[var(--radius-xl)] border p-4 sm:p-5">
         <div
           ref={logRef}
-          className="flex min-h-[15rem] flex-col gap-4 overflow-y-auto sm:max-h-[26rem] sm:min-h-[19rem]"
+          /* tabIndex=0 and a label because this is a scrollable region: once
+             the conversation overflows, a keyboard-only visitor has no way to
+             reach the text above the fold without a focusable container. Axe
+             flags it as `scrollable-region-focusable`, and the flag was right
+             — this was already true before the scrollbar was hidden, it just
+             never fired because the standing suite never fills the chat.
+             role=log so assistive tech treats it as an appending transcript.
+
+             scrollbar-none hides the painted bar only; wheel, trackpad, touch
+             and arrow keys all still scroll it. */
+          tabIndex={0}
+          role="log"
+          aria-label="Conversation with the assistant"
+          className="scrollbar-none flex min-h-[15rem] flex-col gap-4 overflow-y-auto sm:max-h-[26rem] sm:min-h-[19rem]"
         >
           {!hasConversation ? (
             <p className="bg-on-band-dark/10 text-body-sm text-on-band-dark/85 rounded-[var(--radius-md)] px-4 py-3">
