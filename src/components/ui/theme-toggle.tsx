@@ -7,31 +7,25 @@ import { getDictionary } from "@/lib/i18n";
 type Theme = "light" | "dark";
 
 /**
- * The theme lives in two external systems — localStorage and the OS media
- * query — so it is read with useSyncExternalStore rather than mirrored into
- * component state via an effect. That avoids the cascading render an
- * effect-plus-setState would cause, and keeps the toggle correct if the OS
- * preference changes mid-session.
+ * The theme lives in localStorage, an external system, so it is read with
+ * useSyncExternalStore rather than mirrored into component state via an
+ * effect. That avoids the cascading render an effect-plus-setState causes.
  *
- * getServerSnapshot returns null: the server cannot know the preference, and
- * guessing would render the wrong icon for half of visitors before swapping.
+ * The OS preference is deliberately NOT consulted. Light is the default for
+ * everyone and dark is opt-in — see the note at the top of theme.css. This
+ * component and the CSS have to agree on that, or the icon would show a sun
+ * on a light page.
+ *
+ * getServerSnapshot returns null: the server cannot read localStorage, and
+ * guessing would render the wrong icon for anyone who has chosen dark.
  */
 function subscribe(onChange: () => void) {
-  const media = window.matchMedia("(prefers-color-scheme: dark)");
-  media.addEventListener("change", onChange);
   window.addEventListener("storage", onChange);
-  return () => {
-    media.removeEventListener("change", onChange);
-    window.removeEventListener("storage", onChange);
-  };
+  return () => window.removeEventListener("storage", onChange);
 }
 
 function getSnapshot(): Theme {
-  const explicit = document.documentElement.dataset.theme;
-  if (explicit === "dark" || explicit === "light") return explicit;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 }
 
 export function ThemeToggle({ className }: { className?: string }) {
@@ -45,6 +39,14 @@ export function ThemeToggle({ className }: { className?: string }) {
   const toggle = useCallback(() => {
     const next: Theme = getSnapshot() === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = next;
+
+    /* Keep the browser chrome in step. The meta tag is static in the document
+       because light is the default; without this the address bar stays cream
+       behind a dark page on Android and iOS. */
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", next === "dark" ? "#12131A" : "#FDFBF6");
+
     try {
       localStorage.setItem("ks-theme", next);
     } catch {
@@ -64,7 +66,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       type="button"
       onClick={toggle}
       aria-label={theme === "dark" ? t.theme.toLight : t.theme.toDark}
-      className={`inline-flex size-11 items-center justify-center rounded-[var(--radius-md)] text-ink-muted transition-colors hover:bg-sunken hover:text-ink ${className ?? ""}`}
+      className={`text-ink-muted hover:bg-sunken hover:text-ink inline-flex size-11 items-center justify-center rounded-[var(--radius-md)] transition-colors ${className ?? ""}`}
     >
       {theme === "dark" ? (
         <Sun size={19} aria-hidden="true" />

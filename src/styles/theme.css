@@ -71,55 +71,21 @@
   --shadow-xl: 0 24px 64px rgb(46 38 20 / 0.12);
 }
 
-/* Dark: warm near-black, not blue-black. Not a naive inversion. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #12131a;
-    --surface: #1b1d27;
-    --sunken: #171922;
+/* Light is the default for EVERY visitor, regardless of the OS setting.
+   Dark applies only when the moon toggle has explicitly asked for it.
 
-    --ink: #f2efe8; /* 16.13:1 on paper */
-    --ink-muted: #a5aac0; /* 8.04:1 */
-    --ink-subtle: #8e94ac;
+   There is deliberately no `@media (prefers-color-scheme: dark)` block here.
+   Honouring the OS preference meant a principal opening the site on a phone
+   in system dark mode saw the dark treatment first, when the brand and the
+   brochure it has to sit beside are light. The palette below is the site;
+   `:root[data-theme="dark"]` is the opt-in.
 
-    --rule: #2e3140;
-    --rule-strong: #5c6178;
+   The dark token set is unchanged and complete — it moved, it was not
+   dropped. Anything added to :root that differs in dark must be added there
+   too, or it will silently inherit the light value. */
 
-    --brand: #8db4f7; /* 8.82:1 — and paper on it 8.82:1 for filled buttons */
-    --brand-deep: #b4cdfa;
-    --brand-tint: #1a2740;
-    --on-brand: #12131a;
-
-    --accent: #f5c518; /* 11.36:1 */
-    --on-accent: #12131a;
-
-    --success: #5fd3a0; /* 9.98:1 */
-    --energy: #ff9552; /* 8.53:1 */
-    --energy-text: #ff9552;
-    --magenta: #f58cb4;
-
-    --tint-sky: #1a2740;
-    --tint-blush: #38202c;
-    --tint-mint: #17302a;
-    --tint-peach: #3a2618;
-    --tint-lavender: #262046;
-
-    --pillar-sky: #8db4f7;
-    --pillar-blush: #f58cb4;
-    --pillar-mint: #5fd3a0;
-    --pillar-peach: #ff9552;
-    --pillar-lavender: #a99cf5;
-
-    --glass: rgb(18 19 26 / 0.76);
-
-    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
-    --shadow-md: 0 4px 14px rgb(0 0 0 / 0.45);
-    --shadow-lg: 0 12px 34px rgb(0 0 0 / 0.5);
-    --shadow-xl: 0 24px 64px rgb(0 0 0 / 0.55);
-  }
-}
-
-/* An explicit toggle must win over the media query in BOTH directions. */
+/* The opt-in dark treatment, set by the moon toggle and restored before first
+   paint by the boot script in layout.tsx. */
 :root[data-theme="dark"] {
   --paper: #12131a;
   --surface: #1b1d27;

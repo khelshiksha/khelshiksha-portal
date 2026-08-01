@@ -37,32 +37,35 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", site: "@khelshiksha" },
 };
 
+/**
+ * A single light theme-color, not a prefers-color-scheme pair: light is the
+ * default for every visitor now, so keying the browser chrome to the OS would
+ * paint a dark address bar above a light page. The toggle rewrites this tag
+ * when someone opts into dark.
+ */
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#FDFBF6" },
-    { media: "(prefers-color-scheme: dark)", color: "#12131A" },
-  ],
+  themeColor: "#FDFBF6",
   width: "device-width",
   initialScale: 1,
 };
 
 /**
- * Applies a stored theme preference before first paint.
- *
- * This must run synchronously in <head> — deferring it produces a flash of
- * the wrong theme on every navigation, which is worse than not having a
- * toggle. It only ever sets data-theme when the user has made an explicit
- * choice; otherwise the CSS media query decides.
- */
-/**
- * Runs before first paint. Two jobs:
- *  - apply a stored theme preference (deferring this flashes the wrong theme
- *    on every navigation, which is worse than having no toggle);
+ * Runs before first paint. Three jobs:
  *  - set data-js, which gates the scroll-reveal hidden state in CSS. Without
  *    JavaScript the flag is never set and every revealed section renders
- *    visible.
+ *    visible;
+ *  - restore a stored theme choice (deferring this flashes the wrong theme on
+ *    every navigation, which is worse than having no toggle);
+ *  - repaint the theme-color meta so the browser chrome matches. The tag ships
+ *    light because light is the default, so only a stored dark choice needs
+ *    to touch it.
+ *
+ * It reads localStorage and nothing else — the OS preference is deliberately
+ * ignored, matching theme.css. Wrapped in try/catch because localStorage
+ * throws outright in some private-browsing modes, and a theme preference is
+ * not worth breaking the page over.
  */
-const BOOT_SCRIPT = `(function(){var d=document.documentElement;d.dataset.js='1';try{var t=localStorage.getItem('ks-theme');if(t==='dark'||t==='light'){d.dataset.theme=t}}catch(e){}})()`;
+const BOOT_SCRIPT = `(function(){var d=document.documentElement;d.dataset.js='1';try{var t=localStorage.getItem('ks-theme');if(t==='dark'||t==='light'){d.dataset.theme=t;if(t==='dark'){var m=document.querySelector('meta[name="theme-color"]');if(m){m.setAttribute('content','#12131A')}}}}catch(e){}})()`;
 
 export default function RootLayout({
   children,
@@ -74,10 +77,10 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
       </head>
-      <body className="flex min-h-full flex-col bg-paper text-ink antialiased">
+      <body className="bg-paper text-ink flex min-h-full flex-col antialiased">
         <a
           href="#main"
-          className="sr-only rounded-[var(--radius-md)] bg-brand px-5 py-3 font-semibold text-on-brand focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100]"
+          className="bg-brand text-on-brand sr-only rounded-[var(--radius-md)] px-5 py-3 font-semibold focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100]"
         >
           {t.nav.skipToContent}
         </a>

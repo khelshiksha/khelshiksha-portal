@@ -31,7 +31,15 @@
   /* Focus is non-negotiable and must be visible on every background,
      including the five pillar tints and the blue CTA band.
      3px at 5.62:1 clears the 3:1 non-text requirement with margin. */
-  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  :where(
+    a,
+    button,
+    input,
+    select,
+    textarea,
+    summary,
+    [tabindex]
+  ):focus-visible {
     outline: 3px solid var(--brand);
     outline-offset: 3px;
     border-radius: var(--radius-sm);
@@ -145,6 +153,58 @@
     font-style: italic;
     font-weight: 400;
     color: var(--brand);
+  }
+
+  /* --- Rotating hero word ------------------------------------------------
+     Every candidate word is stacked in ONE grid cell, so the box is as wide
+     as the longest of them and swapping words cannot shift the headline.
+     Reserving the width is the whole point: an inline swap of "play." for
+     "confidence." would jog the line on every tick and wreck CLS on the LCP
+     element.
+
+     Inactive words use visibility:hidden rather than opacity:0 — hidden
+     removes them from the accessibility tree, so a screen reader reads the
+     heading once, with whichever word is current, instead of reciting all
+     five. */
+  .word-rotator {
+    display: inline-grid;
+    vertical-align: bottom;
+  }
+
+  .word-rotator > * {
+    grid-area: 1 / 1;
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      opacity 420ms var(--ease-out-quint),
+      transform 420ms var(--ease-out-quint);
+    transform: translateY(0.24em);
+  }
+
+  .word-rotator > .is-active {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* No JavaScript: nothing ever gets .is-active, so show the first word and
+     let the headline read as a normal sentence. */
+  html:not([data-js]) .word-rotator > * {
+    visibility: hidden;
+  }
+  html:not([data-js]) .word-rotator > :first-child {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Reduced motion: the word still changes — that is content, not decoration
+     — but it cuts rather than slides. */
+  @media (prefers-reduced-motion: reduce) {
+    .word-rotator > * {
+      transition: none;
+      transform: none;
+    }
   }
 
   /* Prose measure for long-form content */

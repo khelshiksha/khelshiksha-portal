@@ -7,6 +7,7 @@ import { FeaturedKits } from "@/components/blocks/product/featured-kits";
 import { GameCornerBand } from "@/components/blocks/content/game-corner-band";
 import { StatBand } from "@/components/blocks/proof/stat-band";
 import { CTABand } from "@/components/blocks/content/cta-band";
+import { AssistantSection } from "@/features/assistant/components/assistant-section";
 import type { Metadata } from "next";
 import { SITE } from "@/lib/constants";
 import { buildMetadata } from "@/lib/seo";
@@ -17,6 +18,7 @@ import {
   getImpactStats,
   getPartners,
   getPillars,
+  getAlignments,
 } from "@/services/cms";
 
 /* CMS-driven, changes rarely, must be instant. Webhook revalidation will make
@@ -44,7 +46,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [audiences, benefits, pillars, featured, stats, partners] =
+  const [audiences, benefits, pillars, featured, stats, partners, alignments] =
     await Promise.all([
       getAudienceHubs(),
       getBenefits(),
@@ -52,17 +54,20 @@ export default async function HomePage() {
       getFeaturedProducts(4),
       getImpactStats(),
       getPartners(),
+      getAlignments(),
     ]);
 
   return (
     <>
       <HeroHome />
-      <TrustBar partners={partners} />
+      <TrustBar partners={partners} alignments={alignments} />
       <AudienceSplit audiences={audiences} />
       <BenefitList benefits={benefits} />
       <PillarGrid pillars={pillars} />
       <FeaturedKits products={featured} pillars={pillars} />
       <GameCornerBand />
+      <AssistantSection />
+
       <StatBand
         stats={stats}
         cta={{ label: "See our impact in full", href: "/impact" }}

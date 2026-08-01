@@ -1,0 +1,221 @@
+"use client";
+
+import { useRef, useState } from "react";
+import Link from "next/link";
+import { CornerDownLeft, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+/**
+ * The site assistant.
+ *
+ * Answers stream in as plain text. Three things here are deliberate:
+ *
+ *  - The heading, lede, suggested questions and the route to a human are all
+ *    server-rendered. With JavaScript off, the panel is still a readable
+ *    section that ends in a link to /contact rather than a dead input box.
+ *
+ *  - Streaming text is NOT announced character by character. Piping a live
+ *    region a token at a time makes a screen reader stutter continuously and
+ *    is worse than useless; the finished answer is announced once, through a
+ *    visually hidden status region.
+ *
+ *  - The disclaimer sits under the input where the answer appears, not buried
+ *    in a footer. It is generated text about a real purchase decision and the
+ *    visitor should be told that where they read it.
+ */
+const SUGGESTIONS = [
+  "Which kits suit a Class 3–5 classroom?",
+  "How does a Game Corner get set up?",
+  "How does this align with NEP 2020?",
+];
+
+interface Turn {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export function AssistantPanel() {
+  const [turns, setTurns] = useState<Turn[]>([]);
+  const [streaming, setStreaming] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [announce, setAnnounce] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const logRef = useRef<HTMLDivElement>(null);
+
+  async function ask(question: string) {
+    const trimmed = question.trim();
+    if (trimmed === "" || busy) return;
+
+    const next: Turn[] = [...turns, { role: "user", content: trimmed }];
+    setTurns(next);
+    setStreaming("");
+    setBusy(true);
+    setAnnounce("");
+    if (inputRef.current) inputRef.current.value = "";
+
+    let answer = "";
+    try {
+      const response = await fetch("/api/assistant", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ messages: next }),
+      });
+
+      if (!response.ok || response.body === null) {
+        const { error } = await response.json().catch(() => ({ error: null }));
+        answer =
+          error ??
+          "Sorry — the assistant is unavailable right now. Please book a demo and we'll answer properly.";
+        setStreaming(answer);
+      } else {
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          answer += decoder.decode(value, { stream: true });
+          setStreaming(answer);
+          logRef.current?.scrollTo({ top: logRef.current.scrollHeight });
+        }
+      }
+    } catch {
+      answer =
+        "Sorry — that didn't get through. Please check your connection, or call us on +91 97798 73333.";
+      setStreaming(answer);
+    }
+
+    setTurns([...next, { role: "assistant", content: answer }]);
+    setStreaming("");
+    setBusy(false);
+    /* Announced once, complete, rather than token by token. */
+    setAnnounce(answer);
+  }
+
+  const hasConversation = turns.length > 0 || streaming !== "";
+
+  return (
+    <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:gap-14">
+      <div className="flex flex-col gap-6">
+        <p className="bg-on-band-dark/10 text-on-band-dark/80 inline-flex w-fit items-center gap-2 rounded-full px-3.5 py-1.5 text-[0.6875rem] font-bold tracking-[0.12em] uppercase">
+          <Sparkles size={13} aria-hidden="true" />
+          AI assistant
+        </p>
+
+        <h2 id="assistant-heading" className="text-h2 text-on-band-dark">
+          Ask anything about{" "}
+          <em className="accent-phrase text-accent">Khel Shiksha.</em>
+        </h2>
+
+        <p className="measure text-body text-on-band-dark/80">
+          Kits, pillars, teacher training, NEP alignment or how a rollout works
+          in your school — get an answer right away.
+        </p>
+
+        <ul className="flex flex-col gap-2.5">
+          {SUGGESTIONS.map((suggestion) => (
+            <li key={suggestion}>
+              <button
+                type="button"
+                onClick={() => ask(suggestion)}
+                disabled={busy}
+                className="border-on-band-dark/20 bg-on-band-dark/[0.06] text-body-sm text-on-band-dark/90 hover:border-on-band-dark/40 hover:bg-on-band-dark/10 w-full rounded-[var(--radius-md)] border px-4 py-3 text-left transition-colors disabled:opacity-50"
+              >
+                {suggestion}
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        <p className="text-body-sm text-on-band-dark/70">
+          Would rather talk to a person?{" "}
+          <Link
+            href="/contact?type=school-demo"
+            className="text-accent font-semibold underline underline-offset-4"
+          >
+            Book a demo
+          </Link>
+          .
+        </p>
+      </div>
+
+      <div className="border-on-band-dark/15 bg-on-band-dark/[0.06] flex flex-col gap-3 rounded-[var(--radius-xl)] border p-4 sm:p-5">
+        <div
+          ref={logRef}
+          className="flex min-h-[15rem] flex-col gap-4 overflow-y-auto sm:max-h-[26rem] sm:min-h-[19rem]"
+        >
+          {!hasConversation ? (
+            <p className="bg-on-band-dark/10 text-body-sm text-on-band-dark/85 rounded-[var(--radius-md)] px-4 py-3">
+              Namaste! Ask me about the kits, teacher training, or how a rollout
+              works in your school.
+            </p>
+          ) : null}
+
+          {turns.map((turn, i) => (
+            <div
+              key={i}
+              className={
+                turn.role === "user"
+                  ? "bg-accent text-body-sm text-on-accent ml-auto max-w-[85%] rounded-[var(--radius-md)] px-4 py-2.5 font-medium"
+                  : "bg-on-band-dark/10 text-body-sm text-on-band-dark/90 max-w-[92%] rounded-[var(--radius-md)] px-4 py-3 whitespace-pre-wrap"
+              }
+            >
+              {turn.content}
+            </div>
+          ))}
+
+          {streaming !== "" ? (
+            <div className="bg-on-band-dark/10 text-body-sm text-on-band-dark/90 max-w-[92%] rounded-[var(--radius-md)] px-4 py-3 whitespace-pre-wrap">
+              {streaming}
+            </div>
+          ) : null}
+
+          {busy && streaming === "" ? (
+            <p className="text-body-sm text-on-band-dark/60">Thinking…</p>
+          ) : null}
+        </div>
+
+        {/* Announced once, when the answer is complete. */}
+        <p className="sr-only" role="status" aria-live="polite">
+          {announce}
+        </p>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            ask(inputRef.current?.value ?? "");
+          }}
+          className="flex flex-col gap-2"
+        >
+          <label htmlFor="assistant-input" className="sr-only">
+            Your question about Khel Shiksha
+          </label>
+          <div className="flex gap-2">
+            <input
+              ref={inputRef}
+              id="assistant-input"
+              name="question"
+              type="text"
+              maxLength={600}
+              autoComplete="off"
+              placeholder="Type your question…"
+              disabled={busy}
+              className="border-on-band-dark/25 bg-band-dark text-body text-on-band-dark placeholder:text-on-band-dark/50 h-12 min-w-0 flex-1 rounded-[var(--radius-md)] border px-4 disabled:opacity-60"
+            />
+            <Button
+              type="submit"
+              disabled={busy}
+              className="bg-on-band-dark text-band-dark hover:bg-accent hover:text-on-accent"
+            >
+              <CornerDownLeft size={16} aria-hidden="true" />
+              Ask
+            </Button>
+          </div>
+          <p className="text-on-band-dark/55 text-[0.75rem]">
+            AI-generated. Confirm details with the team before you commit to a
+            programme.
+          </p>
+        </form>
+      </div>
+    </div>
+  );
+}
