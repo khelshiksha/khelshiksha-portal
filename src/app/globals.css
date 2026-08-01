@@ -251,6 +251,256 @@
      word is content. The dotted route shows the climb, so the board reads
      without a single moving part. */
 
+  /* The hero's sky. A CSS gradient rather than a rect inside the SVG, so it
+     fills the full bleed of the section at any aspect and the world can be
+     pulled up into it without a visible seam. */
+  .kv-hero {
+    background: linear-gradient(
+      180deg,
+      var(--w-sky-high) 0%,
+      var(--w-sky-low) 62%,
+      var(--paper) 100%
+    );
+  }
+
+  /* --- KhelVerse ---------------------------------------------------------
+     The hero world. Everything here is transform or opacity only, so no
+     animation in the scene can trigger layout or paint — that is what holds
+     60fps on a mid-range Android while fifty-odd elements are moving.
+
+     Durations and delays are NOT set here. They are written inline per
+     element from a seeded generator, so no two trees, clouds or birds share a
+     loop. A single shared duration is exactly what makes an animated
+     illustration read as a screensaver. */
+
+  .kv-sway {
+    animation: kv-sway 7s ease-in-out infinite alternate;
+  }
+  @keyframes kv-sway {
+    from {
+      transform: rotate(-1.1deg);
+    }
+    to {
+      transform: rotate(1.1deg);
+    }
+  }
+
+  .kv-drift {
+    animation: kv-drift 60s linear infinite;
+  }
+  @keyframes kv-drift {
+    from {
+      transform: translateX(-320px);
+    }
+    to {
+      transform: translateX(1420px);
+    }
+  }
+
+  .kv-spin {
+    animation: kv-spin 9s linear infinite;
+  }
+  @keyframes kv-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .kv-plume {
+    animation: kv-plume 4.2s ease-out infinite;
+  }
+  @keyframes kv-plume {
+    0% {
+      opacity: 0;
+      transform: translate(0, 0) scale(0.6);
+    }
+    30% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-26px, 14px) scale(1.5);
+    }
+  }
+
+  /* The balloon crosses the whole sky once every couple of minutes. Long
+     enough that catching it feels like noticing something rather than
+     watching a loop. */
+  .kv-balloon {
+    animation: kv-balloon 128s linear infinite;
+  }
+  @keyframes kv-balloon {
+    from {
+      transform: translate(1360px, 250px);
+    }
+    to {
+      transform: translate(-120px, 92px);
+    }
+  }
+
+  /* Birds are absent most of the cycle and cross quickly — occasional, per the
+     brief, rather than a permanent flock. */
+  .kv-bird {
+    animation: kv-bird 30s linear infinite;
+    opacity: 0;
+  }
+  @keyframes kv-bird {
+    0%,
+    62% {
+      opacity: 0;
+      transform: translate(0, 0);
+    }
+    66% {
+      opacity: 1;
+    }
+    94% {
+      opacity: 1;
+      transform: translate(560px, -46px);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(640px, -54px);
+    }
+  }
+
+  /* --- Zones -------------------------------------------------------------
+     A zone lights when the die lands on it, or when a visitor points at its
+     link. The glow sits under the platform and scales, so the highlight reads
+     as the ground lighting up rather than as an outline drawn around a
+     shape. */
+  .kv-zone-glow {
+    opacity: 0;
+    transform: scale(0.72);
+    transform-box: fill-box;
+    transform-origin: center;
+    transition:
+      opacity 420ms var(--ease-out-quint),
+      transform 420ms var(--ease-out-quint);
+  }
+  .kv-zone.is-active .kv-zone-glow {
+    opacity: 0.42;
+    transform: scale(1);
+  }
+
+  .kv-zone-body {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    transition: transform 420ms var(--ease-out-quint);
+  }
+  .kv-zone.is-active .kv-zone-body {
+    transform: translateY(-7px);
+  }
+
+  .kv-die {
+    /* Written by rAF; never transitioned, or the hop would fight the loop. */
+    transition: none;
+  }
+  .kv-die-face {
+    display: none;
+  }
+  .kv-die-face.is-shown {
+    display: block;
+  }
+
+  /* --- Zone pins ---------------------------------------------------------
+     Real links sitting above the rooftops. Always legible, not hover-only:
+     a principal must be able to see the five pillars without playing a game
+     of find-the-hotspot, and a touch device has no hover at all. */
+  .kv-pin {
+    position: absolute;
+    display: grid;
+    justify-items: center;
+    gap: 0.1rem;
+    translate: -50% -100%;
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-md, 0.75rem);
+    background: var(--glass);
+    border: 1px solid var(--rule);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    transition:
+      transform 260ms var(--ease-out-quint),
+      box-shadow 260ms var(--ease-out-quint),
+      border-color 260ms var(--ease-out-quint);
+  }
+
+  /* A tail, so a pin reads as pointing at the platform beneath it. Without one
+     the labels floated over whatever terrain happened to be behind them and it
+     was genuinely ambiguous which zone each named. */
+  .kv-pin::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 2px;
+    height: 0.9rem;
+    translate: -50% 0;
+    background: linear-gradient(var(--rule-strong), transparent);
+  }
+
+  .kv-pin-label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  /* The blurb is the payoff for pointing at a zone: the label says what the
+     pillar is, this says what it does. Hidden until then so five permanent
+     paragraphs do not bury the world. */
+  .kv-pin-blurb {
+    display: none;
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: var(--ink-muted);
+    max-width: 15ch;
+  }
+
+  .kv-pin:hover,
+  .kv-pin:focus-visible {
+    transform: translateY(-4px);
+    border-color: var(--brand);
+    box-shadow: var(--shadow-md);
+  }
+  .kv-pin:hover .kv-pin-blurb,
+  .kv-pin:focus-visible .kv-pin-blurb {
+    display: block;
+  }
+
+  /* Below the lg breakpoint the world is a picture, not a map: the pins would
+     overlap each other and the landmarks at that scale. The pillars are
+     reachable from the nav and from the section below, so nothing is lost. */
+  @media (max-width: 1023px) {
+    .kv-pin {
+      display: none;
+    }
+  }
+
+  /* Reduced motion: the world stops. Every ambient loop here is decorative —
+     a still isometric landscape says exactly the same thing. The die is
+     handled in the component (it lands without travelling) and the headline
+     word still changes, because that is content. */
+  @media (prefers-reduced-motion: reduce) {
+    .kv-sway,
+    .kv-drift,
+    .kv-spin,
+    .kv-plume,
+    .kv-balloon,
+    .kv-bird {
+      animation: none;
+    }
+    .kv-bird {
+      opacity: 0.6;
+    }
+  }
+
+  /* Nothing animates for a tab nobody is looking at. */
+  .kv-root[data-paused="1"] * {
+    animation-play-state: paused !important;
+  }
+
   /* A scroll container with no visible scrollbar.
      Scrolling itself is untouched — wheel, trackpad, touch, and keyboard all
      still work, and the element keeps its overflow so it remains focusable
