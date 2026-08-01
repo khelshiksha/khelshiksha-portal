@@ -24,8 +24,44 @@ import { formatAgeRange, formatDuration, formatGroupSize } from "@/lib/utils";
  *    load-bearing rather than decorative.
  */
 
-/** Flash-class by default. Check AI Studio for the current free-tier models. */
-const MODEL = process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
+/**
+ * Candidate models, best first.
+ *
+ * A single hardcoded name broke the assistant in production the day it
+ * shipped: `gemini-2.5-flash` returned 404 "no longer available to new
+ * users". Google retires and closes off model IDs on their own schedule —
+ * 2.0 Flash is already shut down — and this code has no way to know when.
+ *
+ * So: try each in order, and step to the next ONLY on the specific "this
+ * model does not exist for you" error. Every other failure (bad key, quota
+ * exhausted, safety block) propagates immediately, because retrying a
+ * different model would neither fix it nor tell us anything.
+ *
+ * Flash rather than Flash-Lite deliberately. The rules in the system prompt —
+ * never quote a price, never repeat a named child — are instructions, not
+ * code, and instruction-following is exactly what the Lite tier trades away.
+ *
+ * Set GEMINI_MODEL to pin one and skip the list entirely.
+ */
+const MODEL_CANDIDATES = [
+  "gemini-3.6-flash",
+  "gemini-3.5-flash",
+  "gemini-2.5-flash",
+] as const;
+
+const MODELS: readonly string[] = process.env.GEMINI_MODEL
+  ? [process.env.GEMINI_MODEL]
+  : MODEL_CANDIDATES;
+
+/** A 404 from the models endpoint means "not this one", not "give up". */
+function isModelUnavailable(error: unknown): boolean {
+  const status = (error as { status?: number } | null)?.status;
+  if (status !== 404) return false;
+  const message = String((error as { message?: string } | null)?.message ?? "");
+  return /not found|not available|no longer available|is not supported/i.test(
+    message,
+  );
+}
 
 /* Deliberately small. Answers are two or three short paragraphs — a visitor
    wants a route to the right page, not an essay, and an unbounded budget on a
@@ -146,24 +182,46 @@ export async function* answerQuestion(
 
   const client = new GoogleGenAI({ apiKey });
 
-  const stream = await client.models.generateContentStream({
-    model: MODEL,
-    /* Gemini calls the assistant role "model", not "assistant". Mapping it
-       here rather than changing AssistantTurn keeps the provider's vocabulary
-       inside the port, which is the point of having one. */
-    contents: history.map((turn) => ({
-      role: turn.role === "assistant" ? "model" : "user",
-      parts: [{ text: turn.content }],
-    })),
-    config: {
-      systemInstruction: await buildSystemPrompt(),
-      maxOutputTokens: MAX_TOKENS,
-    },
-  });
+  /* Built once, outside the loop — it reads the whole catalogue and would be
+     wasteful to rebuild per model attempt. */
+  const systemInstruction = await buildSystemPrompt();
 
-  for await (const chunk of stream) {
-    /* Undefined on chunks that carry only metadata (safety ratings, usage),
-       which arrive interleaved with the text ones. */
-    if (chunk.text) yield chunk.text;
+  /* Gemini calls the assistant role "model", not "assistant". Mapping it here
+     rather than changing AssistantTurn keeps the provider's vocabulary inside
+     the port, which is the point of having one. */
+  const contents = history.map((turn) => ({
+    role: turn.role === "assistant" ? "model" : "user",
+    parts: [{ text: turn.content }],
+  }));
+
+  for (const [index, model] of MODELS.entries()) {
+    let stream;
+    try {
+      stream = await client.models.generateContentStream({
+        model,
+        contents,
+        config: { systemInstruction, maxOutputTokens: MAX_TOKENS },
+      });
+    } catch (error) {
+      const isLast = index === MODELS.length - 1;
+      if (isModelUnavailable(error) && !isLast) {
+        console.warn(
+          `[assistant] model ${model} unavailable, trying ${MODELS[index + 1]}`,
+        );
+        continue;
+      }
+      throw error;
+    }
+
+    /* Logged so the working model can be pinned via GEMINI_MODEL instead of
+       paying for a failed call on every request. */
+    if (index > 0) console.info(`[assistant] answered with ${model}`);
+
+    for await (const chunk of stream) {
+      /* Undefined on chunks that carry only metadata (safety ratings, usage),
+         which arrive interleaved with the text ones. */
+      if (chunk.text) yield chunk.text;
+    }
+    return;
   }
 }
