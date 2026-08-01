@@ -21,7 +21,7 @@
     "db:migrate:create": "prisma migrate dev"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.115.0",
+    "@google/genai": "^2.15.0",
     "@hookform/resolvers": "^5.5.7",
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
