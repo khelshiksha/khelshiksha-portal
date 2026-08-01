@@ -1,12 +1,18 @@
 import { SiteHeader } from "@/components/blocks/navigation/site-header";
 import { SiteFooter } from "@/components/blocks/navigation/site-footer";
+import { assertLocale } from "@/lib/i18n";
 import { Container, Section } from "@/components/ui/container";
 
-export default function LegalLayout({
+export default async function LegalLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
+  const active = assertLocale(locale);
+
   return (
     <>
       <SiteHeader />
@@ -21,7 +27,7 @@ export default function LegalLayout({
           </Container>
         </Section>
       </main>
-      <SiteFooter />
+      <SiteFooter locale={active} />
     </>
   );
 }

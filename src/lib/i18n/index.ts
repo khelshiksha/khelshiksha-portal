@@ -1,14 +1,15 @@
 import { DEFAULT_LOCALE, type Locale } from "./config";
 import { en, type Dictionary } from "./dictionaries/en";
+import { gu } from "./dictionaries/gu";
 
 /**
- * Dictionary access. Every locale maps here; `gu` intentionally falls back to
- * `en` until Gujarati copy exists, so adding it later is a one-line change in
- * this map rather than a hunt through components (decision D8).
+ * Dictionary access. The fallback to English is gone: `gu` is a real
+ * dictionary now, and the Dictionary type forces it to stay complete — add a
+ * key to en.ts and the build fails until Gujarati has it too (decision D8).
  */
 const DICTIONARIES: Record<Locale, Dictionary> = {
   en,
-  gu: en,
+  gu,
 };
 
 export function getDictionary(locale: Locale = DEFAULT_LOCALE): Dictionary {
@@ -17,3 +18,4 @@ export function getDictionary(locale: Locale = DEFAULT_LOCALE): Dictionary {
 
 export type { Dictionary };
 export * from "./config";
+export * from "./routing";

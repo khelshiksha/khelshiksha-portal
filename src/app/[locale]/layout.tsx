@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from "next";
+import { notFound } from "next/navigation";
 import { fontVariables } from "@/lib/fonts";
 import { SITE } from "@/lib/constants";
 import { getDictionary } from "@/lib/i18n";
-import { LOCALE_TAG } from "@/lib/i18n/config";
+import { ACTIVE_LOCALES, LOCALE_TAG, isLocale } from "@/lib/i18n/config";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/json-ld";
-import "./globals.css";
+import { LocaleProvider } from "@/lib/i18n/locale-context";
+import "../globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -67,13 +69,33 @@ export const viewport: Viewport = {
  */
 const BOOT_SCRIPT = `(function(){var d=document.documentElement;d.dataset.js='1';try{var t=localStorage.getItem('ks-theme');if(t==='dark'||t==='light'){d.dataset.theme=t;if(t==='dark'){var m=document.querySelector('meta[name="theme-color"]');if(m){m.setAttribute('content','#12131A')}}}}catch(e){}})()`;
 
-export default function RootLayout({
+/**
+ * Both locales are generated at build time, so a Gujarati page is as static
+ * and as fast as an English one. Nothing here reads headers() or cookies() —
+ * doing so to detect the language would make every page dynamic and give up
+ * the static generation that holds LCP under a second on 4G.
+ */
+export function generateStaticParams() {
+  return ACTIVE_LOCALES.map((locale) => ({ locale }));
+}
+
+export default async function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
-  const t = getDictionary();
+  params,
+}: Readonly<{
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}>) {
+  const { locale } = await params;
+
+  /* The segment is user-controllable, so /xx/schools would otherwise render
+     the English page under a bogus lang attribute. */
+  if (!isLocale(locale) || !ACTIVE_LOCALES.includes(locale)) notFound();
+
+  const t = getDictionary(locale);
 
   return (
-    <html lang={LOCALE_TAG.en} className={`${fontVariables} h-full`}>
+    <html lang={LOCALE_TAG[locale]} className={`${fontVariables} h-full`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
       </head>
@@ -84,7 +106,7 @@ export default function RootLayout({
         >
           {t.nav.skipToContent}
         </a>
-        {children}
+        <LocaleProvider locale={locale}>{children}</LocaleProvider>
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={websiteJsonLd()} />
       </body>

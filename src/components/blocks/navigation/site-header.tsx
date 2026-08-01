@@ -7,14 +7,16 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { LocaleToggle } from "@/components/ui/locale-toggle";
 import { Logo } from "./logo";
 import { audienceNav, whatWeDoMenu } from "@/lib/navigation";
-import { getDictionary } from "@/lib/i18n";
+import { useDictionary, useLocaleHref } from "@/lib/i18n/locale-context";
 import { ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
-  const t = getDictionary();
+  const t = useDictionary();
+  const href = useLocaleHref();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -107,10 +109,10 @@ export function SiteHeader() {
           aria-label={t.nav.primary}
           className="hidden items-center gap-1 lg:flex"
         >
-          {audienceNav.map((link) => (
+          {audienceNav(t).map((link) => (
             <Link
               key={link.href}
-              href={link.href}
+              href={href(link.href)}
               aria-current={isActive(link.href) ? "page" : undefined}
               className={cn(
                 "relative rounded-[var(--radius-sm)] px-3 py-2 text-[0.9375rem] font-semibold transition-colors",
@@ -150,7 +152,7 @@ export function SiteHeader() {
           </button>
 
           <Link
-            href={ROUTES.impact}
+            href={href(ROUTES.impact)}
             aria-current={isActive(ROUTES.impact) ? "page" : undefined}
             className={cn(
               "rounded-[var(--radius-sm)] px-3 py-2 text-[0.9375rem] font-semibold transition-colors",
@@ -164,9 +166,10 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <LocaleToggle className="hidden sm:inline-flex" />
           <ThemeToggle className="hidden sm:inline-flex" />
           <ButtonLink
-            href="/contact?type=school-demo"
+            href={href("/contact?type=school-demo")}
             size="sm"
             className="hidden sm:inline-flex"
           >
@@ -206,7 +209,7 @@ export function SiteHeader() {
           className="border-rule bg-surface absolute inset-x-0 top-full hidden border-y shadow-[var(--shadow-lg)] lg:block"
         >
           <Container className="grid grid-cols-3 gap-10 py-10">
-            {whatWeDoMenu.map((group) => (
+            {whatWeDoMenu(t).map((group) => (
               <div key={group.heading} className="flex flex-col gap-3">
                 <p className="text-ink-subtle text-[0.6875rem] font-bold tracking-[0.14em] uppercase">
                   {group.heading}
@@ -215,7 +218,7 @@ export function SiteHeader() {
                   {group.links.map((link) => (
                     <li key={link.href}>
                       <Link
-                        href={link.href}
+                        href={href(link.href)}
                         className="hover:bg-sunken block rounded-[var(--radius-sm)] px-2 py-1.5 transition-colors"
                       >
                         <span className="text-ink block text-[0.9375rem] font-semibold">
@@ -240,7 +243,8 @@ export function SiteHeader() {
 }
 
 function MobileNav({ onNavigate }: { onNavigate: () => void }) {
-  const t = getDictionary();
+  const t = useDictionary();
+  const href = useLocaleHref();
 
   return (
     <div
@@ -249,10 +253,10 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
     >
       <Container className="flex flex-col gap-8 py-8">
         <nav aria-label={t.nav.mobileMenu} className="flex flex-col gap-1">
-          {audienceNav.map((link) => (
+          {audienceNav(t).map((link) => (
             <Link
               key={link.href}
-              href={link.href}
+              href={href(link.href)}
               onClick={onNavigate}
               className="text-h3 text-ink hover:bg-sunken rounded-[var(--radius-md)] px-3 py-3 font-bold transition-colors"
             >
@@ -261,7 +265,7 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
           ))}
         </nav>
 
-        {whatWeDoMenu.map((group) => (
+        {whatWeDoMenu(t).map((group) => (
           <div key={group.heading} className="flex flex-col gap-2">
             <p className="text-ink-subtle px-3 text-[0.6875rem] font-bold tracking-[0.14em] uppercase">
               {group.heading}
@@ -270,7 +274,7 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
               {group.links.map((link) => (
                 <li key={link.href}>
                   <Link
-                    href={link.href}
+                    href={href(link.href)}
                     onClick={onNavigate}
                     className="text-ink-muted hover:bg-sunken hover:text-ink block rounded-[var(--radius-sm)] px-3 py-2.5 text-[0.9375rem] font-medium transition-colors"
                   >
@@ -285,12 +289,13 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
         {/* CTA pinned at the end of the sheet, always thumb-reachable. */}
         <div className="border-rule flex items-center gap-3 border-t pt-6">
           <ButtonLink
-            href="/contact?type=school-demo"
+            href={href("/contact?type=school-demo")}
             size="lg"
             className="flex-1"
           >
             {t.cta.bookDemo}
           </ButtonLink>
+          <LocaleToggle />
           <ThemeToggle />
         </div>
       </Container>

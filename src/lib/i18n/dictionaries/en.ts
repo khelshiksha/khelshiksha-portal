@@ -97,6 +97,47 @@ export const en = {
     toLight: "Switch to light theme",
     toDark: "Switch to dark theme",
   },
+  /* Menu labels. These used to live as English literals in lib/navigation,
+     which quietly broke the "no hardcoded user-facing string" rule that makes
+     a second language possible at all. */
+  menu: {
+    theApproach: "The Approach",
+    learningThroughPlay: "Learning Through Play",
+    learningThroughPlayDesc: "The philosophy behind every kit",
+    whyExperiential: "Why Experiential?",
+    whyExperientialDesc: "Five things that change in a classroom",
+    gameCorner: "The Game Corner",
+    gameCornerDesc: "A learning zone inside your school",
+    fivePillars: "The 5 Pillars",
+    learningKits: "Learning Kits",
+    allKits: "All learning kits",
+    explore: "Explore",
+    forYou: "For you",
+    company: "Company",
+    ourImpact: "Our Impact",
+    aboutUs: "About us",
+    privacy: "Privacy",
+    terms: "Terms",
+    schools: "Schools",
+    teachers: "Teachers",
+    parents: "Parents",
+    governmentNgos: "Government & NGOs",
+  },
+  /* Pillar names appear in the menu, the footer and the hero world, so they
+     live here rather than being read from the content layer three times. */
+  pillars: {
+    "foundational-learning": "Foundational Learning",
+    "health-nutrition": "Health & Nutrition",
+    "climate-education": "Climate Education",
+    "future-readiness": "Future Readiness",
+    "life-skills": "Life Skills",
+  },
+  locale: {
+    label: "Language",
+    /* Named in the target language on purpose: someone who cannot read the
+       current language still has to be able to find the way out. */
+    switchTo: "ગુજરાતીમાં જુઓ",
+  },
   common: {
     loading: "Loading",
     opensInNewTab: "opens in a new tab",
@@ -105,4 +146,24 @@ export const en = {
   },
 } as const;
 
-export type Dictionary = typeof en;
+/**
+ * Widen literal types to their base types.
+ *
+ * `en` is `as const`, which is what stops a stray reassignment and keeps the
+ * object readable as data. But it also means `typeof en` types every value as
+ * the exact English string — `skipToContent: "Skip to main content"` — so no
+ * other language can satisfy it. Deriving Dictionary straight from `typeof en`
+ * made the type a description of English rather than of a dictionary, and the
+ * Gujarati file failed to compile on its first line.
+ *
+ * This maps every leaf to `string` while preserving the shape and the one
+ * function signature, so `gu` must supply exactly the same keys with exactly
+ * the same kinds of value — which is the guarantee actually wanted.
+ */
+type Widen<T> = T extends string
+  ? string
+  : T extends (...args: infer A) => infer R
+    ? (...args: A) => R
+    : { -readonly [K in keyof T]: Widen<T[K]> };
+
+export type Dictionary = Widen<typeof en>;

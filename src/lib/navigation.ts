@@ -1,4 +1,5 @@
 import { ROUTES } from "./constants";
+import type { Dictionary } from "./i18n";
 
 export interface NavLink {
   label: string;
@@ -18,84 +19,103 @@ export interface NavGroup {
  * Products are deliberately NOT top-level. They live under "What We Do" as
  * evidence, so a visitor who wants to understand the approach is never dumped
  * into a grid of boxes.
+ *
+ * These are FUNCTIONS OF THE DICTIONARY, not constants. They used to be
+ * exported arrays with English labels baked in, which meant the navigation —
+ * the one component on every page — could never be translated no matter how
+ * complete the dictionary was.
+ *
+ * Hrefs stay unprefixed. Locale prefixing happens at the point of rendering,
+ * through localeHref, so this file never has to know which language it is in.
+ *
+ * Kit names are NOT translated. "Project SURAKSHA" and "Aryabhata" are the
+ * products' actual names, printed on the boxes that arrive at the school;
+ * translating them would leave a teacher unable to match the site to the kit
+ * in their hands.
  */
-export const audienceNav: NavLink[] = [
-  { label: "For Schools", href: ROUTES.schools },
-  { label: "For Teachers", href: ROUTES.teachers },
-  { label: "For Parents", href: ROUTES.parents },
-  { label: "Government", href: ROUTES.government },
-];
+export function audienceNav(t: Dictionary): NavLink[] {
+  return [
+    { label: t.nav.forSchools, href: ROUTES.schools },
+    { label: t.nav.forTeachers, href: ROUTES.teachers },
+    { label: t.nav.forParents, href: ROUTES.parents },
+    { label: t.menu.governmentNgos, href: ROUTES.government },
+  ];
+}
 
-export const whatWeDoMenu: NavGroup[] = [
-  {
-    heading: "The Approach",
-    links: [
-      {
-        label: "Learning Through Play",
-        href: ROUTES.approach,
-        description: "The philosophy behind every kit",
-      },
-      {
-        label: "Why Experiential?",
-        href: ROUTES.whyExperiential,
-        description: "Five things that change in a classroom",
-      },
-      {
-        label: "The Game Corner",
-        href: ROUTES.gameCorner,
-        description: "A learning zone inside your school",
-      },
-    ],
-  },
-  {
-    heading: "The 5 Pillars",
-    links: [
-      { label: "Foundational Learning", href: `${ROUTES.pillars}/foundational-learning` },
-      { label: "Health & Nutrition", href: `${ROUTES.pillars}/health-nutrition` },
-      { label: "Climate Education", href: `${ROUTES.pillars}/climate-education` },
-      { label: "Future Readiness", href: `${ROUTES.pillars}/future-readiness` },
-      { label: "Life Skills", href: `${ROUTES.pillars}/life-skills` },
-    ],
-  },
-  {
-    heading: "Learning Kits",
-    links: [
-      { label: "All learning kits", href: ROUTES.products },
-      { label: "Project SURAKSHA", href: `${ROUTES.products}/project-suraksha` },
-      { label: "Aryabhata", href: `${ROUTES.products}/aryabhata` },
-      { label: "Yoga Safari", href: `${ROUTES.products}/yoga-safari` },
-      { label: "Brainy Bee", href: `${ROUTES.products}/brainy-bee` },
-    ],
-  },
-];
+export function whatWeDoMenu(t: Dictionary): NavGroup[] {
+  return [
+    {
+      heading: t.menu.theApproach,
+      links: [
+        {
+          label: t.menu.learningThroughPlay,
+          href: ROUTES.approach,
+          description: t.menu.learningThroughPlayDesc,
+        },
+        {
+          label: t.menu.whyExperiential,
+          href: ROUTES.whyExperiential,
+          description: t.menu.whyExperientialDesc,
+        },
+        {
+          label: t.menu.gameCorner,
+          href: ROUTES.gameCorner,
+          description: t.menu.gameCornerDesc,
+        },
+      ],
+    },
+    {
+      heading: t.menu.fivePillars,
+      links: [
+        { label: t.pillars["foundational-learning"], href: `${ROUTES.pillars}/foundational-learning` },
+        { label: t.pillars["health-nutrition"], href: `${ROUTES.pillars}/health-nutrition` },
+        { label: t.pillars["climate-education"], href: `${ROUTES.pillars}/climate-education` },
+        { label: t.pillars["future-readiness"], href: `${ROUTES.pillars}/future-readiness` },
+        { label: t.pillars["life-skills"], href: `${ROUTES.pillars}/life-skills` },
+      ],
+    },
+    {
+      heading: t.menu.learningKits,
+      links: [
+        { label: t.menu.allKits, href: ROUTES.products },
+        { label: "Project SURAKSHA", href: `${ROUTES.products}/project-suraksha` },
+        { label: "Aryabhata", href: `${ROUTES.products}/aryabhata` },
+        { label: "Yoga Safari", href: `${ROUTES.products}/yoga-safari` },
+        { label: "Brainy Bee", href: `${ROUTES.products}/brainy-bee` },
+      ],
+    },
+  ];
+}
 
-export const footerGroups: NavGroup[] = [
-  {
-    heading: "Explore",
-    links: [
-      { label: "Learning Through Play", href: ROUTES.approach },
-      { label: "The 5 Pillars", href: ROUTES.pillars },
-      { label: "Learning Kits", href: ROUTES.products },
-      { label: "The Game Corner", href: ROUTES.gameCorner },
-      { label: "Our Impact", href: ROUTES.impact },
-    ],
-  },
-  {
-    heading: "For you",
-    links: [
-      { label: "Schools", href: ROUTES.schools },
-      { label: "Teachers", href: ROUTES.teachers },
-      { label: "Parents", href: ROUTES.parents },
-      { label: "Government & NGOs", href: ROUTES.government },
-    ],
-  },
-  {
-    heading: "Company",
-    links: [
-      { label: "About us", href: ROUTES.about },
-      { label: "Contact", href: ROUTES.contact },
-      { label: "Privacy", href: ROUTES.privacy },
-      { label: "Terms", href: ROUTES.terms },
-    ],
-  },
-];
+export function footerGroups(t: Dictionary): NavGroup[] {
+  return [
+    {
+      heading: t.menu.explore,
+      links: [
+        { label: t.menu.learningThroughPlay, href: ROUTES.approach },
+        { label: t.menu.fivePillars, href: ROUTES.pillars },
+        { label: t.menu.learningKits, href: ROUTES.products },
+        { label: t.menu.gameCorner, href: ROUTES.gameCorner },
+        { label: t.menu.ourImpact, href: ROUTES.impact },
+      ],
+    },
+    {
+      heading: t.menu.forYou,
+      links: [
+        { label: t.menu.schools, href: ROUTES.schools },
+        { label: t.menu.teachers, href: ROUTES.teachers },
+        { label: t.menu.parents, href: ROUTES.parents },
+        { label: t.menu.governmentNgos, href: ROUTES.government },
+      ],
+    },
+    {
+      heading: t.menu.company,
+      links: [
+        { label: t.menu.aboutUs, href: ROUTES.about },
+        { label: t.nav.contact, href: ROUTES.contact },
+        { label: t.menu.privacy, href: ROUTES.privacy },
+        { label: t.menu.terms, href: ROUTES.terms },
+      ],
+    },
+  ];
+}

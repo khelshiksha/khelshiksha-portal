@@ -3,10 +3,12 @@ import { Mail, Phone } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Logo } from "./logo";
 import { footerGroups } from "@/lib/navigation";
+import { getDictionary, localeHref, type Locale } from "@/lib/i18n";
 import { SITE } from "@/lib/constants";
 
-export function SiteFooter() {
+export function SiteFooter({ locale }: { locale: Locale }) {
   const year = new Date().getFullYear();
+  const t = getDictionary(locale);
 
   return (
     <footer className="mt-auto border-t border-rule bg-sunken">
@@ -40,7 +42,7 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {footerGroups.map((group) => (
+          {footerGroups(t).map((group) => (
             <nav
               key={group.heading}
               aria-label={group.heading}
@@ -53,7 +55,7 @@ export function SiteFooter() {
                 {group.links.map((link) => (
                   <li key={link.href}>
                     <Link
-                      href={link.href}
+                      href={localeHref(locale, link.href)}
                       className="text-body-sm text-ink-muted transition-colors hover:text-brand-deep"
                     >
                       {link.label}
