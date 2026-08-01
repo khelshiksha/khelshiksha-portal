@@ -156,8 +156,12 @@ export function AssistantPanel({
   const hasConversation = turns.length > 0 || streaming !== "";
 
   return (
+    /* min-w-0 on both columns is load-bearing. A grid item defaults to
+       min-width:auto, so it refuses to shrink below its content's min-content
+       width — which pushed this panel 44px past a 320px viewport and made the
+       whole PAGE scroll sideways. */
     <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:gap-14">
-      <div className="flex flex-col gap-6">
+      <div className="flex min-w-0 flex-col gap-6">
         <p className="bg-on-band-dark/10 text-on-band-dark/80 inline-flex w-fit items-center gap-2 rounded-full px-3.5 py-1.5 text-[0.6875rem] font-bold tracking-[0.12em] uppercase">
           <Sparkles size={13} aria-hidden="true" />
           AI assistant
@@ -200,7 +204,7 @@ export function AssistantPanel({
         </p>
       </div>
 
-      <div className="border-on-band-dark/15 bg-on-band-dark/[0.06] flex flex-col gap-3 rounded-[var(--radius-xl)] border p-4 sm:p-5">
+      <div className="border-on-band-dark/15 bg-on-band-dark/[0.06] flex min-w-0 flex-col gap-3 rounded-[var(--radius-xl)] border p-4 sm:p-5">
         <div
           ref={logRef}
           /* tabIndex=0 and a label because this is a scrollable region: once
