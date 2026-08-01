@@ -207,6 +207,18 @@
     }
   }
 
+  /* A scroll container with no visible scrollbar.
+     Scrolling itself is untouched — wheel, trackpad, touch, and keyboard all
+     still work, and the element keeps its overflow so it remains focusable
+     and reachable without a pointer. Only the painted bar is hidden. */
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Prose measure for long-form content */
   .measure {
     max-width: 68ch;
