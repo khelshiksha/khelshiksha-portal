@@ -52,9 +52,17 @@ export default function PrivacyPage() {
 
       <h2>Who we share it with</h2>
       <p>
-        Nobody. We do not sell, rent or trade personal information. We use
-        service providers for hosting and email delivery, who process data only
-        on our instructions.
+        We do not sell, rent or trade personal information. We use service
+        providers for hosting and email delivery, who process data only on our
+        instructions.
+      </p>
+      <p>
+        The one exception is the AI assistant on this site. If you type a
+        question into it, that question is sent to Google to generate the
+        answer, and Google may use it to improve their services. Do not put
+        anything into the assistant that you would not want processed that way
+        — if you would rather talk to us privately, use the enquiry form or
+        call us.
       </p>
 
       <h2>How long we keep it</h2>
