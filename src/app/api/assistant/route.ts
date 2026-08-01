@@ -16,18 +16,61 @@ export const runtime = "nodejs";
    public, so the limits are tighter than the lead form's and bound both the
    question and the conversation. */
 const MAX_QUESTION_CHARS = 600;
+
+/* Our OWN previous answers come back as conversation history, and they are
+   routinely longer than a question. Capping every message at the question
+   limit meant the first question worked and every follow-up failed with "too
+   long or malformed" — the model's reply could not survive the round trip
+   back through validation. Bounded by what we actually generate:
+   maxOutputTokens is 700, so ~3000 characters, with headroom. */
+const MAX_ANSWER_CHARS = 8000;
+
 const MAX_TURNS = 12;
 
+/* Belt and braces on payload size, since a client could send 12 near-limit
+   assistant turns and nothing above would object. */
+const MAX_TOTAL_CHARS = 24_000;
+
+/**
+ * Role-dependent length limits.
+ *
+ * Note that the assistant turns are supplied by the CLIENT, so a crafted
+ * request can put words in the assistant's mouth as fake history. That is
+ * inherent to stateless chat and is bounded rather than prevented: the system
+ * instruction is sent separately on every call and takes precedence over
+ * conversation content, the grounding facts are re-sent each time, and the
+ * blast radius is a visitor misleading themselves in their own browser.
+ * Server-side session state would close it properly and is not worth a
+ * datastore for an FAQ widget.
+ */
 const bodySchema = z.object({
   messages: z
     .array(
-      z.object({
-        role: z.enum(["user", "assistant"]),
-        content: z.string().trim().min(1).max(MAX_QUESTION_CHARS),
-      }),
+      z.discriminatedUnion("role", [
+        z.object({
+          role: z.literal("user"),
+          content: z.string().trim().min(1).max(MAX_QUESTION_CHARS),
+        }),
+        z.object({
+          role: z.literal("assistant"),
+          content: z.string().trim().min(1).max(MAX_ANSWER_CHARS),
+        }),
+      ]),
     )
     .min(1)
-    .max(MAX_TURNS),
+    .max(MAX_TURNS)
+    .refine(
+      (messages) =>
+        messages.reduce((sum, m) => sum + m.content.length, 0) <=
+        MAX_TOTAL_CHARS,
+      { message: "conversation too long" },
+    )
+    /* Gemini expects the exchange to end on the human's turn, and a trailing
+       assistant message would mean asking the model to continue its own reply
+       rather than answer anything. */
+    .refine((messages) => messages[messages.length - 1]?.role === "user", {
+      message: "last message must be from the user",
+    }),
 });
 
 function textError(message: string, status: number) {
@@ -51,7 +94,21 @@ export async function POST(request: Request) {
     return textError("Send a JSON body.", 400);
   }
   if (!parsed.success) {
-    return textError("That question was too long or malformed.", 400);
+    /* Say which limit was hit. The visitor can act on "shorten your question"
+       and on "start a new conversation"; they can do nothing with a single
+       message covering both. */
+    const tooLong = parsed.error.issues.some(
+      (issue) =>
+        issue.code === "too_big" ||
+        issue.message === "conversation too long" ||
+        issue.code === "too_small",
+    );
+    return textError(
+      tooLong
+        ? "That's longer than the assistant can take. Try a shorter question, or reload the page to start a fresh conversation."
+        : "That request wasn't understood. Please reload the page and try again.",
+      400,
+    );
   }
 
   /* Same identify-or-fall-back-to-a-global-ceiling shape as the lead action:
