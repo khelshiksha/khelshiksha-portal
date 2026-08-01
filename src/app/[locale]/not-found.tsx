@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { SiteHeader } from "@/components/blocks/navigation/site-header";
 import { SiteFooter } from "@/components/blocks/navigation/site-footer";
+import { DEFAULT_LOCALE } from "@/lib/i18n";
 import { ROUTES } from "@/lib/constants";
 
 /* Returns a real 404 status, not a soft 200. */
@@ -53,7 +54,7 @@ export default function NotFound() {
           </ul>
         </Container>
       </main>
-      <SiteFooter />
+      <SiteFooter locale={DEFAULT_LOCALE} />
     </>
   );
 }
