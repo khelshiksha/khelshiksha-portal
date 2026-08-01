@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { CornerDownLeft, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { linkifyPaths } from "../lib/linkify";
 
 /**
  * The site assistant.
@@ -49,7 +50,11 @@ interface Turn {
  */
 const MAX_SENT_TURNS = 10;
 
-export function AssistantPanel() {
+export function AssistantPanel({
+  pageLabels,
+}: {
+  pageLabels: Record<string, string>;
+}) {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [streaming, setStreaming] = useState("");
   const [busy, setBusy] = useState(false);
@@ -229,12 +234,17 @@ export function AssistantPanel() {
                   : "bg-on-band-dark/10 text-body-sm text-on-band-dark/90 max-w-[92%] rounded-[var(--radius-md)] px-4 py-3 whitespace-pre-wrap"
               }
             >
-              {turn.content}
+              {turn.role === "assistant"
+                ? linkifyPaths(turn.content, pageLabels)
+                : turn.content}
             </div>
           ))}
 
           {streaming !== "" ? (
             <div className="bg-on-band-dark/10 text-body-sm text-on-band-dark/90 max-w-[92%] rounded-[var(--radius-md)] px-4 py-3 whitespace-pre-wrap">
+              {/* Not linkified while streaming: a path can arrive split
+                  across chunks, so it would flicker between plain text and a
+                  link as the halves land. Linked once the answer settles. */}
               {streaming}
             </div>
           ) : null}

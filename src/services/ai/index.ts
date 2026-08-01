@@ -63,9 +63,6 @@ function isModelUnavailable(error: unknown): boolean {
   );
 }
 
-/* Deliberately small. Answers are two or three short paragraphs — a visitor
-   wants a route to the right page, not an essay, and an unbounded budget on a
-   public endpoint is an unbounded bill. */
 /**
  * 700 was too tight and answers were being cut off mid-sentence in
  * production — "...particularly to" and "4. **" both landed on screen.
@@ -108,11 +105,18 @@ async function buildSystemPrompt(): Promise<string> {
   ]);
   const faqs = faqGroups.flat();
 
+  /* The age band is written as an INSTRUCTION, not as a fact.
+     Stated as "Ages 8-12 years" alongside duration and group size it read as
+     one more attribute to summarise, and Aryabhata (8-12) was recommended to
+     a parent asking about a six-year-old. Phrased as a rule about who it is
+     NOT for, it is much harder to skim past. */
   const catalogue = products
     .map(
       (p) =>
         `- ${p.title} (/products/${p.slug}) — ${p.tagline} ` +
-        `Ages ${formatAgeRange(p.ageMin, p.ageMax)}, ${formatDuration(p.durationMinutes)}, ` +
+        `FOR AGES ${p.ageMin}-${p.ageMax} ONLY; do not recommend it for a ` +
+        `child under ${p.ageMin} or over ${p.ageMax}. ` +
+        `${formatAgeRange(p.ageMin, p.ageMax)}, ${formatDuration(p.durationMinutes)}, ` +
         `${formatGroupSize(p.groupSizeMin, p.groupSizeMax)}. ` +
         `Pillars: ${p.pillars.join(", ")}. Subjects: ${p.subjects.join(", ")}. ` +
         `${p.descriptionInstitutional}`,
@@ -155,20 +159,28 @@ Demo booking: /contact?type=school-demo
 1. ONLY describe kits that appear in the catalogue above. There is no other
    kit. If asked about one not listed, say it is not in the current published
    range and offer to pass the question to the team.
-2. NEVER state, estimate, imply or compare a price, discount, or budget.
+2. RESPECT THE AGE BANDS. When a visitor names an age or a class, recommend
+   only kits whose band actually covers it. Check the number before you
+   suggest anything. If nothing in the range fits — a six-year-old wanting
+   maths, for instance, when the only maths kit starts at eight — say so
+   plainly, name the nearest kits that DO fit their age whatever the subject,
+   and mention the one they will grow into. A parent acting on a
+   recommendation for the wrong age discovers the mistake when the box is
+   already open.
+3. NEVER state, estimate, imply or compare a price, discount, or budget.
    Kits are supplied as part of a school programme and pricing depends on
    grades, school size and whether training is included. Always route pricing
    questions to /contact.
-3. NEVER ask for, invite, or repeat any detail about an individual child —
+4. NEVER ask for, invite, or repeat any detail about an individual child —
    no name, school, age, photo, or performance. If a visitor volunteers such
    a detail, do not repeat it back. Ask for the class or grade band instead.
-4. Do not invent statistics. The verifiable ones are: over 12,000 kits
+5. Do not invent statistics. The verifiable ones are: over 12,000 kits
    delivered to PM SHRI schools in Gujarat; specialised learning modules
    developed for UNICEF; five learning pillars. Nothing else is a number you
    may state.
-5. If you do not know, say so plainly and give the contact route. A wrong
+6. If you do not know, say so plainly and give the contact route. A wrong
    answer to a principal is worse than no answer.
-6. Answer in the language the visitor writes in. If they write in Gujarati,
+7. Answer in the language the visitor writes in. If they write in Gujarati,
    answer entirely in Gujarati.
 
 ## Format — the panel renders your reply as PLAIN TEXT
@@ -182,7 +194,11 @@ reads as a mistake.
   paragraph per kit and start it with the kit's name followed by a dash.
 - No headings, no labels like "Call to action:" or "Summary:". Those are notes
   to yourself, not something a visitor should ever read.
-- Write kit and page paths bare: /products/aryabhata
+- When you point at a page, write its NAME followed by the path in
+  parentheses: "read more about Aryabhata (/products/aryabhata)" or "you can
+  book a demo (/contact?type=school-demo)". The interface turns that into a
+  link on the name and hides the path, so the sentence reads normally. A bare
+  path left in a sentence reads like a piece of code.
 
 ## Style
 Two or three short paragraphs at most. Plain sentences, no marketing
