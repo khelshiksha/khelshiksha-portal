@@ -50,7 +50,11 @@ interface Turn {
  */
 const MAX_SENT_TURNS = 10;
 
-export function AssistantPanel() {
+export function AssistantPanel({
+  pageLabels,
+}: {
+  pageLabels: Record<string, string>;
+}) {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [streaming, setStreaming] = useState("");
   const [busy, setBusy] = useState(false);
@@ -231,7 +235,7 @@ export function AssistantPanel() {
               }
             >
               {turn.role === "assistant"
-                ? linkifyPaths(turn.content)
+                ? linkifyPaths(turn.content, pageLabels)
                 : turn.content}
             </div>
           ))}

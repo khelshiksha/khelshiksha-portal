@@ -1,9 +1,10 @@
 import { Panel } from "@/components/ui/container";
 import { isAssistantConfigured } from "@/services/ai";
+import { getPageLabels } from "../lib/page-labels";
 import { AssistantPanel } from "./assistant-panel";
 
 /**
- * Renders nothing when ANTHROPIC_API_KEY is absent.
+ * Renders nothing when GOOGLE_API_KEY is absent.
  *
  * A chat box that returns an error on every question is worse than no chat
  * box — it reads as a broken site to the one visitor type we most need to
@@ -21,12 +22,16 @@ import { AssistantPanel } from "./assistant-panel";
  * page dynamic and give up the static generation that holds LCP under a
  * second on 4G. Not worth it to save one redeploy.
  */
-export function AssistantSection() {
+export async function AssistantSection() {
   if (!isAssistantConfigured()) return null;
+
+  /* Resolved on the server so the client never pulls the catalogue over the
+     wire just to caption a link. */
+  const pageLabels = await getPageLabels();
 
   return (
     <Panel tone="dark" labelledBy="assistant-heading">
-      <AssistantPanel />
+      <AssistantPanel pageLabels={pageLabels} />
     </Panel>
   );
 }

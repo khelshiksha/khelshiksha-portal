@@ -18,6 +18,21 @@ function text(nodes: React.ReactNode[]): string {
   return nodes.map((n) => (typeof n === "string" ? n : "")).join("");
 }
 
+function labelsOf(nodes: React.ReactNode[]): string[] {
+  return nodes
+    .filter(
+      (n): n is React.ReactElement<{ children: string }> =>
+        typeof n === "object" && n !== null && "props" in n,
+    )
+    .map((n) => n.props.children);
+}
+
+const LABELS = {
+  "/products/aryabhata": "Aryabhata",
+  "/contact?type=school-demo": "book a demo",
+  "/approach/pillars/life-skills": "Life Skills",
+};
+
 describe("linkifyPaths", () => {
   it("links a bare product path", () => {
     expect(hrefs(linkifyPaths("See /products/aryabhata for more."))).toEqual([
@@ -65,5 +80,48 @@ describe("linkifyPaths", () => {
 
   it("handles an empty answer", () => {
     expect(linkifyPaths("")).toEqual([]);
+  });
+
+  /* The point of the labels: a sentence should read as prose, not as a URL. */
+  describe("readable link text", () => {
+    it("uses the page name instead of the raw path", () => {
+      const nodes = linkifyPaths("You can explore /products/aryabhata now", LABELS);
+      expect(labelsOf(nodes)).toEqual(["Aryabhata"]);
+      expect(hrefs(nodes)).toEqual(["/products/aryabhata"]);
+    });
+
+    it("collapses the model's 'Name (/path)' form onto the name", () => {
+      const nodes = linkifyPaths(
+        "Read more about Aryabhata (/products/aryabhata).",
+        LABELS,
+      );
+      expect(labelsOf(nodes)).toEqual(["Aryabhata"]);
+      expect(hrefs(nodes)).toEqual(["/products/aryabhata"]);
+      /* The parenthetical must be gone, not just unlinked. */
+      expect(text(nodes)).not.toContain("(");
+      expect(text(nodes)).not.toContain("/products/");
+    });
+
+    it("does not double-link a path already collapsed in pass 1", () => {
+      const nodes = linkifyPaths(
+        "See Aryabhata (/products/aryabhata) and Life Skills (/approach/pillars/life-skills).",
+        LABELS,
+      );
+      expect(hrefs(nodes)).toEqual([
+        "/products/aryabhata",
+        "/approach/pillars/life-skills",
+      ]);
+    });
+
+    it("falls back to the path when there is no known name", () => {
+      const nodes = linkifyPaths("Try /products/unknown-kit", LABELS);
+      expect(labelsOf(nodes)).toEqual(["/products/unknown-kit"]);
+    });
+
+    it("still refuses a path inside an external URL", () => {
+      expect(
+        hrefs(linkifyPaths("Visit https://evil.example.com/products/aryabhata", LABELS)),
+      ).toEqual([]);
+    });
   });
 });

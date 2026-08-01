@@ -194,7 +194,11 @@ reads as a mistake.
   paragraph per kit and start it with the kit's name followed by a dash.
 - No headings, no labels like "Call to action:" or "Summary:". Those are notes
   to yourself, not something a visitor should ever read.
-- Write kit and page paths bare: /products/aryabhata
+- When you point at a page, write its NAME followed by the path in
+  parentheses: "read more about Aryabhata (/products/aryabhata)" or "you can
+  book a demo (/contact?type=school-demo)". The interface turns that into a
+  link on the name and hides the path, so the sentence reads normally. A bare
+  path left in a sentence reads like a piece of code.
 
 ## Style
 Two or three short paragraphs at most. Plain sentences, no marketing
