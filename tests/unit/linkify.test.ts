@@ -30,6 +30,7 @@ function labelsOf(nodes: React.ReactNode[]): string[] {
 const LABELS = {
   "/products/aryabhata": "Aryabhata",
   "/contact?type=school-demo": "book a demo",
+  "/contact": "contact us",
   "/approach/pillars/life-skills": "Life Skills",
 };
 
@@ -116,6 +117,27 @@ describe("linkifyPaths", () => {
     it("falls back to the path when there is no known name", () => {
       const nodes = linkifyPaths("Try /products/unknown-kit", LABELS);
       expect(labelsOf(nodes)).toEqual(["/products/unknown-kit"]);
+    });
+
+    it("links the model's own phrase rather than appending a duplicate label", () => {
+      /* Seen in production: "...on our contact page" + the canonical label
+         "contact us" rendered as "our contact pagecontact us". */
+      const nodes = linkifyPaths(
+        "You can reach out directly on our contact page (/contact).",
+        LABELS,
+      );
+      expect(labelsOf(nodes)).toEqual(["our contact page"]);
+      expect(hrefs(nodes)).toEqual(["/contact"]);
+      expect(text(nodes)).not.toContain("contact us");
+      expect(text(nodes)).not.toContain("(");
+    });
+
+    it("caps the trailing phrase at three words", () => {
+      const nodes = linkifyPaths(
+        "Please go and read all about the five pillars (/approach/pillars/life-skills).",
+        LABELS,
+      );
+      expect(labelsOf(nodes)).toEqual(["the five pillars"]);
     });
 
     it("still refuses a path inside an external URL", () => {

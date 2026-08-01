@@ -92,11 +92,25 @@ export function linkifyPaths(
       collapsed.push(before.slice(0, cut));
       collapsed.push({ href, label: before.trimEnd().slice(cut) });
     } else {
-      /* The model wrote a path in parentheses after something else, or after
-         nothing we recognise. Keep the prose and put the link where the
-         parenthetical was, so the destination is never silently dropped. */
-      collapsed.push(before);
-      collapsed.push({ href, label: known ?? href });
+      /* The model referred to the page in its own words — "reach out on our
+         contact page (/contact)". Appending the canonical label produced
+         "our contact page contact us", which is how this read in production.
+         Link the trailing phrase it actually wrote instead.
+         Capped at three words and lowercase-only: that covers "our contact
+         page" and "the five pillars" while refusing to swallow a sentence,
+         which is exactly what over-capturing did the first time. */
+      const trailing = before.match(/(?:^|\s)((?:[a-z]+\s){0,2}[a-z]+)\s*$/);
+      if (trailing) {
+        const phrase = trailing[1];
+        const cut = before.length - phrase.length;
+        collapsed.push(before.slice(0, cut));
+        collapsed.push({ href, label: phrase });
+      } else {
+        /* Nothing sensible to attach it to — put the link where the
+           parenthetical was so the destination is never silently dropped. */
+        collapsed.push(before);
+        collapsed.push({ href, label: known ?? href });
+      }
     }
     lastIndex = index + match[0].length;
   }
