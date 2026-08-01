@@ -19,9 +19,13 @@ import { setBeatPaused, subscribeToBeat } from "@/lib/play-beat";
  *     is what an effect is for. Same reasoning as ui/reveal.tsx.
  *
  *  3. The change is driven by lib/play-beat, NOT by a timer of its own. The
- *     hero artwork kicks a ball at the same beat and the word changes when it
- *     lands — that only reads as cause and effect if both are the same event.
- *     Two independent timers drift apart within seconds.
+ *     hero artwork hops a die along a board on the same beat, and the word
+ *     changes where it lands — that only reads as cause and effect if both are
+ *     the same event. Two independent timers drift apart within seconds.
+ *
+ *     The word list and the board's tiles are the same sequence: tile n
+ *     carries n pips because it is the nth word. Adding a word here means
+ *     adding a tile in hero-artwork.tsx.
  *
  *  4. The beat is paused when the pointer or keyboard focus is on the
  *     headline. WCAG 2.2.2 wants auto-updating content to be pausable;

@@ -1,97 +1,227 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import { FLIGHT_MS, subscribeToBeat } from "@/lib/play-beat";
 
 /**
- * The hero scene: a child kicks a ball, the ball arcs up toward the headline,
- * and the word at the end of the headline changes when it lands.
+ * The hero scene: a die climbs a game board and the headline word changes on
+ * every square it lands on. The board colours in as the round progresses.
  *
- * The point is the causality. "Learning through play" is the whole thesis, so
- * the headline changing BECAUSE something was played is the argument made
- * visually rather than a decoration sitting next to it. Timing comes from
- * lib/play-beat, shared with the word, because two independent timers drift
- * apart within seconds and the idea collapses into two unrelated animations.
+ * WHY A BOARD AND NOT A CHARACTER. The first version drew a child kicking a
+ * football. Hand-authored anatomy in SVG reads as clip-art almost every time,
+ * and it did — a doll standing next to a ball. This draws what the company
+ * actually sells: a board game. A die is the logo's own mark, so the scene is
+ * on-brand without illustrating anything, and every shape here is a rounded
+ * rectangle or a circle — the geometry SVG renders crisply at any size.
  *
- * Written against rAF and CSS transforms, no animation library — the previous
- * parallax version made the same call, and Framer Motion cost ~50KB gzipped
- * on the site's most important page.
+ * WHY ONE BOARD AND NOT LOOSE PIECES. A previous pass scattered five tiles
+ * along a curve with nothing behind them. It read as shapes floating in space:
+ * no dominant form, no focal point, and the lit tiles looked like more dice.
+ * A single bounded board gives the composition mass, the yellow die is
+ * unmistakably the only die on it, and the empty corners become deliberate
+ * negative space rather than emptiness.
  *
- * Entirely decorative, so the whole thing is aria-hidden. Nothing here carries
+ * WHY FIVE SQUARES. There are five words in the headline, and each square
+ * takes the tint of the pillar it lines up with in the section below — so the
+ * hero and the rest of the page share one palette rather than each inventing
+ * their own. Square n carries n pips because it is the nth word: the numbering
+ * encodes the sequence rather than decorating it.
+ *
+ * The causality is the point. "Learning through play" is the thesis, so the
+ * headline changing BECAUSE something was played is the argument made visually
+ * rather than a decoration next to it. Timing comes from lib/play-beat, shared
+ * with the word — two independent timers drift apart within seconds and the
+ * idea collapses into two unrelated animations.
+ *
+ * rAF and CSS transforms, no animation library: Framer Motion costs ~50KB
+ * gzipped on the site's most important page.
+ *
+ * Decorative, so the whole thing is aria-hidden — nothing here carries
  * information that is not already in the headline.
  *
- * Reduced motion: the ball never flies. It rests at the child's foot and the
- * scene is a still illustration. The word still changes, because that is
- * content — see the note in lib/play-beat.
+ * Reduced motion: the die never tumbles, it simply appears on the next square.
+ * Squares still fill, because they track the word, and the word is content —
+ * see the note in lib/play-beat.
  */
 
-/* Flight path, in viewBox units. Starts at the foot, ends at the upper left
-   where the headline sits. A quadratic curve rather than a parabola because
-   the control point lets the arc be tuned by eye. */
-const START = { x: 176, y: 322 };
-const CONTROL = { x: 104, y: 74 };
-const END = { x: 2, y: 148 };
+type Square = { x: number; y: number; tint: string };
 
-function pointAt(t: number) {
-  const inv = 1 - t;
-  return {
-    x: inv * inv * START.x + 2 * inv * t * CONTROL.x + t * t * END.x,
-    y: inv * inv * START.y + 2 * inv * t * CONTROL.y + t * t * END.y,
-  };
+/* A 3×3 board. The route is a staircase climbing from the bottom-right corner
+   toward the top-left — toward the headline — in right angles rather than a
+   smooth curve, because a board route is built from steps and the climb is
+   the point.
+
+   The four cells the route does not touch are still drawn, faintly. An
+   earlier pass drew only the five route squares and left the corners bare:
+   the board had a diagonal band of content and two empty quarters, which read
+   as an unfinished graphic rather than a game. Nine cells make it a board the
+   route happens to cross. */
+const GRID = [108, 204, 300];
+
+const SQUARES: readonly Square[] = [
+  { x: GRID[2], y: GRID[2], tint: "var(--tint-sky)" },
+  { x: GRID[1], y: GRID[2], tint: "var(--tint-blush)" },
+  { x: GRID[1], y: GRID[1], tint: "var(--tint-mint)" },
+  { x: GRID[0], y: GRID[1], tint: "var(--tint-peach)" },
+  { x: GRID[0], y: GRID[0], tint: "var(--tint-lavender)" },
+];
+
+/** Every cell the route does not use, so the board is a full 3×3. */
+const OFF_ROUTE = GRID.flatMap((x) => GRID.map((y) => ({ x, y }))).filter(
+  (cell) => !SQUARES.some((sq) => sq.x === cell.x && sq.y === cell.y),
+);
+
+/**
+ * The headline's words, typed to exactly one per square.
+ *
+ * The board and the headline are one sequence, so a sixth word with only five
+ * squares would light nothing on its turn and look broken. This makes that a
+ * build failure at the call site instead — add a word, add a square.
+ */
+export type HeroWords = [string, string, string, string, string];
+
+const SQUARE = 74;
+const DIE = 62;
+
+/* Pip layout for faces 1–5, in units from the face centre. */
+const PIP = 14;
+const FACES: readonly (readonly [number, number])[][] = [
+  [[0, 0]],
+  [
+    [-PIP, -PIP],
+    [PIP, PIP],
+  ],
+  [
+    [-PIP, -PIP],
+    [0, 0],
+    [PIP, PIP],
+  ],
+  [
+    [-PIP, -PIP],
+    [PIP, -PIP],
+    [-PIP, PIP],
+    [PIP, PIP],
+  ],
+  [
+    [-PIP, -PIP],
+    [PIP, -PIP],
+    [0, 0],
+    [-PIP, PIP],
+    [PIP, PIP],
+  ],
+];
+
+/** Hop height, so the long hop back to the start arcs higher than one step. */
+function liftFor(distance: number) {
+  return Math.min(distance * 0.38, 96);
+}
+
+function Pips({ face, r }: { face: number; r: number }) {
+  return (
+    <>
+      {FACES[face].map(([x, y]) => (
+        <circle key={`${x},${y}`} cx={x} cy={y} r={r} />
+      ))}
+    </>
+  );
 }
 
 export function HeroArtwork() {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const ballRef = useRef<SVGGElement>(null);
-  const legRef = useRef<SVGGElement>(null);
-  const burstRef = useRef<SVGGElement>(null);
+  const dieRef = useRef<SVGGElement>(null);
+  const faceRefs = useRef<(SVGGElement | null)[]>([]);
+  const squareRefs = useRef<(SVGGElement | null)[]>([]);
 
   useEffect(() => {
-    const ball = ballRef.current;
-    const leg = legRef.current;
-    const burst = burstRef.current;
-    if (!ball || !leg || !burst) return;
+    const die = dieRef.current;
+    if (die === null) return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
+    let index = 0;
     let frame = 0;
     let startedAt = 0;
+    let from = SQUARES[0];
+    let to = SQUARES[0];
+    let spinFrom = 0;
+    let spinTo = 0;
+    let distance = 0;
+    let faceSwapped = false;
 
-    const rest = () => {
-      ball.style.transform = `translate(${START.x}px, ${START.y}px)`;
-      ball.style.opacity = "1";
+    const showFace = (n: number) => {
+      faceRefs.current.forEach((g, i) => {
+        g?.classList.toggle("is-shown", i === n);
+      });
     };
-    rest();
+
+    const place = (x: number, y: number, spin: number, scale = 1) => {
+      die.style.transform = `translate(${x}px, ${y}px) rotate(${spin}deg) scale(${scale})`;
+    };
+
+    place(SQUARES[0].x, SQUARES[0].y, 0);
+    showFace(0);
+    squareRefs.current[0]?.classList.add("is-lit");
 
     const tick = (now: number) => {
       const t = Math.min((now - startedAt) / FLIGHT_MS, 1);
-      const { x, y } = pointAt(t);
-      /* Spin scales with how far it has travelled, so it slows as it lands. */
-      ball.style.transform = `translate(${x}px, ${y}px) rotate(${t * 540}deg)`;
-      /* Fades out over the last fifth — it is heading off toward the word,
-         not stopping at the panel edge. */
-      ball.style.opacity = t > 0.8 ? String((1 - t) / 0.2) : "1";
+      /* Ease the travel along the ground, keep the lift a clean parabola, so
+         the hop hangs at the top the way a thrown object does. */
+      const e = 1 - Math.pow(1 - t, 3);
+      const x = from.x + (to.x - from.x) * e;
+      const y =
+        from.y + (to.y - from.y) * e - liftFor(distance) * 4 * t * (1 - t);
+      /* A little stretch at the peak and squash on landing sells the weight. */
+      const scale = 1 + Math.sin(t * Math.PI) * 0.1;
+
+      place(x, y, spinFrom + (spinTo - spinFrom) * e, scale);
+
+      /* Swap the pip face at the midpoint, where the die is most rotated and
+         the change is least noticeable. */
+      if (!faceSwapped && t >= 0.5) {
+        faceSwapped = true;
+        showFace(index);
+      }
 
       if (t < 1) frame = requestAnimationFrame(tick);
     };
 
     const unsubscribe = subscribeToBeat((event) => {
-      if (reduced) return;
-
       if (event === "launch") {
+        from = SQUARES[index];
+        index = (index + 1) % SQUARES.length;
+        to = SQUARES[index];
+
+        /* Wrapping back to the first square starts a new round — clear the
+           board on the way, so the reset reads as deliberate, not as a
+           glitch. */
+        if (index === 0) {
+          for (const sq of squareRefs.current) sq?.classList.remove("is-lit");
+        }
+
+        if (reduced) {
+          showFace(index);
+          place(to.x, to.y, 0);
+          return;
+        }
+
+        distance = Math.hypot(to.x - from.x, to.y - from.y);
+        spinFrom = spinTo;
+        spinTo = spinFrom + 90;
+        faceSwapped = false;
         cancelAnimationFrame(frame);
-        leg.classList.add("is-kicking");
         startedAt = performance.now();
         frame = requestAnimationFrame(tick);
-        window.setTimeout(() => leg.classList.remove("is-kicking"), 320);
       }
 
       if (event === "impact") {
-        /* Retrigger the burst by tearing the animation off and back on. */
-        burst.classList.remove("is-bursting");
-        void burst.getBoundingClientRect();
-        burst.classList.add("is-bursting");
-        window.setTimeout(rest, 260);
+        showFace(index);
+        /* The die is smaller than the square, so the fill reads as a coloured
+           border appearing around it — the landing is visible immediately,
+           not only once the die moves on. */
+        squareRefs.current[index]?.classList.add("is-lit");
+
+        if (!reduced) place(to.x, to.y, spinTo);
       }
     });
 
@@ -103,111 +233,127 @@ export function HeroArtwork() {
 
   return (
     <div
-      ref={rootRef}
       aria-hidden="true"
       className="relative mx-auto aspect-square w-full max-w-[460px] lg:max-w-none"
     >
       <svg viewBox="0 0 400 400" className="size-full overflow-visible">
-        {/* Ground — soft brand shapes, the brochure's background language */}
-        <circle cx="150" cy="140" r="112" fill="var(--tint-blush)" />
-        <circle cx="268" cy="248" r="122" fill="var(--tint-sky)" />
-        <circle cx="146" cy="286" r="84" fill="var(--tint-peach)" />
-
-        {/* Where the ball is headed. A faint dotted arc so the trajectory
-            reads even in the still, reduced-motion state. */}
-        <path
-          d={`M ${START.x} ${START.y} Q ${CONTROL.x} ${CONTROL.y} ${END.x} ${END.y}`}
-          fill="none"
-          stroke="var(--rule-strong)"
-          strokeWidth="2"
-          strokeDasharray="2 12"
-          strokeLinecap="round"
-          opacity="0.5"
-        />
-
-        {/* Contact point with the headline */}
-        <g ref={burstRef} className="hero-burst" transform={`translate(${END.x} ${END.y})`}>
-          <circle r="7" fill="var(--accent)" />
-          <circle cx="16" cy="-14" r="4" fill="var(--brand)" />
-          <circle cx="20" cy="10" r="3.5" fill="var(--magenta)" />
-          <circle cx="4" cy="22" r="3" fill="var(--success)" />
-        </g>
-
-        {/* Ground. Without a shadow the figure floats and the kick has
-            nothing to push against. */}
-        <ellipse cx="268" cy="352" rx="86" ry="13" fill="var(--ink)" opacity="0.07" />
-
-        {/* The child, mid-kick. Chunky rounded forms echoing the logo.
-            The REST pose is already a kick — planted leg under the hip, body
-            leaning in, arms counterbalancing. A neutral standing pose read as
-            a doll placed next to a ball; the action has to be legible in a
-            still frame, because that is what reduced-motion visitors get. */}
-        <g transform="translate(196 96) scale(1.62)">
-          {/* Planted leg */}
-          <g transform="rotate(6 34 92)">
-            <rect x="30" y="86" width="19" height="60" rx="9.5" fill="var(--fig-skin-dark)" />
-            <rect x="26" y="138" width="34" height="14" rx="7" fill="var(--ink)" />
-          </g>
-
-          {/* Kicking leg — already swung forward, swings further on the beat */}
-          <g ref={legRef} className="hero-leg" style={{ transformOrigin: "34px 92px" }}>
-            <g transform="rotate(-30 34 92)">
-              <rect x="10" y="86" width="19" height="58" rx="9.5" fill="var(--fig-skin)" />
-              <rect x="0" y="136" width="34" height="14" rx="7" fill="var(--ink)" />
-            </g>
-          </g>
-
-          {/* Torso, leaning into the kick */}
-          <g transform="rotate(-9 30 60)">
-            <rect x="8" y="72" width="46" height="30" rx="12" fill="var(--fig-shorts)" />
-            <rect x="6" y="24" width="50" height="56" rx="18" fill="var(--fig-shirt)" />
-
-            {/* Arms counterbalancing — one forward, one back */}
-            <rect
-              x="-16"
-              y="28"
-              width="17"
-              height="46"
-              rx="8.5"
-              fill="var(--fig-skin)"
-              transform="rotate(52 -7 51)"
+        <defs>
+          <filter id="hero-lift" x="-30%" y="-30%" width="160%" height="180%">
+            <feDropShadow
+              dx="0"
+              dy="10"
+              stdDeviation="12"
+              floodColor="#2e2614"
+              floodOpacity="0.13"
             />
-            <rect
-              x="54"
-              y="28"
-              width="17"
-              height="46"
-              rx="8.5"
-              fill="var(--fig-skin)"
-              transform="rotate(-44 62 51)"
+          </filter>
+          <filter id="hero-die-lift" x="-60%" y="-60%" width="220%" height="240%">
+            <feDropShadow
+              dx="0"
+              dy="7"
+              stdDeviation="7"
+              floodColor="#2e2614"
+              floodOpacity="0.24"
             />
+          </filter>
+        </defs>
 
-            {/* Head, hair, and the same smile the logo's die wears */}
-            <circle cx="31" cy="4" r="25" fill="var(--fig-skin)" />
-            <path d="M6 2a25 25 0 0 1 50 0a30 30 0 0 0-50 0z" fill="var(--fig-hair)" />
-            <circle cx="21" cy="4" r="2.6" fill="var(--fig-hair)" />
-            <circle cx="39" cy="4" r="2.6" fill="var(--fig-hair)" />
-            <path
-              d="M23 13q8 7 16 0"
-              fill="none"
-              stroke="var(--fig-hair)"
-              strokeWidth="2.6"
-              strokeLinecap="round"
-            />
-          </g>
-        </g>
-
-        {/* The ball. Positioned by transform so the rAF loop only ever writes
-            one property. */}
-        <g ref={ballRef} className="hero-ball">
-          <circle r="22" fill="var(--surface)" stroke="var(--ink)" strokeWidth="3" />
-          <path d="M0-11l10.5 7.6-4 12.4h-13l-4-12.4z" fill="var(--ink)" />
-          <path
-            d="M0-22v11M-21-4l10.5 0M21-4l-10.5 0M-13 20l4-12.4M13 20l-4-12.4"
-            stroke="var(--ink)"
-            strokeWidth="2.4"
-            strokeLinecap="round"
+        {/* The board. A few degrees off square so it reads as an object
+            someone put on a table, not a UI panel. */}
+        <g transform="rotate(-4 204 204)">
+          <rect
+            x="44"
+            y="44"
+            width="320"
+            height="320"
+            rx="36"
+            fill="var(--surface)"
+            stroke="var(--rule)"
+            strokeWidth="2"
+            filter="url(#hero-lift)"
           />
+
+          {/* Cells the route skips. Quiet — no stroke, no pips — so they read
+              as the rest of the board rather than as steps that never light. */}
+          {OFF_ROUTE.map((cell) => (
+            <rect
+              key={`${cell.x},${cell.y}`}
+              x={cell.x - SQUARE / 2}
+              y={cell.y - SQUARE / 2}
+              width={SQUARE}
+              height={SQUARE}
+              rx="20"
+              fill="var(--paper)"
+              opacity="0.75"
+            />
+          ))}
+
+          {/* The route. Drawn over the cells so the climb is legible at a
+              glance — it is the one thing on the board that has a direction. */}
+          <path
+            d={SQUARES.map(
+              (sq, i) => `${i === 0 ? "M" : "L"} ${sq.x} ${sq.y}`,
+            ).join(" ")}
+            fill="none"
+            stroke="var(--rule-strong)"
+            strokeWidth="3"
+            strokeDasharray="2 12"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {SQUARES.map((sq, i) => (
+            <g
+              key={i}
+              ref={(el) => {
+                squareRefs.current[i] = el;
+              }}
+              className="hero-square"
+              transform={`translate(${sq.x} ${sq.y})`}
+              style={{ "--sq-tint": sq.tint } as CSSProperties}
+            >
+              <rect
+                className="hero-square-face"
+                x={-SQUARE / 2}
+                y={-SQUARE / 2}
+                width={SQUARE}
+                height={SQUARE}
+                rx="20"
+                strokeWidth="2"
+              />
+              <g className="hero-square-pips" fill="var(--brand-deep)">
+                <Pips face={i} r={5} />
+              </g>
+            </g>
+          ))}
+
+          {/* The die. Yellow so there is exactly one focal point on the board
+              and it is never mistaken for a square. Positioned by transform so
+              the rAF loop only ever writes one property. */}
+          <g ref={dieRef} className="hero-die" filter="url(#hero-die-lift)">
+            <rect
+              x={-DIE / 2}
+              y={-DIE / 2}
+              width={DIE}
+              height={DIE}
+              rx="16"
+              fill="var(--accent)"
+              stroke="var(--ink)"
+              strokeWidth="3"
+            />
+            {FACES.map((_, i) => (
+              <g
+                key={i}
+                ref={(el) => {
+                  faceRefs.current[i] = el;
+                }}
+                className="hero-die-face"
+                fill="var(--ink)"
+              >
+                <Pips face={i} r={6} />
+              </g>
+            ))}
+          </g>
         </g>
       </svg>
     </div>
