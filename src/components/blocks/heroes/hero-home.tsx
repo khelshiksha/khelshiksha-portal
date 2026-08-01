@@ -2,8 +2,24 @@ import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { SITE } from "@/lib/constants";
 import { getDictionary } from "@/lib/i18n";
-import { HeroArtwork } from "./hero-artwork";
+import { HeroArtwork, type HeroWords } from "./hero-artwork";
 import { RotatingWord } from "./rotating-word";
+
+/* The rotating word is the vision line from the brochure — "vibrant hubs of
+   discovery" — opened out into the things a classroom actually becomes. Every
+   word is a claim the rest of the page then backs up, not a thesaurus run on
+   "discovery".
+
+   These are also the board in HeroArtwork: one tile per word, lit in order as
+   the die reaches it. HeroWords is a fixed-length tuple so adding a sixth word
+   here fails the build rather than silently landing on nothing. */
+const WORDS: HeroWords = [
+  "discovery.",
+  "curiosity.",
+  "confidence.",
+  "teamwork.",
+  "wonder.",
+];
 
 /**
  * The homepage hero.
@@ -26,23 +42,10 @@ export function HeroHome() {
             {SITE.tagline}
           </p>
 
-          {/* The rotating word is the vision line from the brochure —
-              "vibrant hubs of discovery" — opened out into the things a
-              classroom actually becomes. Every word is a claim the rest of
-              the page then backs up, not a thesaurus run on "discovery". */}
           <h1 className="text-display-1 text-ink">
             Learning through play.
             <br />
-            Every classroom a hub of{" "}
-            <RotatingWord
-              words={[
-                "discovery.",
-                "curiosity.",
-                "confidence.",
-                "teamwork.",
-                "wonder.",
-              ]}
-            />
+            Every classroom a hub of <RotatingWord words={WORDS} />
           </h1>
 
           <p className="measure text-body-lg text-ink-muted">
