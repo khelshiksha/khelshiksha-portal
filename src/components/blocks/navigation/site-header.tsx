@@ -99,7 +99,9 @@ export function SiteHeader() {
       )}
     >
       <Container className="flex h-18 items-center justify-between gap-6 py-3">
-        <Logo />
+        {/* In the header on every route and above the fold, so it is fetched
+            with the document rather than discovered after hydration. */}
+        <Logo priority />
 
         <nav
           aria-label={t.nav.primary}
@@ -113,7 +115,7 @@ export function SiteHeader() {
               className={cn(
                 "relative rounded-[var(--radius-sm)] px-3 py-2 text-[0.9375rem] font-semibold transition-colors",
                 "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left",
-                "after:scale-x-0 after:bg-accent after:transition-transform after:duration-200",
+                "after:bg-accent after:scale-x-0 after:transition-transform after:duration-200",
                 "hover:after:scale-x-100",
                 isActive(link.href)
                   ? "text-brand-deep after:scale-x-100"
@@ -183,7 +185,7 @@ export function SiteHeader() {
           >
             <summary
               aria-label={mobileOpen ? t.nav.closeMenu : t.nav.openMenu}
-              className="inline-flex size-11 cursor-pointer list-none items-center justify-center rounded-[var(--radius-md)] text-ink [&::-webkit-details-marker]:hidden"
+              className="text-ink inline-flex size-11 cursor-pointer list-none items-center justify-center rounded-[var(--radius-md)] [&::-webkit-details-marker]:hidden"
             >
               {mobileOpen ? (
                 <X size={22} aria-hidden="true" />
@@ -201,12 +203,12 @@ export function SiteHeader() {
         <div
           ref={menuRef}
           id="what-we-do-menu"
-          className="absolute inset-x-0 top-full hidden border-y border-rule bg-surface shadow-[var(--shadow-lg)] lg:block"
+          className="border-rule bg-surface absolute inset-x-0 top-full hidden border-y shadow-[var(--shadow-lg)] lg:block"
         >
           <Container className="grid grid-cols-3 gap-10 py-10">
             {whatWeDoMenu.map((group) => (
               <div key={group.heading} className="flex flex-col gap-3">
-                <p className="text-[0.6875rem] font-bold tracking-[0.14em] text-ink-subtle uppercase">
+                <p className="text-ink-subtle text-[0.6875rem] font-bold tracking-[0.14em] uppercase">
                   {group.heading}
                 </p>
                 <ul className="flex flex-col gap-1">
@@ -214,13 +216,13 @@ export function SiteHeader() {
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="block rounded-[var(--radius-sm)] px-2 py-1.5 transition-colors hover:bg-sunken"
+                        className="hover:bg-sunken block rounded-[var(--radius-sm)] px-2 py-1.5 transition-colors"
                       >
-                        <span className="block text-[0.9375rem] font-semibold text-ink">
+                        <span className="text-ink block text-[0.9375rem] font-semibold">
                           {link.label}
                         </span>
                         {link.description ? (
-                          <span className="block text-[0.8125rem] text-ink-muted">
+                          <span className="text-ink-muted block text-[0.8125rem]">
                             {link.description}
                           </span>
                         ) : null}
@@ -233,7 +235,6 @@ export function SiteHeader() {
           </Container>
         </div>
       ) : null}
-
     </header>
   );
 }
@@ -244,7 +245,7 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
   return (
     <div
       id="mobile-nav"
-      className="fixed inset-x-0 top-18 bottom-0 z-50 overflow-y-auto border-t border-rule bg-paper lg:hidden"
+      className="border-rule bg-paper fixed inset-x-0 top-18 bottom-0 z-50 overflow-y-auto border-t lg:hidden"
     >
       <Container className="flex flex-col gap-8 py-8">
         <nav aria-label={t.nav.mobileMenu} className="flex flex-col gap-1">
@@ -253,7 +254,7 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
               key={link.href}
               href={link.href}
               onClick={onNavigate}
-              className="rounded-[var(--radius-md)] px-3 py-3 text-h3 font-bold text-ink transition-colors hover:bg-sunken"
+              className="text-h3 text-ink hover:bg-sunken rounded-[var(--radius-md)] px-3 py-3 font-bold transition-colors"
             >
               {link.label}
             </Link>
@@ -262,7 +263,7 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
 
         {whatWeDoMenu.map((group) => (
           <div key={group.heading} className="flex flex-col gap-2">
-            <p className="px-3 text-[0.6875rem] font-bold tracking-[0.14em] text-ink-subtle uppercase">
+            <p className="text-ink-subtle px-3 text-[0.6875rem] font-bold tracking-[0.14em] uppercase">
               {group.heading}
             </p>
             <ul className="flex flex-col">
@@ -271,7 +272,7 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
                   <Link
                     href={link.href}
                     onClick={onNavigate}
-                    className="block rounded-[var(--radius-sm)] px-3 py-2.5 text-[0.9375rem] font-medium text-ink-muted transition-colors hover:bg-sunken hover:text-ink"
+                    className="text-ink-muted hover:bg-sunken hover:text-ink block rounded-[var(--radius-sm)] px-3 py-2.5 text-[0.9375rem] font-medium transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -282,7 +283,7 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
         ))}
 
         {/* CTA pinned at the end of the sheet, always thumb-reachable. */}
-        <div className="flex items-center gap-3 border-t border-rule pt-6">
+        <div className="border-rule flex items-center gap-3 border-t pt-6">
           <ButtonLink
             href="/contact?type=school-demo"
             size="lg"

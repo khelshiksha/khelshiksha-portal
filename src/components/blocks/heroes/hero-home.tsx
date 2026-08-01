@@ -3,6 +3,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { SITE } from "@/lib/constants";
 import { getDictionary } from "@/lib/i18n";
 import { HeroArtwork } from "./hero-artwork";
+import { RotatingWord } from "./rotating-word";
 
 /**
  * The homepage hero.
@@ -21,15 +22,27 @@ export function HeroHome() {
     <section className="relative overflow-hidden">
       <Container className="relative grid items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-28">
         <div className="flex flex-col gap-6">
-          <p className="text-label font-bold tracking-[0.16em] text-ink-subtle uppercase">
+          <p className="text-label text-ink-subtle font-bold tracking-[0.16em] uppercase">
             {SITE.tagline}
           </p>
 
+          {/* The rotating word is the vision line from the brochure —
+              "vibrant hubs of discovery" — opened out into the things a
+              classroom actually becomes. Every word is a claim the rest of
+              the page then backs up, not a thesaurus run on "discovery". */}
           <h1 className="text-display-1 text-ink">
             Learning through play.
             <br />
             Every classroom a hub of{" "}
-            <em className="accent-phrase">discovery.</em>
+            <RotatingWord
+              words={[
+                "discovery.",
+                "curiosity.",
+                "confidence.",
+                "teamwork.",
+                "wonder.",
+              ]}
+            />
           </h1>
 
           <p className="measure text-body-lg text-ink-muted">

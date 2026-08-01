@@ -47,8 +47,20 @@ export const impactStats: ImpactStat[] = [
  * reproducing a mark we have no licence to use.
  */
 export const partners: Partner[] = [
-  { _id: "p-unicef", name: "UNICEF", partnerType: "ngo", showOnHomepage: true, order: 1 },
-  { _id: "p-pmshri", name: "PM SHRI", partnerType: "govt", showOnHomepage: true, order: 2 },
+  {
+    _id: "p-unicef",
+    name: "UNICEF",
+    partnerType: "ngo",
+    showOnHomepage: true,
+    order: 1,
+  },
+  {
+    _id: "p-pmshri",
+    name: "PM SHRI",
+    partnerType: "govt",
+    showOnHomepage: true,
+    order: 2,
+  },
   {
     _id: "p-gujcost",
     name: "GUJCOST",
@@ -63,13 +75,28 @@ export const partners: Partner[] = [
     showOnHomepage: true,
     order: 4,
   },
-  { _id: "p-geda", name: "GEDA", partnerType: "govt", showOnHomepage: true, order: 5 },
+  {
+    _id: "p-geda",
+    name: "GEDA",
+    partnerType: "govt",
+    showOnHomepage: true,
+    order: 5,
+  },
   {
     _id: "p-yogasana",
     name: "World Yogasana",
     partnerType: "institution",
     showOnHomepage: true,
     order: 6,
+  },
+  /* On the brochure's credibility row (docs/brand-context.md) but missed when
+     this list was first written. */
+  {
+    _id: "p-baps",
+    name: "BAPS",
+    partnerType: "institution",
+    showOnHomepage: true,
+    order: 7,
   },
 ];
 
