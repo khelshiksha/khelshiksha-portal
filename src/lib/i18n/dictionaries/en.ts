@@ -138,6 +138,14 @@ export const en = {
        current language still has to be able to find the way out. */
     switchTo: "ગુજરાતીમાં જુઓ",
   },
+  /* Trust signals sit directly under the hero CTAs. Claims only — alignment
+     with a published framework, and what is included in the programme. No
+     counts of schools or children until those numbers can be sourced. */
+  trust: {
+    nep: "NEP 2020 aligned",
+    ncf: "NCF 2023 compliant",
+    training: "Teacher training included",
+  },
   common: {
     loading: "Loading",
     opensInNewTab: "opens in a new tab",

@@ -149,33 +149,74 @@ function Paths() {
   );
 }
 
-/** Discovery Square: a low stone plaza where the paths meet. */
+/**
+ * Discovery Square: the plaza all five paths run to, with an open book at the
+ * centre of it.
+ *
+ * The centre used to be an empty stone slab with a painted ring. It read as
+ * important — everything points at it — and meant nothing, which is the worst
+ * combination a focal point can have.
+ *
+ * An open book, because it is the one object that says "learning" in every
+ * language on this page's audience list, at any size, with no label. It is
+ * also the only curved-plane object in the world, which is what makes it read
+ * as a monument rather than as another building.
+ */
 function Plaza() {
-  const c = iso(PLAZA_CENTRE.gx, PLAZA_CENTRE.gy, PLAZA.h + 0.01);
+  const cx = PLAZA_CENTRE.gx;
+  const cy = PLAZA_CENTRE.gy;
+  const c = iso(cx, cy, PLAZA.h + 0.01);
+
+  /* Plinth height, then the spine and the outer edge of each page. The pages
+     tilt: the spine sits higher than the fore-edges, which is what stops the
+     book reading as a flat diamond painted on the floor. */
+  const base = PLAZA.h + 0.24;
+  const spineTop = base + 0.46;
+  const edgeTop = base + 0.16;
+  const halfW = 0.72;
+  const pageD = 0.92;
+
+  const spineA = iso(cx - halfW, cy, spineTop);
+  const spineB = iso(cx + halfW, cy, spineTop);
+  const backA = iso(cx - halfW, cy - pageD, edgeTop);
+  const backB = iso(cx + halfW, cy - pageD, edgeTop);
+  const frontA = iso(cx - halfW, cy + pageD, edgeTop);
+  const frontB = iso(cx + halfW, cy + pageD, edgeTop);
+
   return (
     <g>
-      <Box
-        gx={PLAZA.gx}
-        gy={PLAZA.gy}
-        w={PLAZA.size}
-        d={PLAZA.size}
-        h={PLAZA.h}
-        material="stone"
-      />
-      {/* An inlaid ring in brand blue. In pale stone-on-stone it disappeared
-          entirely and Discovery Square — the point all five paths run to —
-          read as an empty patch. */}
+      <Box gx={PLAZA.gx} gy={PLAZA.gy} w={PLAZA.size} d={PLAZA.size} h={PLAZA.h} material="stone" />
+
+      {/* Ring of brand blue inlaid in the paving, so the plaza reads as a
+          designed square rather than a slab. */}
       <ellipse
         cx={c.x}
         cy={c.y}
-        rx="58"
-        ry="29"
+        rx="60"
+        ry="30"
         fill="none"
         stroke="var(--w-sky-blue)"
-        strokeWidth="6"
-        opacity="0.55"
+        strokeWidth="5"
+        opacity="0.45"
       />
-      <ellipse cx={c.x} cy={c.y} rx="26" ry="13" fill="var(--w-sky-blue)" opacity="0.22" />
+
+      {/* Stepped plinth */}
+      <Box gx={cx - 1.05} gy={cy - 1.05} gz={PLAZA.h} w={2.1} d={2.1} h={0.12} material="stone" />
+      <Box gx={cx - 0.82} gy={cy - 0.82} gz={PLAZA.h + 0.12} w={1.64} d={1.64} h={0.12} material="wood" />
+
+      {/* The two pages. Different tones so they read as two planes meeting at
+          a ridge, exactly like every roof in the world. */}
+      <polygon points={points([spineA, spineB, backB, backA])} fill="var(--w-stone-top)" />
+      <polygon points={points([spineA, spineB, frontB, frontA])} fill="var(--w-stone-left)" />
+      <line
+        x1={spineA.x}
+        y1={spineA.y}
+        x2={spineB.x}
+        y2={spineB.y}
+        stroke="var(--w-wood-right)"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
     </g>
   );
 }
@@ -307,6 +348,17 @@ function ZonePlatform({ slug }: { slug: string }) {
         rx="118"
         ry="60"
         fill={zone.accent}
+      />
+      {/* Contact shadow. Without one the plateau reads as a decal on the
+          grass rather than a raised bank of earth — the cheapest depth cue
+          in the scene and the one that does the most work. */}
+      <ellipse
+        cx={iso(zone.gx + PLATFORM / 2 + 0.18, zone.gy + PLATFORM / 2 + 0.18, 0).x}
+        cy={iso(zone.gx + PLATFORM / 2 + 0.18, zone.gy + PLATFORM / 2 + 0.18, 0).y}
+        rx="112"
+        ry="56"
+        fill="var(--w-grass-right)"
+        opacity="0.34"
       />
       <g className="kv-zone-body">
         {/* Turf on an earth bank. Once the side faces were drawn correctly

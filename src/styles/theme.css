@@ -313,7 +313,12 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Fluid scale, 320 → 1440px */
-  --text-display-1: clamp(2.75rem, 1.6rem + 5.6vw, 5.5rem);
+  /* Capped at 4.6rem, not 5.5rem. At 88px the headline ran to three lines of
+     260px on a 1366x768 laptop and pushed the call to action and the trust
+     signals off the screen — the two things a principal most needs to see.
+     Restraint reads as more expensive than scale, and this token is used by
+     the hero and nothing else, so the change is contained. */
+  --text-display-1: clamp(2.6rem, 1.5rem + 4.4vw, 4.6rem);
   --text-display-1--line-height: 0.98;
   --text-display-1--letter-spacing: -0.03em;
 

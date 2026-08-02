@@ -335,7 +335,7 @@
     justify-items: center;
     gap: 0.1rem;
     translate: -50% -100%;
-    padding: 0.4rem 0.75rem;
+    padding: 0.5rem 0.8rem;
     border-radius: var(--radius-md, 0.75rem);
     background: var(--glass);
     border: 1px solid var(--rule);
@@ -352,10 +352,20 @@
   }
 
   .kv-pin.is-current,
-  .kv-root:hover .kv-pin,
-  .kv-pin:hover,
   .kv-pin:focus-visible {
     opacity: 1;
+  }
+
+  /* Reveal-the-whole-map on hover is for pointers that REALLY hover.
+     A touch browser latches :hover on tap, and on a phone all five cards are
+     stacked in one place — so this rule made every one of them visible and
+     tappable at once, and the last in DOM order swallowed the tap. Whatever
+     the card said, the finger went to Life Skills. */
+  @media (hover: hover) and (pointer: fine) {
+    .kv-root:hover .kv-pin,
+    .kv-pin:hover {
+      opacity: 1;
+    }
   }
 
   /* No JavaScript means no die and no is-current, so the labels would never
@@ -385,15 +395,32 @@
     color: var(--ink);
   }
 
-  /* The blurb is the payoff for pointing at a zone: the label says what the
-     pillar is, this says what it does. Hidden until then so five permanent
-     paragraphs do not bury the world. */
+  /* The blurb says what the pillar DOES; the label says what it is.
+
+     Shown on the current pin as well as on hover, not hover-only. The whole
+     point of the campus cycling through its zones is that a visitor who never
+     touches anything still learns what the five pillars are — a title alone
+     does not teach that, and hover does not exist on a phone, where most of
+     the traffic is. */
   .kv-pin-blurb {
-    display: none;
     font-size: 0.75rem;
-    line-height: 1.3;
+    line-height: 1.35;
     color: var(--ink-muted);
-    max-width: 15ch;
+    max-width: 19ch;
+  }
+
+  .kv-pin-go {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--brand);
+    opacity: 0;
+    transition: opacity 220ms var(--ease-out-quint);
+  }
+  .kv-pin.is-current .kv-pin-go,
+  .kv-pin:hover .kv-pin-go,
+  .kv-pin:focus-visible .kv-pin-go {
+    opacity: 1;
   }
 
   .kv-pin:hover,
@@ -402,17 +429,109 @@
     border-color: var(--brand);
     box-shadow: var(--shadow-md);
   }
-  .kv-pin:hover .kv-pin-blurb,
-  .kv-pin:focus-visible .kv-pin-blurb {
-    display: block;
+  /* Pins are reachable on EVERY screen, phones included.
+     They used to be display:none below lg, on the theory that five labels
+     would overlap at that size. That stopped being true when only one shows
+     at a time — and it meant that on phones, where most of the traffic is,
+     the campus was decoration you could not touch. Five pillars, no way in.
+
+     pointer-events is the load-bearing half of this. An opacity:0 link is
+     still tappable, so without it a thumb landing anywhere near a hidden pin
+     would navigate somewhere unannounced. Only the pin you can see can be
+     pressed. */
+  .kv-pin {
+    pointer-events: none;
+  }
+  .kv-pin.is-current,
+  .kv-pin:focus-visible {
+    pointer-events: auto;
   }
 
-  /* Below the lg breakpoint the world is a picture, not a map: the pins would
-     overlap each other and the landmarks at that scale. The pillars are
-     reachable from the nav and from the section below, so nothing is lost. */
+  @media (hover: hover) and (pointer: fine) {
+    .kv-root:hover .kv-pin,
+    .kv-pin:hover {
+      pointer-events: auto;
+    }
+  }
+  html:not([data-js]) .kv-pin {
+    pointer-events: auto;
+  }
+
+  /* --- The label on small screens ----------------------------------------
+     Below lg the campus is deliberately WIDER than the viewport, so a label
+     pinned to its zone can sit off-screen: the Climate card landed half past
+     the right edge with its title cut off. A tooltip you cannot read is worse
+     than no tooltip.
+
+     So on a phone it stops being a pin and becomes a caption — one card,
+     centred, always fully visible, always tappable. It loses the tail,
+     because it is no longer pointing at anything.
+
+     !important because the component writes left/top inline, computed from
+     the zone's position in the campus. That is exactly right on a desktop and
+     exactly wrong here, and an inline style cannot be beaten any other way. */
   @media (max-width: 1023px) {
     .kv-pin {
+      top: auto !important;
+      bottom: 3%;
+      left: 50% !important;
+      translate: -50% 0;
+      width: max-content;
+      max-width: min(21rem, 84vw);
+      justify-items: center;
+      text-align: center;
+    }
+    .kv-pin::after {
       display: none;
+    }
+    .kv-pin-blurb {
+      max-width: none;
+    }
+  }
+
+  /* --- Framing -----------------------------------------------------------
+     The campus is sized by HEIGHT on laptops and by WIDTH on phones, because
+     the failure mode is opposite at each end.
+
+     On a 1366x768 laptop the hero ran to 1156px — 1.51 viewports — so the
+     illustration pushed the proposition off the screen entirely. Capping the
+     height and letting the width follow the aspect ratio keeps the whole hero
+     inside one screen.
+
+     On a 390px phone the campus was 278px tall and read as a thumbnail. There
+     the constraint is the other way round: give it more width than the
+     viewport, let it run off both edges, and the landmarks become legible.
+
+     aspect-ratio does the arithmetic either way, so the two never disagree. */
+  .kv-frame {
+    /* --kv-ratio is written inline from the camera crop, so the box and the
+       viewBox cannot disagree. Hard-coding it here is what let them drift
+       apart last time, which letterboxed the SVG and pulled every pin off its
+       rooftop. */
+    aspect-ratio: var(--kv-ratio);
+    width: 218%;
+    /* Wider than the viewport, and centred on it. margin-inline:auto does not
+       centre a box that overflows its parent — it pushes the overflow to one
+       side — so the shift is explicit. */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  @media (min-width: 640px) {
+    .kv-frame {
+      width: 138%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .kv-frame {
+      height: min(36vh, 400px);
+      width: auto;
+      max-width: 100%;
+      left: auto;
+      transform: none;
+      margin-inline: auto;
     }
   }
 
