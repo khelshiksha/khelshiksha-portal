@@ -1,5 +1,5 @@
 import { iso, points, randRange, VIEW_BOX, type Point } from "./iso";
-import { Box, Tile, Tree } from "./solids";
+import { Box, Tree } from "./solids";
 import {
   ClimateGrove,
   Schoolhouse,
