@@ -1,6 +1,7 @@
 import "server-only";
 import { Resend } from "resend";
 import { SITE } from "@/lib/constants";
+import { FEATURES } from "@/lib/features";
 import type { LeadInput } from "@/features/leads/schema";
 
 /**
@@ -26,7 +27,18 @@ const LEAD_LABEL: Record<LeadInput["type"], string> = {
   general: "General enquiry",
 };
 
+/**
+ * FEATURES.leadEmail is checked first and has to win over a present API key:
+ * it is a manual pause for billing, and the key stays in Vercel so restoring
+ * the notification is one boolean rather than a hunt for a credential.
+ *
+ * Everything downstream of this already treats "not configured" as normal —
+ * the lead is stored before this function is ever called, and no path here
+ * throws. So pausing notification cannot lose an enquiry. It can only stop
+ * anyone being told about one, which is the risk documented in lib/features.
+ */
 export function isEmailConfigured(): boolean {
+  if (!FEATURES.leadEmail) return false;
   return Boolean(process.env.RESEND_API_KEY && process.env.LEAD_NOTIFY_TO);
 }
 
@@ -38,9 +50,19 @@ export async function sendLeadNotification(
   const subject = `${label} — ${lead.name}${lead.organisation ? ` (${lead.organisation})` : ""}`;
 
   if (!isEmailConfigured()) {
-    console.info(
-      `[email] not configured — would have sent "${subject}" for lead ${leadId}`,
-    );
+    /* Loud, and it says where the enquiry actually is. Whoever reads these
+       logs while notification is paused needs one thing from this line: that
+       a real person is waiting and the record is in the database. */
+    if (!FEATURES.leadEmail) {
+      console.warn(
+        `[email] PAUSED (FEATURES.leadEmail=false) — lead ${leadId} IS STORED ` +
+          `and nobody has been notified. Subject would have been: "${subject}"`,
+      );
+    } else {
+      console.info(
+        `[email] not configured — would have sent "${subject}" for lead ${leadId}`,
+      );
+    }
     return;
   }
 
