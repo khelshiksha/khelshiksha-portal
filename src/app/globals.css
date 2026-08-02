@@ -578,6 +578,81 @@
     animation-play-state: paused !important;
   }
 
+  /* --- Logo rail ---------------------------------------------------------
+     One list rendered twice, translated by exactly -50% so the second copy
+     lands where the first began and the loop is seamless.
+
+     The mask fades both ends into the background instead of cutting logos off
+     at a hard edge, which is what makes a rail read as continuing rather than
+     as a clipped box. */
+  .logo-rail {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 6rem,
+      #000 calc(100% - 6rem),
+      transparent
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 6rem,
+      #000 calc(100% - 6rem),
+      transparent
+    );
+  }
+
+  .logo-rail-inner {
+    display: flex;
+    width: max-content;
+    animation: logo-rail 46s linear infinite;
+  }
+
+  .logo-rail-track {
+    display: flex;
+    align-items: center;
+    gap: 3.5rem;
+    padding-inline: 1.75rem;
+  }
+
+  @keyframes logo-rail {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Pausing on hover is not a nicety — WCAG 2.2.2 requires a way to stop
+     motion that starts automatically and runs longer than five seconds. */
+  .logo-rail:hover .logo-rail-inner,
+  .logo-rail:focus-within .logo-rail-inner {
+    animation-play-state: paused;
+  }
+
+  /* Continuous horizontal motion is a common migraine and vestibular trigger,
+     so reduced motion does not merely slow it — it stops it and lets the rail
+     wrap onto as many lines as it needs, becoming a plain grid of marks. */
+  @media (prefers-reduced-motion: reduce) {
+    .logo-rail {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    .logo-rail-inner {
+      animation: none;
+      width: 100%;
+    }
+    .logo-rail-track {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem 3rem;
+    }
+    /* The duplicate exists only to make the loop seamless; with no loop it is
+       just fifteen repeated images. */
+    .logo-rail-track[aria-hidden="true"] {
+      display: none;
+    }
+  }
+
   /* A scroll container with no visible scrollbar.
      Scrolling itself is untouched — wheel, trackpad, touch, and keyboard all
      still work, and the element keeps its overflow so it remains focusable

@@ -28,9 +28,15 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   /* Sanity and Cloudinary match the image remotePatterns below; data: is for
      the inline blur placeholders next/image generates. */
-  "img-src 'self' data: blob: https://cdn.sanity.io https://res.cloudinary.com",
+  "img-src 'self' data: blob: https://cdn.sanity.io https://res.cloudinary.com https://i.ytimg.com",
   "font-src 'self'",
   "connect-src 'self'",
+  /* The YouTube facade in blocks/media/video-panel mounts an iframe only
+     after someone presses play. Without frame-src it falls back to
+     default-src 'self' and that iframe is blocked outright — which would have
+     surfaced on the day the first film was published, not before. Scoped to
+     the no-cookie host, which is the one the component actually uses. */
+  "frame-src 'self' https://www.youtube-nocookie.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
