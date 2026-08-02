@@ -504,34 +504,60 @@
 
      aspect-ratio does the arithmetic either way, so the two never disagree. */
   .kv-frame {
-    /* --kv-ratio is written inline from the camera crop, so the box and the
-       viewBox cannot disagree. Hard-coding it here is what let them drift
-       apart last time, which letterboxed the SVG and pulled every pin off its
-       rooftop. */
-    aspect-ratio: var(--kv-ratio);
-    width: 218%;
-    /* Wider than the viewport, and centred on it. margin-inline:auto does not
-       centre a box that overflows its parent — it pushes the overflow to one
-       side — so the shift is explicit. */
     position: relative;
+    overflow: hidden;
+    /* A DELIBERATE CROP, not an arbitrary one.
+
+       The campus is a wide, shallow shape: shown whole at 390px it can only
+       be about 140px tall, which reads as a thumbnail. Shown big it has to be
+       cropped. The previous attempt cropped by simply scaling the whole thing
+       up until it overflowed the screen, and the screen edge then fell
+       wherever it liked — straight through the Life Skills pavilion on one
+       side and the Future Readiness lab on the other. Buildings sliced in
+       half is what made it look broken.
+
+       So the frame's aspect ratio IS the crop. 620x444 of the campus is the
+       region that contains all five zones whole, and the stage inside is
+       scaled so exactly that region fills the frame. Trees at the far edges
+       are lost, which is fine — a tree cut off reads as a world continuing,
+       a building cut off reads as a mistake. */
+    aspect-ratio: 620 / 444;
+  }
+
+  /* The full-width campus, centred inside the cropped frame. 1096/620. */
+  .kv-stage {
+    position: absolute;
+    top: 0;
+    bottom: 0;
     left: 50%;
+    width: 176.8%;
     transform: translateX(-50%);
   }
 
   @media (min-width: 640px) {
     .kv-frame {
-      width: 138%;
+      aspect-ratio: 820 / 444;
+    }
+    .kv-stage {
+      width: 133.7%;
     }
   }
 
+  /* Laptops and up show the whole campus, sized by HEIGHT so the entire hero
+     fits one screen — at 1366x768 it used to run to 1.51 viewports. */
   @media (min-width: 1024px) {
     .kv-frame {
+      aspect-ratio: var(--kv-ratio);
       height: min(36vh, 400px);
       width: auto;
       max-width: 100%;
-      left: auto;
-      transform: none;
       margin-inline: auto;
+      overflow: visible;
+    }
+    .kv-stage {
+      position: static;
+      width: 100%;
+      transform: none;
     }
   }
 

@@ -269,19 +269,24 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
         className="kv-frame"
         style={{ "--kv-ratio": `${VIEW.w} / ${VIEW.h}` } as React.CSSProperties}
       >
-        {children}
+        {/* Both SVGs live on the stage so they crop together; the pins stay on
+            the frame, because on phones they are a centred caption rather than
+            a position on the campus. */}
+        <div className="kv-stage">
+          {children}
 
-        <svg
+          <svg
           viewBox={VIEW_BOX}
           className="pointer-events-none absolute inset-0 size-full"
           preserveAspectRatio="xMidYMid meet"
           aria-hidden="true"
           focusable="false"
         >
-          <g ref={dieRef} className="kv-die">
-            <DieCube />
-          </g>
-        </svg>
+            <g ref={dieRef} className="kv-die">
+              <DieCube />
+            </g>
+          </svg>
+        </div>
 
         {/* The zones as real links. Positioned as a percentage of the viewBox,
             which the locked aspect ratio above makes exact at any size. */}

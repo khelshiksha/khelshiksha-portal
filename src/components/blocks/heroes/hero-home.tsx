@@ -103,19 +103,10 @@ export function HeroHome() {
           tall, and present-but-unreadable is worse than absent. The camera
           moves in instead, the island runs off both edges, and the section
           clips it so nothing scrolls sideways. */}
-      <div className="relative my-1 w-full overflow-hidden sm:-mt-6 lg:my-0 lg:mt-2 lg:overflow-visible">
-        {/* Crop the sky on small screens.
-
-            Zoomed in on a phone, the band above the island is mostly empty,
-            and a single drifting cloud sitting alone in it read as a stray
-            white blob under the headline rather than as weather. Desktop
-            keeps the full sky, where the clouds have an island and a balloon
-            to belong to. */}
-        <div className="-mt-10 sm:mt-0">
-          <KhelVerse>
-            <World />
-          </KhelVerse>
-        </div>
+      <div className="relative my-1 w-full sm:-mt-4 lg:my-0 lg:mt-2">
+        <KhelVerse>
+          <World />
+        </KhelVerse>
       </div>
 
       <Container className="relative z-10 mt-2 flex flex-col gap-4 pb-4 sm:gap-5 lg:mt-7 lg:max-w-[62rem] lg:gap-6">

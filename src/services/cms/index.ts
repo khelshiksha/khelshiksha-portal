@@ -3,9 +3,13 @@ import { impactStats, partners, testimonials } from "@/content/impact";
 import { pillars } from "@/content/pillars";
 import { products } from "@/content/products";
 import { alignments, benefits, faqs, mission, vision } from "@/content/site";
+import { credentialGroups } from "@/content/credentials";
+import { pressCuttings } from "@/content/press";
 import type { AudienceKey, PillarKey } from "@/lib/constants";
 import type {
   AudienceHub,
+  CredentialGroup,
+  PressCutting,
   Benefit,
   FaqItem,
   ImpactStat,
@@ -132,3 +136,13 @@ export async function getVisionAndMission() {
 }
 
 export type * from "./types";
+
+/* --- Credibility -------------------------------------------------------- */
+
+export async function getCredentialGroups(): Promise<CredentialGroup[]> {
+  return credentialGroups;
+}
+
+export async function getPressCuttings(): Promise<PressCutting[]> {
+  return pressCuttings;
+}

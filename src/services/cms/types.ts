@@ -164,3 +164,32 @@ export interface AudienceHub {
   timeline?: TimelineStep[];
   included?: { title: string; description: string }[];
 }
+
+/* --- Credibility -------------------------------------------------------- */
+
+export interface CredentialItem {
+  name: string;
+  /** File under public/logos. */
+  file: string;
+  /** What the relationship actually is, where a logo alone would overclaim. */
+  relationship?: string;
+}
+
+export interface CredentialGroup {
+  _id: string;
+  key: string;
+  heading: string;
+  /** One line saying what this group of marks means. */
+  note: string;
+  items: CredentialItem[];
+}
+
+export interface PressCutting {
+  _id: string;
+  /** File under public/press. */
+  file: string;
+  alt: string;
+  /** Null until verified — see the note in content/press.ts. */
+  publication: string | null;
+  date: string | null;
+}
