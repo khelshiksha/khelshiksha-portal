@@ -2,6 +2,7 @@ import "server-only";
 import { GoogleGenAI } from "@google/genai";
 import { getFaqs, getPillars, getProducts } from "@/services/cms";
 import { AUDIENCE_KEYS, SITE } from "@/lib/constants";
+import { FEATURES } from "@/lib/features";
 import { formatAgeRange, formatDuration, formatGroupSize } from "@/lib/utils";
 
 /**
@@ -77,7 +78,16 @@ function isModelUnavailable(error: unknown): boolean {
  */
 const MAX_TOKENS = 2000;
 
+/**
+ * The single gate the UI and the route both ask.
+ *
+ * FEATURES.assistant is checked first and deliberately: it is a manual pause
+ * for billing, and it has to win even when GOOGLE_API_KEY is still present in
+ * the environment. Keeping the key set while the flag is false is the point —
+ * switching the feature back on is one boolean, not a hunt for a credential.
+ */
 export function isAssistantConfigured(): boolean {
+  if (!FEATURES.assistant) return false;
   return Boolean(process.env.GOOGLE_API_KEY);
 }
 

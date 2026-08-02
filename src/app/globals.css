@@ -169,36 +169,40 @@
      changing its shadow. */
 
   /* --- Institutional marks ------------------------------------------------
-     Fifteen logos in fifteen brand palettes fight each other and the page;
-     greyed back they read as one row of credentials, which is what they are.
+     FULL COLOUR, at the owner's direction. These were greyed back on the
+     argument that fifteen brand palettes fight each other — true in the
+     abstract, and outweighed here: the Ministry of Education emblem, the
+     UNICEF blue and the Eat Right India mark are recognised BY their colour
+     by exactly the audience this row is aimed at, and a greyed government
+     crest reads as a screenshot of a document rather than as a credential.
 
-     THE DARK-MODE RULE IS NOT COSMETIC. These files are dark ink drawn for
-     white paper. On the dusk ground they are close to invisible, and six of
-     them shipped as flat PNGs with an opaque white background, so they were
-     rendering as white rectangles with a logo somewhere inside. The
-     backgrounds have since been punched out (.audit/dealpha-logos.mjs), which
-     fixed the light theme and made the dark one worse — a mark with no
-     backing and no contrast is just gone.
+     Dark mode is the whole reason this rule exists rather than the class
+     simply being dropped. These files are dark ink drawn for white paper, and
+     six of them had their opaque white backgrounds punched out
+     (.audit/dealpha-logos.mjs) so they would stop rendering as white
+     rectangles on the cream. That fixed the light theme and left the dark one
+     with dark marks on a dark ground.
 
-     Inverting solves both at once: the ink goes light, and any white left in
-     a file goes black, which the dark ground swallows. Greyscale stays on top
-     so an inverted logo cannot arrive in a hallucinated complementary colour.
-
-     Colour-on-hover is light-theme only. In dark mode `filter: none` would
-     both un-invert and un-grey, i.e. put the dark original back on the dark
-     ground — the exact failure this rule exists to prevent. There, hover just
-     brings the mark to full strength. */
+     Greying-and-inverting used to solve it. Colour cannot be inverted — an
+     inverted logo arrives in a hallucinated complementary palette, which is
+     worse than illegible, it is wrong. So dark mode gives each mark back the
+     light card it was designed on: a small cream tile, sized by padding so it
+     hugs the logo instead of becoming a row of uniform boxes. */
   .logo-mark {
-    filter: grayscale(1);
-    opacity: 0.7;
+    opacity: 0.92;
     transition:
-      filter 300ms var(--ease-out-quint),
-      opacity 300ms var(--ease-out-quint);
+      opacity 300ms var(--ease-out-quint),
+      transform 300ms var(--ease-out-quint);
   }
 
   :root[data-theme="dark"] .logo-mark {
-    filter: grayscale(1) invert(1);
-    opacity: 0.78;
+    /* --paper's fixed value. Not var(--paper), which is dark in this theme —
+       the tile has to stay light regardless of the theme, exactly like the
+       contrast bands in theme.css. */
+    background: #fdfbf6;
+    border-radius: var(--radius-sm, 0.5rem);
+    padding: 0.3rem 0.55rem;
+    opacity: 0.96;
   }
 
   /* The signature typographic move, straight from the brochure:
@@ -711,23 +715,28 @@
      One list rendered twice, translated by exactly -50% so the second copy
      lands where the first began and the loop is seamless.
 
-     The mask fades both ends into the background instead of cutting logos off
-     at a hard edge, which is what makes a rail read as continuing rather than
-     as a clipped box. */
+     The mask fades both ends out instead of cutting logos off at a hard edge,
+     which is what makes a rail read as continuing rather than as a filmstrip
+     that stops.
+
+     3rem, not 6rem. The rail used to run the full width of the viewport and
+     needed a long fade to dissolve into the page; it now sits inside a panel
+     roughly a third that wide, where a 6rem fade at each end ate most of the
+     visible logos. */
   .logo-rail {
     overflow: hidden;
     -webkit-mask-image: linear-gradient(
       90deg,
       transparent,
-      #000 6rem,
-      #000 calc(100% - 6rem),
+      #000 3rem,
+      #000 calc(100% - 3rem),
       transparent
     );
     mask-image: linear-gradient(
       90deg,
       transparent,
-      #000 6rem,
-      #000 calc(100% - 6rem),
+      #000 3rem,
+      #000 calc(100% - 3rem),
       transparent
     );
   }
@@ -835,15 +844,13 @@
       transform: scale(1.05);
     }
 
-    /* Light theme only — see the note on .logo-mark. */
+    /* The marks are already in full colour at rest, so there is no colour
+       left to reveal. A small lift is all that is wanted — enough to say the
+       row responds, not enough to look clickable, because these are names
+       rather than links. */
     .logo-mark-interactive:hover {
-      filter: none;
       opacity: 1;
-    }
-
-    :root[data-theme="dark"] .logo-mark-interactive:hover {
-      filter: grayscale(1) invert(1);
-      opacity: 1;
+      transform: scale(1.06);
     }
   }
 }

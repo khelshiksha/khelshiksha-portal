@@ -55,10 +55,9 @@ export function LogoMarquee({
             width={item.w}
             height={item.h}
             loading="lazy"
-            /* .logo-mark is shared with the wall on /impact — greyed here,
-               inverted in dark mode. No hover treatment: the rail is moving,
-               so a mark that lights under the pointer would light and then
-               slide away from it. */
+            /* .logo-mark is shared with the wall on /impact. No hover
+               treatment here: the rail is moving, so a mark that lit under
+               the pointer would light and then slide away from it. */
             className="logo-mark h-12 w-auto sm:h-14"
           />
         </li>
@@ -67,23 +66,33 @@ export function LogoMarquee({
   );
 
   return (
-    <Section className="bg-sunken py-12 lg:py-16">
-      <Container className="flex flex-col gap-2">
-        <p className="text-label text-ink-subtle font-bold tracking-[0.16em] uppercase">
-          {eyebrow}
-        </p>
-        <h2 className="text-h3 text-ink">{title}</h2>
-      </Container>
+    <Section className="py-8 lg:py-10">
+      <Container>
+        {/* THE SAME PANEL AS THE 12,000+ KITS BAR — identical radius, border,
+            ground and padding, deliberately. The two blocks make the same
+            kind of claim ("here is the proof") and sit within one screen of
+            each other, so reading as a matched pair is the point rather than
+            a coincidence. It also gives the rail a defined edge to fade
+            against, which a strip running off the viewport never had.
 
-      {/* Full-bleed: the rail should run off both edges so it reads as
-          continuing rather than as a box of logos. */}
-      <div className="logo-rail mt-8">
-        <div className="logo-rail-inner">
-          {rail(false)}
-          {rail(true)}
+            overflow-hidden belongs on the PANEL, not just on the rail, or the
+            logos ride out over the rounded corners. */}
+        <div className="border-rule bg-sunken flex flex-col gap-6 overflow-hidden rounded-[var(--radius-2xl)] border py-9 sm:py-10">
+          <div className="flex flex-col gap-2 px-6 text-center sm:px-10">
+            <p className="text-label text-ink-subtle font-bold tracking-[0.16em] uppercase">
+              {eyebrow}
+            </p>
+            <h2 className="text-h3 text-ink">{title}</h2>
+          </div>
+
+          <div className="logo-rail">
+            <div className="logo-rail-inner">
+              {rail(false)}
+              {rail(true)}
+            </div>
+          </div>
         </div>
-      </div>
-
+      </Container>
     </Section>
   );
 }
