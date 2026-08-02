@@ -224,6 +224,18 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
     root.addEventListener("focusin", pause);
     root.addEventListener("focusout", resume);
 
+    /* pointerdown, not just pointerenter, and this one is load-bearing.
+       On a phone the label is a single card that cycles through the five
+       pillars, so it is a MOVING TARGET: a thumb aimed at "Climate Education"
+       could land after the beat had advanced and navigate to Life Skills
+       instead — the site doing something the visitor never asked for, which
+       is the worst class of interface bug. Touch does not reliably fire
+       pointerenter before the tap, so the freeze has to hang off the press
+       itself. Verified by tapping and asserting the URL matches the card that
+       was showing. */
+    root.addEventListener("pointerdown", pause);
+    root.addEventListener("touchstart", pause, { passive: true });
+
     /* The ambient loops are CSS animations, which keep running in a background
        tab — unlike rAF, which the browser throttles for us. Fifty animated
        elements burning battery for a tab nobody is looking at is exactly the
@@ -238,6 +250,8 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
       unsubscribe();
       cancelAnimationFrame(frame);
       document.removeEventListener("visibilitychange", onVisibility);
+      root.removeEventListener("pointerdown", pause);
+      root.removeEventListener("touchstart", pause);
       root.removeEventListener("pointerenter", pause);
       root.removeEventListener("pointerleave", resume);
       root.removeEventListener("focusin", pause);
@@ -247,15 +261,13 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
 
   return (
     <div ref={rootRef} className="kv-root relative w-full">
-      {/* Aspect comes from the camera crop itself, so the two can never drift
-          apart. They already did once: the crop was tightened to VIEW.h 444
-          while this box stayed at 486, which letterboxed the SVG inside it —
-          leaving a band of dead cream under the island and knocking every pin
-          slightly out of line, since pins are positioned as a percentage of
-          THIS box. */}
+      {/* .kv-frame owns the aspect ratio and the responsive sizing — see the
+          note in globals.css. Pins are positioned as a percentage of THIS box,
+          so its ratio must match the camera crop exactly or every label drifts
+          off its rooftop. It already happened once. */}
       <div
-        className="relative w-full"
-        style={{ aspectRatio: `${VIEW.w} / ${VIEW.h}` }}
+        className="kv-frame"
+        style={{ "--kv-ratio": `${VIEW.w} / ${VIEW.h}` } as React.CSSProperties}
       >
         {children}
 
@@ -288,13 +300,24 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
               className="kv-pin"
               style={{
                 left: `${((anchor.x - VIEW.x) / VIEW.w) * 100}%`,
-                top: `${((anchor.y - VIEW.y) / VIEW.h) * 100}%`,
+                /* Clamped so the card cannot climb out of the frame. The card
+                   is anchored by its BOTTOM edge, so a zone near the back of
+                   the island put it above the campus entirely — on a laptop it
+                   landed on top of the trust signals. The tail keeps it
+                   pointing at the right platform either way. */
+                top: `${Math.max(26, ((anchor.y - VIEW.y) / VIEW.h) * 100)}%`,
               }}
               onPointerEnter={() => highlight(rootRef.current, zone.slug)}
               onFocus={() => highlight(rootRef.current, zone.slug)}
             >
               <span className="kv-pin-label">{zone.label}</span>
               <span className="kv-pin-blurb">{zone.blurb}</span>
+              {/* Says out loud that the campus is navigable. Without it a
+                  label reads as a caption on a picture, and nobody presses a
+                  caption. */}
+              <span className="kv-pin-go" aria-hidden="true">
+                Explore &rarr;
+              </span>
             </Link>
           );
         })}

@@ -1,6 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { SITE } from "@/lib/constants";
+import { TrustStrip } from "@/components/blocks/proof/trust-strip";
 import { getDictionary } from "@/lib/i18n";
 import { KhelVerse } from "./khelverse/khelverse";
 import { World } from "./khelverse/world";
@@ -50,7 +51,7 @@ export function HeroHome() {
 
   return (
     <section className="kv-hero relative flex flex-col overflow-hidden">
-      <Container className="relative z-10 flex flex-col gap-4 pt-8 sm:gap-5 sm:pt-16 lg:max-w-[62rem] lg:gap-6 lg:pt-20">
+      <Container className="relative z-10 flex flex-col gap-4 pt-8 sm:gap-5 sm:pt-12 lg:max-w-[62rem] lg:gap-6 lg:pt-12">
         <p className="text-label text-ink-subtle font-bold tracking-[0.16em] uppercase">
           {SITE.tagline}
         </p>
@@ -64,24 +65,45 @@ export function HeroHome() {
           <br className="max-sm:hidden" />{" "}
           Every classroom a hub of <RotatingWord words={WORDS} />
         </h1>
+
+        {/* ACTION BEFORE EXPLANATION.
+
+            The paragraph used to sit here and the buttons after it, so the
+            first thing a principal met was three lines of prose and the first
+            thing they could DO was 200px further down. Someone who already
+            knows they want a demo should not have to read a description to
+            find the button, and someone who does not know yet is better
+            served by the campus than by another sentence.
+
+            So: headline, action, reassurance, campus — and the prose after,
+            for the minority who want it before deciding. */}
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <ButtonLink href="/contact?type=school-demo" size="lg">
+            {t.cta.bookDemo}
+          </ButtonLink>
+          <ButtonLink href="/approach" variant="secondary" size="lg">
+            {t.cta.exploreApproach}
+          </ButtonLink>
+        </div>
+
+        <TrustStrip items={[t.trust.nep, t.trust.ncf, t.trust.training]} />
       </Container>
 
-      {/* THE WORLD SITS BETWEEN THE HEADLINE AND THE COPY ON MOBILE.
-          Below it on desktop, via order-last.
+      {/* THE CAMPUS SITS BETWEEN THE ACTION AND THE PROSE, on every screen.
 
-          This is the whole mobile fix. With the world last, a phone visitor
-          met eyebrow + headline + paragraph + two buttons — a screen of pure
-          type — and the island only began around 1300px down. Most visitors
-          are on phones, so for most visitors the entire brand idea was below
-          the fold. Moved here, the world lands in the first screen and the
-          buttons still clear it.
+          Order is: headline, what you can do, why you can trust it, what it
+          is, and only then the paragraph. The illustration is doing the
+          explaining, so it belongs above the sentence that would otherwise
+          have to. It used to be order-last on desktop, which put the prose
+          between the trust signals and the campus and left the zone tooltip
+          overlapping the paragraph.
 
           Wider than the viewport on small screens on purpose: fitting the
           whole island into 390px made every landmark about twelve pixels
           tall, and present-but-unreadable is worse than absent. The camera
           moves in instead, the island runs off both edges, and the section
           clips it so nothing scrolls sideways. */}
-      <div className="relative -mx-[38%] my-1 w-[176%] overflow-hidden sm:-mx-[18%] sm:-mt-8 sm:w-[136%] lg:order-last lg:mx-0 lg:-mt-12 lg:w-full lg:overflow-visible">
+      <div className="relative my-1 w-full overflow-hidden sm:-mt-6 lg:my-0 lg:mt-2 lg:overflow-visible">
         {/* Crop the sky on small screens.
 
             Zoomed in on a phone, the band above the island is mostly empty,
@@ -103,14 +125,6 @@ export function HeroHome() {
           and NCF 2023.
         </p>
 
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <ButtonLink href="/contact?type=school-demo" size="lg">
-            {t.cta.bookDemo}
-          </ButtonLink>
-          <ButtonLink href="/approach" variant="secondary" size="lg">
-            {t.cta.exploreApproach}
-          </ButtonLink>
-        </div>
       </Container>
     </section>
   );

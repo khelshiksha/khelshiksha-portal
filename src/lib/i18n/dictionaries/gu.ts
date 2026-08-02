@@ -149,6 +149,11 @@ export const gu: Dictionary = {
     label: "ભાષા",
     switchTo: "View in English",
   },
+  trust: {
+    nep: "NEP 2020 અનુરૂપ",
+    ncf: "NCF 2023 સુસંગત",
+    training: "શિક્ષક તાલીમ સામેલ",
+  },
   common: {
     loading: "લોડ થઈ રહ્યું છે",
     opensInNewTab: "નવી ટેબમાં ખૂલે છે",
