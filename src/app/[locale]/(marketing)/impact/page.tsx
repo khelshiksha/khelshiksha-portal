@@ -5,7 +5,15 @@ import { Breadcrumbs } from "@/components/blocks/navigation/breadcrumbs";
 import { StatBand } from "@/components/blocks/proof/stat-band";
 import { AlignmentStrip } from "@/components/blocks/content/alignment-strip";
 import { CTABand } from "@/components/blocks/content/cta-band";
-import { getAlignments, getImpactStats, getPartners } from "@/services/cms";
+import { LogoWall } from "@/components/blocks/proof/logo-wall";
+import { PressGallery } from "@/components/blocks/proof/press-gallery";
+import { VideoPanel } from "@/components/blocks/media/video-panel";
+import {
+  getAlignments,
+  getCredentialGroups,
+  getImpactStats,
+  getPressCuttings,
+} from "@/services/cms";
 import { buildMetadata } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -18,10 +26,11 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function ImpactPage() {
-  const [stats, partners, alignments] = await Promise.all([
+  const [stats, alignments, credentials, cuttings] = await Promise.all([
     getImpactStats(),
-    getPartners(),
     getAlignments(),
+    getCredentialGroups(),
+    getPressCuttings(),
   ]);
 
   return (
@@ -44,25 +53,20 @@ export default async function ImpactPage() {
 
       <StatBand stats={stats} eyebrow="" title="By the numbers" accent="" />
 
-      <Section tint="bg-surface" labelledBy="partners-heading">
-        <Container className="flex flex-col gap-8">
-          <SectionTitle
-            id="partners-heading"
-            eyebrow="Working with"
-            title="Institutions we have"
-            accent="delivered alongside."
-          />
-          <ul className="flex flex-wrap gap-x-10 gap-y-4">
-            {partners.map((partner) => (
-              <li key={partner._id} className="text-[0.9375rem] font-bold tracking-[0.06em] text-ink-muted uppercase">
-                {partner.name}
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </Section>
-
       <AlignmentStrip alignments={alignments} />
+
+      <LogoWall groups={credentials} tone="sunken" />
+
+      <PressGallery
+        cuttings={cuttings}
+        heading="In the press"
+        intro="Gujarati coverage of our training sessions and classroom programmes. Shown as scanned, not retyped."
+      />
+
+      <VideoPanel
+        heading="See a session"
+        intro="What a Khel Shiksha classroom actually looks like when the kits come out."
+      />
 
       <CTABand
         title="Bring this to your"

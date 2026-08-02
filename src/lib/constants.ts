@@ -15,6 +15,7 @@ export const SITE = {
     instagram: "https://instagram.com/khelshiksha",
     facebook: "https://facebook.com/khelshiksha",
     x: "https://x.com/khelshiksha",
+    youtube: "https://www.youtube.com/channel/UCwJYHjd7qiL0_z1VeA5pJew",
   },
 } as const;
 
