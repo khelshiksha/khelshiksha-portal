@@ -114,7 +114,7 @@ export default async function PillarPage({
           {kits.length > 0 ? (
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {kits.map((kit) => (
-                <li key={kit._id}>
+                <li key={kit._id} className="h-full">
                   <ProductCard
                     product={kit}
                     pillars={pillars}

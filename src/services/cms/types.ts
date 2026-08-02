@@ -171,6 +171,21 @@ export interface CredentialItem {
   name: string;
   /** File under public/logos. */
   file: string;
+  /**
+   * The file's TRUE pixel dimensions. Required, not optional.
+   *
+   * Every logo used to be declared as 150x56 and rendered `h-12 w-auto
+   * object-contain`, so each one was letterboxed inside a box of the wrong
+   * shape — a tall crest got wide empty margins, a wide wordmark got squeezed
+   * — and next/image logged an aspect-ratio warning for all fifteen. With the
+   * real numbers each mark keeps its own shape and the row reads as a set of
+   * logos rather than a row of boxes.
+   *
+   * Measured with `sips -g pixelWidth -g pixelHeight`, or read off the SVG's
+   * viewBox. If a file is replaced, re-measure it.
+   */
+  w: number;
+  h: number;
   /** What the relationship actually is, where a logo alone would overclaim. */
   relationship?: string;
 }

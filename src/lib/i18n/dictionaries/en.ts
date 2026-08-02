@@ -26,6 +26,10 @@ export const en = {
   },
   cta: {
     bookDemo: "Book a Demo",
+    /* The header CTA below sm. "Book a Demo" plus the logo and the menu
+       button overflows a 320px header; this is the same action, short enough
+       to fit. Not used anywhere the longer label has room. */
+    demo: "Demo",
     enquire: "Enquire about this kit",
     exploreApproach: "Explore the approach",
     seeAllKits: "See all learning kits",

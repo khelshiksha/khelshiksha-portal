@@ -32,9 +32,13 @@ export function FeaturedKits({
           </ButtonLink>
         </div>
 
+        {/* The <li> is the grid item and it stretches by default, but the
+            card inside it did not fill it — so the four kits ended at four
+            different heights. `h-full` on both is what makes the row uniform;
+            removing either one brings the ragged bottoms back. */}
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((product, i) => (
-            <Reveal as="li" key={product._id} delay={staggerDelay(i)}>
+            <Reveal as="li" key={product._id} delay={staggerDelay(i)} className="h-full">
               <ProductCard product={product} pillars={pillars} />
             </Reveal>
           ))}

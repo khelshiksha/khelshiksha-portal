@@ -37,6 +37,10 @@ export function Card({
  * one tap target, one accessible name, and no nested interactive elements to
  * confuse a screen reader. Hover lift is on `transform` only, so it can never
  * cause layout shift.
+ *
+ * The lift is `.lift-on-hover`, NOT Tailwind's `hover:-translate-y-1`. See
+ * globals.css: `hover:` compiles to a bare :hover, which a touch browser
+ * latches on tap — so on a phone every card visibly rose before navigating.
  */
 export function LinkCard({
   href,
@@ -57,9 +61,8 @@ export function LinkCard({
       aria-label={ariaLabel}
       className={cn(
         BASE,
-        "group block transition-[transform,box-shadow] duration-200",
-        "ease-[var(--ease-out-quint)] hover:-translate-y-1",
-        "hover:shadow-[var(--shadow-lg)]",
+        "group lift-on-hover block transition-[transform,box-shadow] duration-200",
+        "ease-[var(--ease-out-quint)]",
         tint && `${PILLAR_TINT_CLASS[tint]} border-transparent`,
         className,
       )}

@@ -5,7 +5,10 @@ import { ButtonLink } from "@/components/ui/button";
  * The closing band. Every page ends in one — no dead ends, per the IA rules.
  * Rendered as an inset rounded panel; the `on-brand` class that scopes the
  * focus-ring override travels with the `brand` tone in Panel, so the ring
- * still survives against the blue ground.
+ * still survives against the coloured ground.
+ *
+ * The ground is DEEP EVERGREEN, not the brand blue — see --band-brand in
+ * theme.css for why, and re-check every ratio below if it changes again.
  */
 export function CTABand({
   title,
@@ -51,7 +54,11 @@ export function CTABand({
           <ButtonLink
             href={secondary.href}
             size="lg"
-            className="border-on-band-brand/45 text-on-band-brand hover:bg-on-band-brand/10 border bg-transparent"
+            /* /60, not /45. The border is the only thing that says this is a
+               control, so WCAG 1.4.11 wants it at 3:1 against the ground. At
+               45% it was 2.98:1 on the old blue and 2.67:1 before that — under
+               the floor in both. 60% white on the evergreen is 4.08:1. */
+            className="border-on-band-brand/60 text-on-band-brand hover:bg-on-band-brand/10 border bg-transparent"
           >
             {secondary.label}
           </ButtonLink>

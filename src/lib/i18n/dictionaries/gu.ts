@@ -44,6 +44,7 @@ export const gu: Dictionary = {
   },
   cta: {
     bookDemo: "ડેમો બુક કરો",
+    demo: "ડેમો",
     enquire: "આ કીટ વિશે પૂછપરછ કરો",
     exploreApproach: "અમારો અભિગમ જુઓ",
     seeAllKits: "બધી લર્નિંગ કીટ જુઓ",

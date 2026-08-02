@@ -1,7 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Container, Section } from "@/components/ui/container";
-import { ROUTES } from "@/lib/constants";
 import type { CredentialGroup } from "@/services/cms/types";
 
 /**
@@ -9,9 +7,14 @@ import type { CredentialGroup } from "@/services/cms/types";
  *
  * The full wall on /impact says who each one is and what the relationship
  * actually was. This is the short version: it exists to make a visitor who
- * has never heard of Khel Shiksha pause for a second, and then hand them the
- * page that explains it. So the whole rail is wrapped in ONE link to /impact
- * rather than pretending each logo is individually meaningful here.
+ * has never heard of Khel Shiksha pause for a second, on their way down a
+ * page that is going to ask them for a demo.
+ *
+ * IT LINKS NOWHERE, on purpose. There was a "See what we built for each of
+ * them" link under the rail; it went because Impact is already in the header,
+ * in the mobile menu and in the footer, and a fourth invitation to the same
+ * page turns a moment of reassurance into another thing to decide about. The
+ * rail is a fact, stated once and then dropped.
  *
  * IT IS ONE LIST, RENDERED TWICE. The second copy is aria-hidden and exists
  * only so the animation can loop seamlessly — translating by exactly -50%
@@ -41,13 +44,22 @@ export function LogoMarquee({
     <ul className="logo-rail-track" aria-hidden={hidden || undefined}>
       {marks.map((item) => (
         <li key={`${hidden ? "b" : "a"}-${item.name}`} className="shrink-0">
+          {/* The mark's OWN dimensions, not a shared 150x56 box. A crest and a
+              wordmark are not the same shape, and forcing both into one ratio
+              letterboxed each of them differently — which is what made the
+              rail look like a row of boxes rather than a row of logos. No
+              object-contain needed once the ratio is right. */}
           <Image
             src={`/logos/${item.file}`}
             alt={hidden ? "" : item.name}
-            width={150}
-            height={56}
+            width={item.w}
+            height={item.h}
             loading="lazy"
-            className="h-12 w-auto object-contain opacity-65 grayscale sm:h-14"
+            /* .logo-mark is shared with the wall on /impact — greyed here,
+               inverted in dark mode. No hover treatment: the rail is moving,
+               so a mark that lights under the pointer would light and then
+               slide away from it. */
+            className="logo-mark h-12 w-auto sm:h-14"
           />
         </li>
       ))}
@@ -72,14 +84,6 @@ export function LogoMarquee({
         </div>
       </div>
 
-      <Container className="mt-8">
-        <Link
-          href={ROUTES.impact}
-          className="text-body-sm text-brand-deep font-semibold underline underline-offset-4"
-        >
-          See what we built for each of them
-        </Link>
-      </Container>
     </Section>
   );
 }
