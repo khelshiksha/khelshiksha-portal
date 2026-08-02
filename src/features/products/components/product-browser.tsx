@@ -204,7 +204,7 @@ export function ProductBrowser({
             {/* Never a bare zero — always show a route forward. */}
             <ul className="mt-10 grid gap-4 text-left sm:grid-cols-3">
               {products.slice(0, 3).map((product) => (
-                <li key={product._id}>
+                <li key={product._id} className="h-full">
                   <ProductCard
                     product={product}
                     pillars={pillars}
@@ -224,7 +224,7 @@ export function ProductBrowser({
                    catalogue of six kits — not a trade worth making. Revisit
                    if the catalogue grows enough that reshuffling becomes
                    disorienting. */
-                className="motion-safe:animate-[fade-in_240ms_var(--ease-out-quint)]"
+                className="h-full motion-safe:animate-[fade-in_240ms_var(--ease-out-quint)]"
               >
                 <ProductCard
                   product={product}

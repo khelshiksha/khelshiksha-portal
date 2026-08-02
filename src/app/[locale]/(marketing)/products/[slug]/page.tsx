@@ -267,7 +267,7 @@ export default async function ProductPage({
             />
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((item) => (
-                <li key={item._id}>
+                <li key={item._id} className="h-full">
                   <ProductCard
                     product={item}
                     pillars={pillars}

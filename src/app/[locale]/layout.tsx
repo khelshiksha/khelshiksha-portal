@@ -95,7 +95,18 @@ export default async function RootLayout({
   const t = getDictionary(locale);
 
   return (
-    <html lang={LOCALE_TAG[locale]} className={`${fontVariables} h-full`}>
+    <html
+      lang={LOCALE_TAG[locale]}
+      className={`${fontVariables} h-full`}
+      /* BOOT_SCRIPT writes data-js and data-theme onto this element before
+         React hydrates, which is the entire point of running it in <head> —
+         so by the time React compares trees, the live <html> has attributes
+         the server never sent and it logs a hydration mismatch. The mismatch
+         is correct and intended; it was filling the dev overlay with a real
+         warning about a non-problem, which is how genuine ones get ignored.
+         Scoped to this element only: it does not suppress anything inside. */
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
       </head>

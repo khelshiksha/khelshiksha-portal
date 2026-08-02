@@ -71,12 +71,15 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           <p className="text-[0.8125rem] text-ink-subtle">
             © {year} {SITE.name}. All rights reserved.
           </p>
-          <ul className="flex items-center gap-5">
+          {/* Three real accounts, not five plausible ones. Facebook and X were
+              placeholder URLs nobody had opened; see the note in constants.ts
+              for why a guessed social link is worse than a missing one. */}
+          <ul className="flex flex-wrap items-center gap-5">
             {(
               [
                 ["Instagram", SITE.social.instagram],
-                ["Facebook", SITE.social.facebook],
-                ["X", SITE.social.x],
+                ["LinkedIn", SITE.social.linkedin],
+                ["YouTube", SITE.social.youtube],
               ] as const
             ).map(([label, href]) => (
               <li key={label}>

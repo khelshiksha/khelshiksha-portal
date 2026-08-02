@@ -70,8 +70,11 @@ export function MediaFrame({
         priority={priority}
         className={cn(
           "object-cover",
+          /* .zoom-on-hover, not group-hover:scale-105 — the Tailwind variant
+             is a bare :hover and a touch browser latches it on tap. See
+             globals.css. */
           zoomOnHover &&
-            "transition-transform duration-[400ms] ease-[var(--ease-out-quint)] group-hover:scale-105",
+            "zoom-on-hover transition-transform duration-[400ms] ease-[var(--ease-out-quint)]",
         )}
       />
     </div>

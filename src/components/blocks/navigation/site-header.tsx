@@ -179,12 +179,18 @@ export function SiteHeader() {
         <div className="flex items-center gap-2">
           <LocaleToggle className="hidden sm:inline-flex" />
           <ThemeToggle className="hidden sm:inline-flex" />
-          <ButtonLink
-            href={href("/contact?type=school-demo")}
-            size="sm"
-            className="hidden sm:inline-flex"
-          >
-            {t.cta.bookDemo}
+          {/* Visible at EVERY width now, phones included.
+              It used to be `hidden sm:inline-flex`, which was survivable only
+              while the hero carried its own pair of buttons. With those gone,
+              hiding this one would have left a phone visitor — most of the
+              traffic — with no way to act that was not behind the hamburger.
+              A primary action must never require a menu.
+              Compact label below sm so the header still fits at 320px: the
+              full "Book a Demo" plus the logo and the menu button overflows a
+              narrow phone, and a wrapped header is worse than a short word. */}
+          <ButtonLink href={href("/contact?type=school-demo")} size="sm">
+            <span className="sm:hidden">{t.cta.demo}</span>
+            <span className="hidden sm:inline">{t.cta.bookDemo}</span>
           </ButtonLink>
           {/* A <details> rather than a button + React state.
               With JavaScript disabled an onClick handler does nothing, which
@@ -268,17 +274,28 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
       className="border-rule bg-paper fixed inset-x-0 top-18 bottom-0 z-40 overflow-y-auto border-t lg:hidden"
     >
       <Container className="flex flex-col gap-8 py-8">
+        {/* IMPACT BELONGS HERE TOO.
+            The desktop bar is audiences + What We Do + Impact; this panel was
+            audiences + What We Do and nothing else, so Impact — the page that
+            holds the logos, the newspaper coverage and the numbers, i.e. the
+            answer to "are these people real?" — was reachable on a laptop and
+            not on a phone. Two navigations claiming to be the same navigation
+            is the kind of gap nobody notices until a principal cannot find the
+            proof. Appended to the same list rather than given its own block so
+            the two menus stay demonstrably identical in content. */}
         <nav aria-label={t.nav.mobileMenu} className="flex flex-col gap-1">
-          {audienceNav(t).map((link) => (
-            <Link
-              key={link.href}
-              href={href(link.href)}
-              onClick={onNavigate}
-              className="text-h3 text-ink hover:bg-sunken rounded-[var(--radius-md)] px-3 py-3 font-bold transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {[...audienceNav(t), { href: ROUTES.impact, label: t.nav.impact }].map(
+            (link) => (
+              <Link
+                key={link.href}
+                href={href(link.href)}
+                onClick={onNavigate}
+                className="text-h3 text-ink hover:bg-sunken rounded-[var(--radius-md)] px-3 py-3 font-bold transition-colors"
+              >
+                {link.label}
+              </Link>
+            ),
+          )}
         </nav>
 
         {whatWeDoMenu(t).map((group) => (

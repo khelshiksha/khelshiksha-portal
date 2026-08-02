@@ -16,9 +16,10 @@ import type { CredentialGroup } from "@/services/cms/types";
  * developed for the 1st World Yogasana Sports Championship" is a much better
  * story than an unexplained logo, and it is one that survives being checked.
  *
- * Marks are greyed back at rest and come to full colour on hover or focus.
- * Fifteen logos in fifteen brand palettes fight each other and the page; muted
- * they read as one row of credentials, which is what they are.
+ * Marks are greyed back at rest and come to full colour on hover — and are
+ * INVERTED rather than merely greyed in dark mode, because these files are
+ * dark ink drawn for white paper. See .logo-mark in globals.css; the rule is
+ * shared with the home page rail so the two can never drift apart.
  */
 export function LogoWall({
   groups,
@@ -42,15 +43,19 @@ export function LogoWall({
             <ul className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
               {group.items.map((item) => (
                 <li key={item.name} className="flex flex-col items-center gap-2 text-center">
+                  {/* The row is a fixed 4rem tall and each mark keeps its own
+                      ratio inside it — declared per file rather than as one
+                      shared 160x64, which letterboxed every logo into a box
+                      of the wrong shape. */}
                   <div className="flex h-16 items-center justify-center">
                     <Image
                       src={`/logos/${item.file}`}
                       alt={item.name}
-                      width={160}
-                      height={64}
+                      width={item.w}
+                      height={item.h}
                       /* Below the fold on every page that uses this. */
                       loading="lazy"
-                      className="max-h-16 w-auto object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+                      className="logo-mark logo-mark-interactive max-h-16 w-auto"
                     />
                   </div>
                   {item.relationship !== undefined && (

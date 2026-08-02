@@ -31,16 +31,17 @@ export const credentialGroups: CredentialGroup[] = [
     heading: "Built against national frameworks",
     /* Says what the logos mean, so the row cannot be read as endorsement. */
     note: "Our kits and teacher training are designed to these published frameworks and missions.",
+    /* w/h are the files' real pixel dimensions — see CredentialItem. */
     items: [
-      { name: "NCF 2023", file: "ncf-2023.png" },
+      { name: "NCF 2023", file: "ncf-2023.png", w: 313, h: 200 },
       /* Supplied named .svg but actually a WebP payload, so the browser tried
          to parse binary as XML and rendered a broken image. Converted to PNG
          rather than just renamed, so the file and its extension agree. */
-      { name: "Ministry of Education, Government of India", file: "ministry-of-education.png" },
-      { name: "PM SHRI", file: "pm-shri.png" },
-      { name: "Fit India Movement", file: "fit-india.png" },
-      { name: "Eat Right India", file: "eat-right-india.png" },
-      { name: "Mission LiFE", file: "mission-life.png" },
+      { name: "Ministry of Education, Government of India", file: "ministry-of-education.png", w: 430, h: 200 },
+      { name: "PM SHRI", file: "pm-shri.png", w: 266, h: 200 },
+      { name: "Fit India Movement", file: "fit-india.png", w: 213, h: 200 },
+      { name: "Eat Right India", file: "eat-right-india.png", w: 545, h: 200 },
+      { name: "Mission LiFE", file: "mission-life.png", w: 268, h: 200 },
     ],
   },
   {
@@ -49,15 +50,16 @@ export const credentialGroups: CredentialGroup[] = [
     heading: "Institutions we have delivered for",
     note: "Kits, modules and training programmes built with or for these organisations.",
     items: [
-      { name: "UNICEF", file: "unicef.svg", relationship: "Learning modules developed for UNICEF" },
-      { name: "GUJCOST", file: "gujcost.png", relationship: "Gujarat Council on Science & Technology" },
-      { name: "GEDA", file: "geda.png", relationship: "Gujarat Energy Development Agency" },
-      { name: "Children's University", file: "childrens-university.png" },
-      { name: "World Yogasana", file: "world-yogasana.png", relationship: "Veer's Yogasana Game Kit, 1st World Yogasana Sports Championship" },
-      { name: "Yogasana Bharat", file: "yogasana-bharat.png" },
-      { name: "BAPS", file: "baps.svg" },
-      { name: "Ahmedabad Municipal Corporation", file: "ahmedabad-municipal-corporation.png" },
-      { name: "GoBananas", file: "gobananas.png" },
+      /* SVGs: dimensions read off the viewBox, rounded. */
+      { name: "UNICEF", file: "unicef.svg", w: 170, h: 47, relationship: "Learning modules developed for UNICEF" },
+      { name: "GUJCOST", file: "gujcost.png", w: 200, h: 200, relationship: "Gujarat Council on Science & Technology" },
+      { name: "GEDA", file: "geda.png", w: 200, h: 200, relationship: "Gujarat Energy Development Agency" },
+      { name: "Children's University", file: "childrens-university.png", w: 200, h: 200 },
+      { name: "World Yogasana", file: "world-yogasana.png", w: 197, h: 200, relationship: "Veer's Yogasana Game Kit, 1st World Yogasana Sports Championship" },
+      { name: "Yogasana Bharat", file: "yogasana-bharat.png", w: 200, h: 200 },
+      { name: "BAPS", file: "baps.svg", w: 279, h: 357 },
+      { name: "Ahmedabad Municipal Corporation", file: "ahmedabad-municipal-corporation.png", w: 300, h: 200 },
+      { name: "GoBananas", file: "gobananas.png", w: 544, h: 200 },
     ],
   },
 ];

@@ -82,7 +82,7 @@ export function linkifyPaths(
     const index = match.index ?? 0;
     const href = match[1];
     const known = labels[href];
-    let before = text.slice(lastIndex, index);
+    const before = text.slice(lastIndex, index);
 
     /* If the sentence already ends with the page's name, link THAT and drop
        the parenthetical — "read more about Aryabhata (/products/aryabhata)"

@@ -41,7 +41,17 @@
      theme, so these do not participate in theming. */
   --band-dark: #161a2b; /* paper on it 16.69:1 · accent 10.59:1 */
   --on-band-dark: #fdfbf6;
-  --band-brand: #1b54bc; /* white on it 6.91:1 · accent 4.24:1 */
+
+  /* The closing band. DEEP EVERGREEN, not the brand blue it used to be.
+     Blue already carries the header, every link, every primary button and the
+     stat band, so the page's last word arrived in the same colour as
+     everything before it and read as one more section rather than as a
+     closing. Green is the one hue the site already owns without spending —
+     it is the ground the hero island is made of — so the page opens on green
+     fields and closes on green, and the yellow accent, which was fighting
+     blue at 4.24:1, now sits on its natural complement.
+     Measured, not chosen by eye: white on it 8.20:1, accent 4.99:1. */
+  --band-brand: #0f5a4c;
   --on-band-brand: #ffffff;
 
   /* Pillar tints — backgrounds only. Ink on each clears 14.6:1.
@@ -121,7 +131,16 @@
   --w-coral: #ef8a6a;
   --w-violet: #b3a3e2;
   --w-sky-blue: #7fb2ea;
-  --w-cloud: #ffffff;
+  /* NOT WHITE, which is what it was and why the first pass of clouds could
+     not be seen at all. The clouds sit low in the hero, where the sky
+     gradient has already reached --paper (#fdfbf6) — so a white cloud on
+     near-white paper is a 1% contrast shape. A cloud reads by being COOLER
+     than the ground it floats over, not by being lighter than it. */
+  --w-cloud: #e4edf9;
+  /* Birds are the only thing in the world drawn as a line rather than a face,
+     so they need a value dark enough to read as a silhouette against the pale
+     sky without becoming a hard black mark on a soft illustration. */
+  --w-bird: #7e8ca3;
 
   --shadow-sm: 0 1px 2px rgb(46 38 20 / 0.05), 0 1px 3px rgb(46 38 20 / 0.04);
   --shadow-md: 0 4px 12px rgb(46 38 20 / 0.06), 0 2px 4px rgb(46 38 20 / 0.04);
@@ -215,6 +234,9 @@
   --w-violet: #6e63a0;
   --w-sky-blue: #4a72a8;
   --w-cloud: #3a3550;
+  /* Inverted from light: at dusk a bird reads as a pale mark on a dark sky,
+     not a dark one. */
+  --w-bird: #6f7ba0;
 
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow-md: 0 4px 14px rgb(0 0 0 / 0.45);

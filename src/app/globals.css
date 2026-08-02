@@ -146,6 +146,61 @@
     }
   }
 
+  /* --- Hover affordances, for pointers that REALLY hover -------------------
+     A touch browser latches :hover on tap and keeps it until you touch
+     something else. So on a phone, pressing a kit card ran its hover state —
+     the card rose 4px and its photo scaled to 105% — and THEN navigated. The
+     reported symptom was exact: "when I click a learning kit the transition
+     feels like something is going up". It was. The card was.
+
+     Card lift and media zoom therefore live behind a hover-capable query
+     rather than on Tailwind's `hover:` variant, which compiles to a bare
+     :hover and fires on touch. Same reasoning as .kv-pin further down, and
+     the same bug in a different costume.
+
+     A tap should feel like a door opening, not like the page shrugging. What
+     is left on touch is the browser's own tap highlight and the route change,
+     which is what a link is supposed to feel like.
+
+     The rules themselves are in the UTILITIES layer, at the foot of this
+     file. The card also carries Tailwind's `shadow-[var(--shadow-sm)]`, and a
+     utility beats a component rule by cascade LAYER regardless of specificity
+     — so declared here the lift would have moved the card without ever
+     changing its shadow. */
+
+  /* --- Institutional marks ------------------------------------------------
+     Fifteen logos in fifteen brand palettes fight each other and the page;
+     greyed back they read as one row of credentials, which is what they are.
+
+     THE DARK-MODE RULE IS NOT COSMETIC. These files are dark ink drawn for
+     white paper. On the dusk ground they are close to invisible, and six of
+     them shipped as flat PNGs with an opaque white background, so they were
+     rendering as white rectangles with a logo somewhere inside. The
+     backgrounds have since been punched out (.audit/dealpha-logos.mjs), which
+     fixed the light theme and made the dark one worse — a mark with no
+     backing and no contrast is just gone.
+
+     Inverting solves both at once: the ink goes light, and any white left in
+     a file goes black, which the dark ground swallows. Greyscale stays on top
+     so an inverted logo cannot arrive in a hallucinated complementary colour.
+
+     Colour-on-hover is light-theme only. In dark mode `filter: none` would
+     both un-invert and un-grey, i.e. put the dark original back on the dark
+     ground — the exact failure this rule exists to prevent. There, hover just
+     brings the mark to full strength. */
+  .logo-mark {
+    filter: grayscale(1);
+    opacity: 0.7;
+    transition:
+      filter 300ms var(--ease-out-quint),
+      opacity 300ms var(--ease-out-quint);
+  }
+
+  :root[data-theme="dark"] .logo-mark {
+    filter: grayscale(1) invert(1);
+    opacity: 0.78;
+  }
+
   /* The signature typographic move, straight from the brochure:
      one italic Fraunces phrase per section, never more. */
   .accent-phrase {
@@ -245,6 +300,62 @@
     }
     to {
       transform: rotate(1.1deg);
+    }
+  }
+
+  /* --- Sky ---------------------------------------------------------------
+     Clouds drift a short distance and come back, rather than crossing the
+     frame. A full traverse means a cloud is absent from most of the sky most
+     of the time, and on a phone — where only the middle 620 units are visible
+     — it would mean a sky that is often empty. A slow lean, alternating, is
+     both cheaper and always composed.
+
+     Amplitude is per-cloud (--kv-drift, written inline) so the small distant
+     ones move less than the near ones. That parallax is the entire reason the
+     sky reads as having depth. */
+  .kv-cloud {
+    animation: kv-cloud-drift 34s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  @keyframes kv-cloud-drift {
+    to {
+      transform: translateX(var(--kv-drift, 26px));
+    }
+  }
+
+  /* The flock crosses once, fading in and out at the ends. A `linear infinite`
+     translate snaps back to its start, and a bird that teleports is the most
+     obvious tell there is that a scene is a loop. */
+  .kv-flock {
+    animation: kv-fly 42s linear infinite;
+  }
+  @keyframes kv-fly {
+    0% {
+      transform: translate(0, 0);
+      opacity: 0;
+    }
+    9% {
+      opacity: 0.85;
+    }
+    86% {
+      opacity: 0.85;
+    }
+    100% {
+      transform: translate(700px, -34px);
+      opacity: 0;
+    }
+  }
+
+  /* transform-box: fill-box so the wing pivots about the bird rather than
+     about the SVG's origin, which would swing it across the whole sky. */
+  .kv-wing {
+    animation: kv-flap 0.8s ease-in-out infinite alternate;
+    transform-box: fill-box;
+    transform-origin: center bottom;
+  }
+  @keyframes kv-flap {
+    to {
+      transform: scaleY(0.42);
     }
   }
 
@@ -467,13 +578,21 @@
      centred, always fully visible, always tappable. It loses the tail,
      because it is no longer pointing at anything.
 
+     IT SITS AT THE TOP OF THE FRAME, NOT THE BOTTOM. Measured on an iPhone 13:
+     the campus occupies 441–720px and the viewport ends at 664, so a caption
+     pinned to the bottom edge landed BELOW THE FOLD. The card is the only
+     thing that names the five pillars on a phone — having it off-screen on
+     first paint defeats the entire point of the campus cycling through them.
+     The top of the frame is the sky band, which is empty by construction, so
+     the card covers nothing and is visible the moment the page loads.
+
      !important because the component writes left/top inline, computed from
      the zone's position in the campus. That is exactly right on a desktop and
      exactly wrong here, and an inline style cannot be beaten any other way. */
   @media (max-width: 1023px) {
     .kv-pin {
-      top: auto !important;
-      bottom: 3%;
+      top: 1% !important;
+      bottom: auto;
       left: 50% !important;
       translate: -50% 0;
       width: max-content;
@@ -568,8 +687,18 @@
   @media (prefers-reduced-motion: reduce) {
     .kv-sway,
     .kv-spin,
-    .kv-plume {
+    .kv-plume,
+    .kv-cloud,
+    .kv-flock,
+    .kv-wing {
       animation: none;
+    }
+
+    /* The flock's opacity is written by its keyframes, so switching the
+       animation off would leave it at the 0% frame — invisible. Put it back
+       where the animation would have had it mid-run. */
+    .kv-flock {
+      opacity: 0.85;
     }
   }
 
@@ -688,4 +817,33 @@
 
 @utility tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/* --- Hover affordances -------------------------------------------------
+   The rules the note in @layer components points at. They live in the
+   utilities layer so they can beat the `shadow-*` utility sitting on the
+   same element, and behind a hover-capable query so a tap on a phone does
+   not run them. */
+@layer utilities {
+  @media (hover: hover) and (pointer: fine) {
+    .lift-on-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .group:hover .zoom-on-hover {
+      transform: scale(1.05);
+    }
+
+    /* Light theme only — see the note on .logo-mark. */
+    .logo-mark-interactive:hover {
+      filter: none;
+      opacity: 1;
+    }
+
+    :root[data-theme="dark"] .logo-mark-interactive:hover {
+      filter: grayscale(1) invert(1);
+      opacity: 1;
+    }
+  }
 }

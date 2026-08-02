@@ -1,5 +1,4 @@
 import { Container } from "@/components/ui/container";
-import { ButtonLink } from "@/components/ui/button";
 import { SITE } from "@/lib/constants";
 import { TrustStrip } from "@/components/blocks/proof/trust-strip";
 import { getDictionary } from "@/lib/i18n";
@@ -66,25 +65,27 @@ export function HeroHome() {
           Every classroom a hub of <RotatingWord words={WORDS} />
         </h1>
 
-        {/* ACTION BEFORE EXPLANATION.
+        {/* NO BUTTONS HERE, and that is a decision rather than an omission.
 
-            The paragraph used to sit here and the buttons after it, so the
-            first thing a principal met was three lines of prose and the first
-            thing they could DO was 200px further down. Someone who already
-            knows they want a demo should not have to read a description to
-            find the button, and someone who does not know yet is better
-            served by the campus than by another sentence.
+            "Book a Demo" and "Explore the approach" both used to sit in this
+            spot. They also sit in the header on every screen, in the mobile
+            menu, in the closing band of this page and of every other page,
+            and the campus below is itself five links. The pair here was the
+            fifth and sixth copy of the same two words above the fold, and a
+            page that asks before it has said anything is a page that reads
+            like a sales call.
 
-            So: headline, action, reassurance, campus — and the prose after,
-            for the minority who want it before deciding. */}
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <ButtonLink href="/contact?type=school-demo" size="lg">
-            {t.cta.bookDemo}
-          </ButtonLink>
-          <ButtonLink href="/approach" variant="secondary" size="lg">
-            {t.cta.exploreApproach}
-          </ButtonLink>
-        </div>
+            What replaces them is a sentence. The hero's job at this point is
+            to make someone want the next screen, not to close them — the
+            header CTA is two inches away the whole time, and it is now
+            visible on phones too, which it was not while this button existed.
+
+            One line, no italic: the headline already spends this section's
+            single Fraunces phrase, and two italics in one block is where a
+            page starts shouting. */}
+        <p className="text-h3 text-ink-muted max-w-[34ch] font-normal">
+          Children don&rsquo;t sit through the lesson. They play it.
+        </p>
 
         <TrustStrip items={[t.trust.nep, t.trust.ncf, t.trust.training]} />
       </Container>

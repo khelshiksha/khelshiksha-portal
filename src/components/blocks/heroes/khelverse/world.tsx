@@ -1,5 +1,5 @@
 import { iso, points, randRange, VIEW_BOX, type Point } from "./iso";
-import { Box, Tile, Tree } from "./solids";
+import { Box, Tree } from "./solids";
 import {
   ClimateGrove,
   Schoolhouse,
@@ -7,19 +7,16 @@ import {
   SportsGround,
   StageYard,
 } from "./landmarks";
+import { Sky } from "./sky";
 import { PLATFORM, PLATFORM_H, PLAZA, PLAZA_CENTRE, ZONES, zoneCentre } from "./zones";
 
 /**
  * The static geometry of KhelVerse.
  *
- * NO SKY. There were drifting clouds, a hot-air balloon and occasional birds
- * here. They went for two reasons, and the first is a bug: on desktop the
- * world is pulled up behind the copy, so a cloud would drift through the
- * middle of the paragraph and read as a rendering artifact next to "NCF
- * 2023". The second is the brief — "simple yet attractive". The island still
- * breathes through swaying trees, a turning windmill and the die; a sky full
- * of extra moving parts was noise competing with the one thing worth
- * watching.
+ * THE SKY IS BACK, thinner than before — four barely-moving clouds and one
+ * flock. It was removed when the world sat behind the hero copy and clouds
+ * drifted through the paragraph; that layout is gone. See sky.tsx for the
+ * full history and for the rule that keeps it from happening again.
  *
  * A SERVER component on purpose. This is the largest markup on the site, and
  * none of it is interactive — shipping it as a client component would put
@@ -271,6 +268,10 @@ export function World() {
       aria-hidden="true"
       focusable="false"
     >
+      {/* First, so everything else paints over it. Nothing in the sky is ever
+          meant to pass in front of the island. */}
+      <Sky />
+
       <Island />
 
       {FILLER.map((spot, i) => {

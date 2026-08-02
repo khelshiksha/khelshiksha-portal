@@ -11,10 +11,17 @@ export const SITE = {
   locale: "en_IN",
   phones: ["+91 97798 73333", "+91 91731 48292"],
   email: "adminkhelshiksha@gmail.com",
+  /* EVERY URL HERE IS ONE THE COMPANY CONFIRMED. The Instagram handle used to
+     be `khelshiksha`, which was a guess and was wrong — the real one is
+     `khelshikshagames`. Facebook and X were guesses too and have been removed
+     rather than corrected, because nobody has confirmed those accounts exist.
+     A social icon that 404s costs more trust than an absent one, and these
+     are rendered in the footer of every page and emitted as schema.org
+     `sameAs`, where a wrong URL tells Google the wrong entity is us.
+     Do not add a network here until someone has opened the link. */
   social: {
-    instagram: "https://instagram.com/khelshiksha",
-    facebook: "https://facebook.com/khelshiksha",
-    x: "https://x.com/khelshiksha",
+    instagram: "https://www.instagram.com/khelshikshagames",
+    linkedin: "https://in.linkedin.com/company/khelshiksha",
     youtube: "https://www.youtube.com/channel/UCwJYHjd7qiL0_z1VeA5pJew",
   },
 } as const;
