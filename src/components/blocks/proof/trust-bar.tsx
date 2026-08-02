@@ -1,5 +1,4 @@
 import { Container } from "@/components/ui/container";
-import type { Partner } from "@/services/cms/types";
 
 type Alignment = { framework: string };
 
@@ -48,16 +47,10 @@ type Alignment = { framework: string };
  * unlicensed mark is not.
  */
 export function TrustBar({
-  partners,
   alignments,
 }: {
-  partners: Partner[];
   alignments: Alignment[];
 }) {
-  /* Named in the headline sentence already; repeating it in the row below is
-     the duplication this rewrite exists to remove. */
-  const institutions = partners.filter((p) => p.name !== "PM SHRI");
-
   return (
     <section aria-labelledby="trust-heading" className="pt-4 pb-2 sm:pt-6">
       <Container>
@@ -67,22 +60,11 @@ export function TrustBar({
             PM SHRI schools across Gujarat
           </h2>
 
-          {/* No separator characters between names.
-              A "·" rendered as a sibling of the name detaches the moment the
-              name itself wraps — "Education Department, Government of
-              Gujarat" takes two lines on a phone and left its dot orphaned
-              against the panel edge. Spacing separates these perfectly well,
-              and one less mark on screen is not a loss. */}
-          <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            {institutions.map((partner) => (
-              <li
-                key={partner._id}
-                className="text-[0.8125rem] font-semibold text-ink-muted sm:text-body-sm"
-              >
-                {partner.name}
-              </li>
-            ))}
-          </ul>
+          {/* The institution wordmarks that used to sit here are gone: the
+              logo rail immediately below now shows the same organisations as
+              actual marks, and naming them twice in adjacent blocks read as
+              padding rather than as proof. The headline claim and the
+              framework line stay, because neither is repeated anywhere. */}
 
           <p className="measure text-[0.75rem] text-ink-subtle sm:text-[0.8125rem]">
             Built against{" "}

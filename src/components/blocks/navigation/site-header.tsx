@@ -96,7 +96,18 @@ export function SiteHeader() {
       className={cn(
         "sticky top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-200",
         scrolled
-          ? "bg-[var(--glass)] shadow-[var(--shadow-sm)] backdrop-blur-xl backdrop-saturate-150"
+          ? /* Opaque on phones, frosted only from lg up.
+               The blur used to apply at every width, and it was the ONLY
+               thing that changed when the page scrolled — which matches the
+               reported bug exactly: the menu opened at the top of the page
+               and stopped opening once scrolled. iOS Safari has long-standing
+               compositing bugs where a backdrop-filter layer swallows touches
+               aimed at its own descendants, and the menu button is a
+               descendant of this header.
+               --glass is 0.92 alpha, so an opaque background is visually
+               near-identical, and dropping a full-width blur is a real
+               rendering saving on a mid-range phone. */
+            "bg-paper shadow-[var(--shadow-sm)] lg:bg-[var(--glass)] lg:backdrop-blur-xl lg:backdrop-saturate-150"
           : "bg-paper",
       )}
     >
@@ -249,7 +260,12 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
   return (
     <div
       id="mobile-nav"
-      className="border-rule bg-paper fixed inset-x-0 top-18 bottom-0 z-50 overflow-y-auto border-t lg:hidden"
+      /* z-40, below the header's z-50. Both used to be z-50, and the panel
+         comes later in the DOM, so it painted OVER the header — meaning any
+         mispositioning (iOS resizes the viewport as its toolbars collapse)
+         would put a full-screen opaque panel on top of the button that closes
+         it. The header must always win. */
+      className="border-rule bg-paper fixed inset-x-0 top-18 bottom-0 z-40 overflow-y-auto border-t lg:hidden"
     >
       <Container className="flex flex-col gap-8 py-8">
         <nav aria-label={t.nav.mobileMenu} className="flex flex-col gap-1">

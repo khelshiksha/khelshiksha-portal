@@ -1,5 +1,6 @@
 import { HeroHome } from "@/components/blocks/heroes/hero-home";
 import { TrustBar } from "@/components/blocks/proof/trust-bar";
+import { LogoMarquee } from "@/components/blocks/proof/logo-marquee";
 import { AudienceSplit } from "@/components/blocks/content/audience-split";
 import { BenefitList } from "@/components/blocks/content/benefit-list";
 import { PillarGrid } from "@/components/blocks/content/pillar-grid";
@@ -16,7 +17,7 @@ import {
   getBenefits,
   getFeaturedProducts,
   getImpactStats,
-  getPartners,
+  getCredentialGroups,
   getPillars,
   getAlignments,
 } from "@/services/cms";
@@ -46,21 +47,29 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [audiences, benefits, pillars, featured, stats, partners, alignments] =
+  const [audiences, benefits, pillars, featured, stats, alignments, credentials] =
     await Promise.all([
       getAudienceHubs(),
       getBenefits(),
       getPillars(),
       getFeaturedProducts(4),
       getImpactStats(),
-      getPartners(),
       getAlignments(),
+      getCredentialGroups(),
     ]);
 
   return (
     <>
       <HeroHome />
-      <TrustBar partners={partners} alignments={alignments} />
+      <TrustBar alignments={alignments} />
+
+      {/* Directly after the trust bar, while "is this real?" is still the
+          question. The rail is the short answer; /impact is the long one. */}
+      <LogoMarquee
+        groups={credentials}
+        eyebrow="Where our work has gone"
+        title="Built with, and for, these institutions."
+      />
       <AudienceSplit audiences={audiences} />
       <BenefitList benefits={benefits} />
       <PillarGrid pillars={pillars} />
