@@ -2,23 +2,25 @@ import { expect, test } from "@playwright/test";
 import { settlePage } from "./support/settle";
 
 /**
- * Regressions for defects reported from real devices.
+ * Regressions for defects observed on real devices.
  *
- * These are not speculative. Every test here corresponds to something a
- * person actually hit and described, and each one asserts the OBSERVABLE
- * behaviour rather than the CSS or markup that currently produces it — so a
- * future refactor that reintroduces the symptom by a different route still
- * fails here. Asserting `class="lift-on-hover"` would prove only that the
- * class is still spelled the same way.
+ * None of these are speculative — each one corresponds to a symptom that was
+ * actually reproduced on hardware, and several were invisible in an emulator.
  *
- * They live in tests/e2e rather than in the local .audit harness because
- * .audit is gitignored: a regression test nobody else can run is a note to
- * self, not a guarantee.
+ * THE RULE FOR THIS FILE: assert the OBSERVABLE BEHAVIOUR, never the CSS or
+ * markup that currently produces it. Checking for `class="lift-on-hover"`
+ * would prove only that a class name is still spelled the same way, and would
+ * pass happily while the bug returned by a different route. Measuring
+ * geometry, computed style and rendered position is slower to write and is
+ * the only version worth having.
+ *
+ * These live in tests/e2e rather than in the local .audit harness because
+ * .audit is gitignored — a regression test nobody else can run is a note to
+ * self rather than a guarantee.
  */
 
 test.describe("mobile navigation", () => {
-  /* "in mobile view, that 3 line button for sections is different than laptop
-     view, which is missing impact section."
+  /* SYMPTOM: the mobile menu offered fewer destinations than the desktop bar.
 
      The panel listed the audience hubs and the What We Do groups and stopped,
      so /impact — the page carrying the institutional logos, the press
@@ -63,8 +65,8 @@ test.describe("mobile navigation", () => {
     expect(missing, `missing from the mobile menu: ${missing.join(", ")}`).toEqual([]);
   });
 
-  /* "when we scroll down in mobile then we are not able to open menu bar
-     (those 3 lines icon) which we are able to open from top."
+  /* SYMPTOM: on iOS the menu button worked at the top of the page and stopped
+     responding once scrolled.
 
      The only thing that changed on scroll was the header gaining a
      backdrop-filter, which iOS Safari has long-standing compositing bugs
@@ -106,8 +108,8 @@ test.describe("mobile navigation", () => {
 });
 
 test.describe("kit cards", () => {
-  /* "these learning kit section in laptop view is not uniform! it should be in
-     similar shape for all 4 kits!"
+  /* SYMPTOM: the four featured kit cards were visibly different heights on a
+     laptop.
 
      Two independent causes: the card was not h-full inside its stretched grid
      cell, and a second chip wrapped to a new row on exactly one of the four
@@ -144,13 +146,14 @@ test.describe("kit cards", () => {
     }
   });
 
-  /* "in mobile view when i click on any of learning kit tab then the
-     transition feels like something is going up."
+  /* SYMPTOM: tapping a kit card on a phone felt like the page lurching upward
+     before it navigated.
 
-     It was going up: a touch browser latches :hover on tap, so the card ran
-     its 4px lift and its 105% image zoom and only then navigated. Both now
-     sit behind (hover: hover) and (pointer: fine). The mobile project has
-     hasTouch, so this exercises the real condition rather than a class name. */
+     It was: the card was. A touch browser latches :hover on tap, so the card
+     ran its 4px lift and its 105% image zoom and only then followed the link.
+     Both now sit behind (hover: hover) and (pointer: fine). Playwright's
+     mobile project sets hasTouch, so this exercises the real condition rather
+     than the presence of a class. */
   test("a card does not lift or zoom on a touch device", async ({ page }, info) => {
     test.skip(info.project.name !== "mobile", "touch-only behaviour");
     await page.goto("/");
@@ -171,7 +174,7 @@ test.describe("kit cards", () => {
 });
 
 test.describe("hero", () => {
-  /* "still in mobile view hero section fitting seems off."
+  /* SYMPTOM: the hero looked mis-cropped on a phone.
 
      The zone caption is the only thing that names the five pillars on a
      phone. Pinned to the bottom edge of the campus it landed below the fold

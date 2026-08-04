@@ -41,10 +41,12 @@ type Alignment = { framework: string };
  * would imply an endorsement by Fit India and Mission LiFE that nobody has
  * given, so the second tier is phrased "Built against" and reads as prose.
  *
- * Both render as type, not logo images: the marks were read by inference from
- * a print scan and we hold neither vector files nor written permission
- * (blocker #2). Stating the association in type is honest; reproducing an
- * unlicensed mark is not.
+ * Both render as TYPE, not as logo images, and deliberately so. Setting an
+ * organisation's name in type states a factual association; reproducing its
+ * logo is a use of its trade mark and needs a licensed asset plus permission
+ * for that specific use. The marks that clear that bar live in
+ * content/credentials.ts and are shown by the logo wall on /impact; this bar
+ * deliberately does not duplicate them.
  */
 export function TrustBar({
   alignments,

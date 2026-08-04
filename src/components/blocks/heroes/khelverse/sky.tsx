@@ -16,7 +16,7 @@ import { randRange } from "./iso";
  *
  *   2. THE NOISE. A balloon, birds, clouds, swaying trees, a turning windmill
  *      and a hopping die is six ambient loops competing for one pair of eyes,
- *      and the brief was "simple yet attractive". So this is deliberately
+ *      and the scene is meant to read as calm. So this is deliberately
  *      thin: four clouds that barely move, and one flock that crosses the sky
  *      about twice a minute. It should register as weather, not as animation.
  *

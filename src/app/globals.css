@@ -150,8 +150,8 @@
      A touch browser latches :hover on tap and keeps it until you touch
      something else. So on a phone, pressing a kit card ran its hover state —
      the card rose 4px and its photo scaled to 105% — and THEN navigated. The
-     reported symptom was exact: "when I click a learning kit the transition
-     feels like something is going up". It was. The card was.
+     symptom is that tapping a card feels like the page moving upward before
+     it navigates. It is: the card is.
 
      Card lift and media zoom therefore live behind a hover-capable query
      rather than on Tailwind's `hover:` variant, which compiles to a bare
@@ -169,12 +169,12 @@
      changing its shadow. */
 
   /* --- Institutional marks ------------------------------------------------
-     FULL COLOUR, at the owner's direction. These were greyed back on the
-     argument that fifteen brand palettes fight each other — true in the
-     abstract, and outweighed here: the Ministry of Education emblem, the
-     UNICEF blue and the Eat Right India mark are recognised BY their colour
-     by exactly the audience this row is aimed at, and a greyed government
-     crest reads as a screenshot of a document rather than as a credential.
+     FULL COLOUR. The obvious argument against is that fifteen brand
+     palettes fight each other and the page — true in the abstract, and
+     outweighed here. The Ministry of Education emblem, the UNICEF blue and
+     the Eat Right India mark are recognised BY their colour by exactly the
+     audience this row exists for, and a desaturated government crest reads
+     as a screenshot of a document rather than as a credential.
 
      Dark mode is the whole reason this rule exists rather than the class
      simply being dropped. These files are dark ink drawn for white paper, and

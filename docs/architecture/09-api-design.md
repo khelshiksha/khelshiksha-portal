@@ -242,7 +242,7 @@ export async function POST(req: Request) {
 1. `stream.finalMessage()` — do not hand-roll a promise around `.on()` events. The SDK already
    handles completion, error and abort states.
 2. `cancel: () => llm.abort()` — without this, a user closing the tab leaves generation running
-   and billing.
+   against the provider, consuming quota nobody will ever read.
 3. **No `temperature`, `top_p`, or `top_k` anywhere.** Those parameters are rejected with a 400
    on Opus 5. Behaviour is steered by the system prompt and `effort`.
 

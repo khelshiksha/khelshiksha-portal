@@ -35,7 +35,7 @@ import { PLATFORM, PLATFORM_H, PLAZA, PLAZA_CENTRE, ZONES, zoneCentre } from "./
  */
 
 /* The island's outline in grid units. Deliberately irregular — a circle or a
-   rectangle would read as a diagram, and the brief asked for a place. */
+   rectangle would read as a diagram rather than as a place. */
 const ISLAND: readonly Point[] = [
   { x: 3.2, y: -1.0 },
   { x: 7.2, y: -0.4 },

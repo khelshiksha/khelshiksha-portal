@@ -5,15 +5,24 @@ import { FEATURES } from "@/lib/features";
 import type { LeadInput } from "@/features/leads/schema";
 
 /**
- * Lead notification.
+ * Lead notification — tells the team that an enquiry has arrived.
  *
- * Fire-and-forget by design: the enquiry is already safely stored by the time
- * this runs, so an email provider outage must never fail a submission the
- * visitor has completed. Every failure path here logs and returns; none of
- * them throw.
+ * FIRE-AND-FORGET BY DESIGN, and this is the most important thing to preserve
+ * about the file. The enquiry is already written to the store by the time
+ * this runs, so nothing here may throw: an email provider outage must never
+ * turn a submission the visitor has already completed into an error they see.
+ * Every failure path below logs and returns.
  *
- * Activates on RESEND_API_KEY. Until then it logs what it would have sent,
- * so the wiring is visible in development rather than silently absent.
+ * The consequence to understand is that a FAILED send is indistinguishable
+ * from a successful one anywhere outside these logs. That is the correct
+ * trade — losing a notification is recoverable, telling a school their
+ * enquiry failed when it did not is not — but it means the logs are the only
+ * place the truth appears, and it means the delivery path must be verified by
+ * sending a real enquiry rather than by reading code.
+ *
+ * Requires RESEND_API_KEY and LEAD_NOTIFY_TO. With either absent it logs what
+ * it would have sent, so the wiring is visible in development instead of
+ * silently doing nothing.
  */
 
 const LEAD_LABEL: Record<LeadInput["type"], string> = {
@@ -28,14 +37,15 @@ const LEAD_LABEL: Record<LeadInput["type"], string> = {
 };
 
 /**
- * FEATURES.leadEmail is checked first and has to win over a present API key:
- * it is a manual pause for billing, and the key stays in Vercel so restoring
- * the notification is one boolean rather than a hunt for a credential.
+ * FEATURES.leadEmail is checked FIRST and wins over a present API key. It is
+ * a manual switch (see lib/features) for taking notification out of service
+ * without removing the credential, so that restoring it is one boolean rather
+ * than a hunt for a lost key.
  *
- * Everything downstream of this already treats "not configured" as normal —
- * the lead is stored before this function is ever called, and no path here
- * throws. So pausing notification cannot lose an enquiry. It can only stop
- * anyone being told about one, which is the risk documented in lib/features.
+ * Turning it off cannot lose an enquiry: the lead is stored before this
+ * function is ever called and no path here throws. It can only stop anyone
+ * being TOLD about one — which is the whole risk, and an operational one
+ * rather than a technical one.
  */
 export function isEmailConfigured(): boolean {
   if (!FEATURES.leadEmail) return false;
@@ -50,12 +60,20 @@ export async function sendLeadNotification(
   const subject = `${label} — ${lead.name}${lead.organisation ? ` (${lead.organisation})` : ""}`;
 
   if (!isEmailConfigured()) {
-    /* Loud, and it says where the enquiry actually is. Whoever reads these
-       logs while notification is paused needs one thing from this line: that
-       a real person is waiting and the record is in the database. */
+    /* Two different situations, two different log levels, because they need
+       different responses.
+
+       A deliberate switch is a warning: a real person has enquired, the
+       record is safe, and nobody has been told — so someone has to go and
+       read the store. Saying where the enquiry IS is the useful half of the
+       message.
+
+       A missing key is merely information, because that is the normal state
+       of a development machine and logging it loudly would train people to
+       ignore the line. */
     if (!FEATURES.leadEmail) {
       console.warn(
-        `[email] PAUSED (FEATURES.leadEmail=false) — lead ${leadId} IS STORED ` +
+        `[email] DISABLED (FEATURES.leadEmail=false) — lead ${leadId} IS STORED ` +
           `and nobody has been notified. Subject would have been: "${subject}"`,
       );
     } else {

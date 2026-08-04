@@ -38,13 +38,23 @@ export const impactStats: ImpactStat[] = [
 ];
 
 /**
- * Named credibility markers from the brochure.
+ * Named credibility markers, sourced from the company profile brochure.
  *
- * Logo images are deliberately absent — the marks were read by inference from
- * a print scan, and we do not hold vector files or written permission yet
- * (blocker #2, docs/architecture/14-implementation-roadmap.md). Until then
- * these render as typographic wordmarks, which states the association without
- * reproducing a mark we have no licence to use.
+ * THESE RENDER AS TYPOGRAPHIC WORDMARKS, NOT AS LOGO IMAGES, and that is a
+ * rule rather than a temporary state.
+ *
+ * An organisation's name set in type states a factual association. A
+ * reproduction of its logo is a use of its trade mark, and most institutions
+ * — government bodies and international agencies especially — publish brand
+ * guidelines restricting third-party use, particularly where it could be read
+ * as an endorsement.
+ *
+ * So a logo image belongs here only when two things are true: a licensed
+ * vector asset exists (not a mark traced or inferred from a print scan), and
+ * permission for this specific use is on file. Until both hold, the wordmark
+ * is the correct and safe representation. See content/credentials.ts, which
+ * handles the marks that do meet that bar and separates them by what they
+ * actually claim.
  */
 export const partners: Partner[] = [
   {

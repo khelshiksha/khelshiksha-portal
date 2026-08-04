@@ -106,9 +106,13 @@ export interface Partner {
   _id: string;
   name: string;
   /**
-   * Logo assets are an open blocker — see docs/architecture/14, blocker #2.
-   * Until vector files and written permission exist, partners render as
-   * typographic wordmarks rather than as (unlicensed) logo images.
+   * OPTIONAL, AND USUALLY ABSENT ON PURPOSE.
+   *
+   * A partner renders as a typographic wordmark unless a logo is supplied.
+   * Supply one only when a licensed vector asset exists and permission for
+   * this use is on file — reproducing an organisation's mark is a trade mark
+   * use, whereas setting its name in type is a statement of fact. See
+   * content/impact.ts.
    */
   logo?: ImageRef;
   partnerType: "govt" | "ngo" | "institution" | "media";

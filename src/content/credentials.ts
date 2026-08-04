@@ -18,11 +18,20 @@ import type { CredentialGroup } from "@/services/cms/types";
  * A logo in the wrong group turns a factual statement into an implied
  * endorsement, which is the one failure mode that matters here.
  *
- * UNICEF IS THE ONE TO WATCH. Its brand guidelines prohibit third-party use
- * that implies endorsement, and "developed learning modules for UNICEF" is a
- * statement about work done, not a partnership. It is listed with an explicit
- * relationship line for that reason. If written permission is not on file,
- * delete the entry — that is a one-line change and nothing else breaks.
+ * BEFORE ADDING ANY MARK, check two things. That the organisation's brand
+ * guidelines permit the use — international agencies and government bodies
+ * commonly restrict third-party display that could imply endorsement — and
+ * that permission for this specific use is on file.
+ *
+ * Where a mark is permitted but the relationship could be over-read, give it
+ * a `relationship` line. "Learning modules developed for UNICEF" is a
+ * statement about work delivered; the logo alone would suggest a partnership,
+ * which is a different and larger claim. The qualifier is what keeps the two
+ * apart, and it is rendered as visible text rather than hidden in a tooltip
+ * for exactly that reason.
+ *
+ * Removing an entry is a one-line change and nothing else breaks. Prefer
+ * removing it to leaving a claim that cannot be evidenced.
  */
 export const credentialGroups: CredentialGroup[] = [
   {
