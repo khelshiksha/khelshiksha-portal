@@ -18,29 +18,29 @@ are written to `.data/leads.jsonl` in development.
 
 ## Scripts
 
-| Command | What it does |
-|---|---|
-| `npm run dev` | Dev server |
-| `npm run build` | Production build |
-| `npm run typecheck` | `tsc --noEmit` |
-| `npm run lint` | ESLint |
-| `npm test` | Vitest unit tests |
-| `npm run test:e2e` | Playwright — accessibility, keyboard journeys, no-JS. Builds first. |
-| `npm run format` | Prettier |
+| Command             | What it does                                                        |
+| ------------------- | ------------------------------------------------------------------- |
+| `npm run dev`       | Dev server                                                          |
+| `npm run build`     | Production build                                                    |
+| `npm run typecheck` | `tsc --noEmit`                                                      |
+| `npm run lint`      | ESLint                                                              |
+| `npm test`          | Vitest unit tests                                                   |
+| `npm run test:e2e`  | Playwright — accessibility, keyboard journeys, no-JS. Builds first. |
+| `npm run format`    | Prettier                                                            |
 
 ## What is and isn't wired
 
 The honest state of the system. See [`docs/architecture/`](docs/architecture/) for the
 reasoning behind each boundary.
 
-| Capability | Status | To activate |
-|---|---|---|
-| Site, content, navigation, SEO | **Working** | — |
-| Enquiry forms (validation, rate limiting, no-JS submit) | **Working** | — |
-| Lead persistence | **Needs `DATABASE_URL`** | Provision Postgres, then `npx prisma migrate deploy` |
-| Lead notification email | **Needs `RESEND_API_KEY`** | Add key + `LEAD_NOTIFY_TO` |
-| Content editing in a CMS | **Not wired** | Create a Sanity project; `services/cms` swaps to GROQ with no call-site changes |
-| AI advisor / lesson planner | **Not started** | Phase 3 |
+| Capability                                              | Status                     | To activate                                                                     |
+| ------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------- |
+| Site, content, navigation, SEO                          | **Working**                | —                                                                               |
+| Enquiry forms (validation, rate limiting, no-JS submit) | **Working**                | —                                                                               |
+| Lead persistence                                        | **Needs `DATABASE_URL`**   | Provision Postgres, then `npx prisma migrate deploy`                            |
+| Lead notification email                                 | **Needs `RESEND_API_KEY`** | Add key + `LEAD_NOTIFY_TO`                                                      |
+| Content editing in a CMS                                | **Not wired**              | Create a Sanity project; `services/cms` swaps to GROQ with no call-site changes |
+| AI advisor / lesson planner                             | **Not started**            | Phase 3                                                                         |
 
 ### Without a database
 

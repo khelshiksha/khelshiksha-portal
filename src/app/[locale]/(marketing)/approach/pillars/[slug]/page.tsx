@@ -38,7 +38,6 @@ export const revalidate = 3600;
  */
 export const dynamicParams = false;
 
-
 export async function generateStaticParams() {
   return (await getPillarSlugs()).map((slug) => ({ slug }));
 }
@@ -89,10 +88,10 @@ export default async function PillarPage({
               size={40}
               className={PILLAR_ACCENT_CLASS[pillar.tint]}
             />
-            <p className="text-label font-bold tracking-[0.16em] text-ink-subtle uppercase">
+            <p className="text-label text-ink-subtle font-bold tracking-[0.16em] uppercase">
               Pillar {pillar.order} of 5
             </p>
-            <h1 className="max-w-[16ch] text-display-2 text-ink">
+            <h1 className="text-display-2 text-ink max-w-[16ch]">
               {pillar.title}
             </h1>
             <p className="measure text-body-lg text-ink-muted">
@@ -126,7 +125,7 @@ export default async function PillarPage({
           ) : (
             /* Honest empty state rather than a hidden section — a pillar with
                no kits yet is information, not an error. */
-            <p className="rounded-[var(--radius-lg)] border border-rule bg-sunken p-8 text-body text-ink-muted">
+            <p className="border-rule bg-sunken text-body text-ink-muted rounded-[var(--radius-lg)] border p-8">
               Kits for this pillar are in development. Tell us what you need and
               we will let you know as soon as they are ready.
             </p>

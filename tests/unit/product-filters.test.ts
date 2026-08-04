@@ -27,9 +27,9 @@ describe("matchesFilters", () => {
 
   it("matches an age band by OVERLAP, not containment", () => {
     // Aryabhata is 8–12; the "9–11" band sits inside that range.
-    expect(
-      matchesFilters(aryabhata, { ...EMPTY_FILTERS, age: ["9-11"] }),
-    ).toBe(true);
+    expect(matchesFilters(aryabhata, { ...EMPTY_FILTERS, age: ["9-11"] })).toBe(
+      true,
+    );
     // ...and the "6–8" band overlaps only at its top edge.
     expect(matchesFilters(aryabhata, { ...EMPTY_FILTERS, age: ["6-8"] })).toBe(
       true,

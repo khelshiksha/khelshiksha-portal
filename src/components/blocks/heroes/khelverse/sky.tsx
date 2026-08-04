@@ -16,7 +16,7 @@ import { randRange } from "./iso";
  *
  *   2. THE NOISE. A balloon, birds, clouds, swaying trees, a turning windmill
  *      and a hopping die is six ambient loops competing for one pair of eyes,
- *      and the brief was "simple yet attractive". So this is deliberately
+ *      and the scene is meant to read as calm. So this is deliberately
  *      thin: four clouds that barely move, and one flock that crosses the sky
  *      about twice a minute. It should register as weather, not as animation.
  *
@@ -72,11 +72,13 @@ function Cloud({ x, y, scale, drift, seed }: CloudSpec) {
     <g transform={`translate(${x} ${y}) scale(${scale})`}>
       <g
         className="kv-cloud"
-        style={{
-          "--kv-drift": `${drift}px`,
-          animationDuration: `${randRange(seed, 26, 44)}s`,
-          animationDelay: `-${randRange(seed + 1, 0, 20)}s`,
-        } as React.CSSProperties}
+        style={
+          {
+            "--kv-drift": `${drift}px`,
+            animationDuration: `${randRange(seed, 26, 44)}s`,
+            animationDelay: `-${randRange(seed + 1, 0, 20)}s`,
+          } as React.CSSProperties
+        }
       >
         <g fill="var(--w-cloud)" opacity="0.92">
           <ellipse cx="0" cy="0" rx="36" ry="17" />
@@ -89,7 +91,17 @@ function Cloud({ x, y, scale, drift, seed }: CloudSpec) {
 }
 
 /** Wing positions, as two ends of one stroke. Flapping is a scaleY on this. */
-function Bird({ x, y, scale, seed }: { x: number; y: number; scale: number; seed: number }) {
+function Bird({
+  x,
+  y,
+  scale,
+  seed,
+}: {
+  x: number;
+  y: number;
+  scale: number;
+  seed: number;
+}) {
   return (
     <g transform={`translate(${x} ${y}) scale(${scale})`}>
       <path

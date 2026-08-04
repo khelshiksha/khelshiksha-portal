@@ -1,6 +1,9 @@
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
-import { Breadcrumbs, type Crumb } from "@/components/blocks/navigation/breadcrumbs";
+import {
+  Breadcrumbs,
+  type Crumb,
+} from "@/components/blocks/navigation/breadcrumbs";
 import { PILLAR_TINT_CLASS } from "@/lib/constants";
 import type { AudienceHub } from "@/services/cms/types";
 
@@ -18,11 +21,11 @@ export function HeroAudience({
         <Breadcrumbs trail={trail} />
 
         <div className="flex flex-col gap-6 pb-8 lg:pb-12">
-          <p className="text-label font-bold tracking-[0.16em] text-ink-subtle uppercase">
+          <p className="text-label text-ink-subtle font-bold tracking-[0.16em] uppercase">
             {hub.eyebrow}
           </p>
 
-          <h1 className="max-w-[18ch] text-display-2 text-ink">
+          <h1 className="text-display-2 text-ink max-w-[18ch]">
             {hub.title}
             {hub.titleAccent ? (
               <>

@@ -48,10 +48,10 @@ export function SpecItem({
 }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <dt className="text-[0.6875rem] font-bold tracking-[0.08em] text-ink-subtle uppercase">
+      <dt className="text-ink-subtle text-[0.6875rem] font-bold tracking-[0.08em] uppercase">
         {label}
       </dt>
-      <dd className="text-[0.9375rem] font-semibold text-ink">{value}</dd>
+      <dd className="text-ink text-[0.9375rem] font-semibold">{value}</dd>
     </div>
   );
 }

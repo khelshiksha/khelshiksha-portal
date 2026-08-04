@@ -42,10 +42,10 @@ export function AlignmentStrip({
           {alignments.map((item, i) => (
             <Reveal as="li" key={item.framework} delay={staggerDelay(i)}>
               <Card className="flex h-full flex-col gap-2 p-6">
-                <p className="text-[0.8125rem] font-extrabold tracking-[0.06em] text-brand uppercase">
+                <p className="text-brand text-[0.8125rem] font-extrabold tracking-[0.06em] uppercase">
                   {item.framework}
                 </p>
-                <h3 className="text-[1.0625rem] font-bold text-ink">
+                <h3 className="text-ink text-[1.0625rem] font-bold">
                   {item.claim}
                 </h3>
                 <p className="text-body-sm text-ink-muted">{item.detail}</p>

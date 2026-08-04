@@ -105,6 +105,7 @@ export async function submitLead(
 
   return {
     ok: true,
-    message: "Thank you — someone from our team will call you within two working days.",
+    message:
+      "Thank you — someone from our team will call you within two working days.",
   };
 }

@@ -16,15 +16,15 @@ sections below are where the other 70% lives.
 These are already solved by decisions made elsewhere in this architecture. They are listed so
 they are not re-litigated or accidentally undone.
 
-| Guarantee | Where it comes from |
-|---|---|
-| All text contrast ≥ 4.5:1 | [Design system](03-design-system.md) — every pair computed, not estimated |
-| Non-text contrast ≥ 3:1 | `--border-strong` 3.54:1, focus ring 5.62:1 |
-| Alt text on every image | `accessibleImage` in Sanity makes it **impossible to publish** without |
-| Reduced motion honoured | [Animation plan](10-animation-plan.md) — per-effect, not just a global CSS reset |
-| No CLS from animation | Only `transform`/`opacity` animate |
-| 16px minimum body text | Type scale; also prevents iOS zoom-on-focus |
-| Works without JS | Server Components + Server Actions + progressive enhancement |
+| Guarantee                 | Where it comes from                                                              |
+| ------------------------- | -------------------------------------------------------------------------------- |
+| All text contrast ≥ 4.5:1 | [Design system](03-design-system.md) — every pair computed, not estimated        |
+| Non-text contrast ≥ 3:1   | `--border-strong` 3.54:1, focus ring 5.62:1                                      |
+| Alt text on every image   | `accessibleImage` in Sanity makes it **impossible to publish** without           |
+| Reduced motion honoured   | [Animation plan](10-animation-plan.md) — per-effect, not just a global CSS reset |
+| No CLS from animation     | Only `transform`/`opacity` animate                                               |
+| 16px minimum body text    | Type scale; also prevents iOS zoom-on-focus                                      |
+| Works without JS          | Server Components + Server Actions + progressive enhancement                     |
 
 ---
 
@@ -57,7 +57,7 @@ they are not re-litigated or accidentally undone.
 
 - [ ] Every interactive element is reachable and operable by keyboard alone
 - [ ] Tab order follows visual order — no positive `tabindex` anywhere
-- [ ] **No keyboard traps.** Modals and the mobile nav sheet trap focus *intentionally* and
+- [ ] **No keyboard traps.** Modals and the mobile nav sheet trap focus _intentionally_ and
       release on `Esc`
 - [ ] Focus returns to the trigger element when a dialog, sheet, or palette closes
 - [ ] `Skip to main content` is the first focusable element, visible on focus
@@ -90,7 +90,7 @@ they are not re-litigated or accidentally undone.
 ## 3. Understandable
 
 - [ ] `<html lang="en">`; `lang` set on any inline Gujarati or Sanskrit-derived term
-      (*Vidyalaya*, *Khel*, *Shiksha*, *Aryabhata*, *Santulan*) so screen readers pronounce them
+      (_Vidyalaya_, _Khel_, _Shiksha_, _Aryabhata_, _Santulan_) so screen readers pronounce them
       correctly — a small detail that matters a great deal for this brand
 - [ ] Navigation is in the same place and order on every page
 - [ ] Components with the same function are labelled identically site-wide
@@ -98,7 +98,7 @@ they are not re-litigated or accidentally undone.
   - [ ] Every input has a visible, associated `<label>`. Placeholder is never the label.
   - [ ] Required fields marked in text, not by colour or `*` alone
   - [ ] Errors identified in text, tied via `aria-describedby`, announced in a live region
-  - [ ] Error messages say how to fix it: *"Enter a 10-digit mobile number"*, not *"Invalid"*
+  - [ ] Error messages say how to fix it: _"Enter a 10-digit mobile number"_, not _"Invalid"_
   - [ ] `autocomplete` on name, email, tel, organisation
   - [ ] `inputmode="tel"` / `type="email"` so mobile keyboards are correct
   - [ ] Success is announced, not only shown
@@ -145,6 +145,7 @@ them wrong.
 ## Testing
 
 ### Automated (every PR)
+
 - `axe-core` via `@axe-core/playwright` on all key routes — **zero violations required**
 - `eslint-plugin-jsx-a11y` at error level
 - Lighthouse CI accessibility budget = 100
@@ -167,6 +168,7 @@ Automated tools cannot catch these. Each is a person doing a task.
 - [ ] **Slow 4G + mid-range Android**, real device, complete journey J2 end to end
 
 ### Ongoing
+
 - Every new component ships with an axe assertion
 - Accessibility review is a required PR checklist item, not a phase
 - Annual third-party audit once the site is live

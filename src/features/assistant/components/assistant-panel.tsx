@@ -220,7 +220,7 @@ export function AssistantPanel({
           tabIndex={0}
           role="log"
           aria-label="Conversation with the assistant"
-          className="scrollbar-none flex min-h-[15rem] flex-col gap-4 overflow-y-auto sm:max-h-[26rem] sm:min-h-[19rem]"
+          className="flex min-h-[15rem] scrollbar-none flex-col gap-4 overflow-y-auto sm:max-h-[26rem] sm:min-h-[19rem]"
         >
           {!hasConversation ? (
             <p className="bg-on-band-dark/10 text-body-sm text-on-band-dark/85 rounded-[var(--radius-md)] px-4 py-3">

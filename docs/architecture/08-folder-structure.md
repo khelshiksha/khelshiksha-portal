@@ -139,25 +139,25 @@ exceeds ~80 lines, its content belongs in a feature.
 
 ```tsx
 // app/(marketing)/products/[slug]/page.tsx — the shape every page should have
-import { getProductBySlug, getProductSlugs } from '@/features/products/queries'
-import { ProductDetailView } from '@/features/products/components/product-detail-view'
-import { buildProductMetadata } from '@/lib/seo'
+import { getProductBySlug, getProductSlugs } from "@/features/products/queries";
+import { ProductDetailView } from "@/features/products/components/product-detail-view";
+import { buildProductMetadata } from "@/lib/seo";
 
-export const revalidate = 3600
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  return (await getProductSlugs()).map((slug) => ({ slug }))
+  return (await getProductSlugs()).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props) {
-  const product = await getProductBySlug((await params).slug)
-  return buildProductMetadata(product)
+  const product = await getProductBySlug((await params).slug);
+  return buildProductMetadata(product);
 }
 
 export default async function ProductPage({ params }: Props) {
-  const product = await getProductBySlug((await params).slug)
-  if (!product) notFound()
-  return <ProductDetailView product={product} />
+  const product = await getProductBySlug((await params).slug);
+  if (!product) notFound();
+  return <ProductDetailView product={product} />;
 }
 ```
 
@@ -167,6 +167,7 @@ export default async function ProductPage({ params }: Props) {
 app  →  features  →  components  →  lib
                  ↘   services    ↗
 ```
+
 `components/` never imports `features/`. `lib/` imports nothing from the app at all. Violations
 fail CI.
 
@@ -175,25 +176,27 @@ fail CI.
 then a contained change instead of a migration.
 
 **4. One zod schema per form, shared both ways.** `features/leads/schema.ts` is imported by the
-client component (react-hook-form resolver) *and* the Server Action (revalidation). Client-side
+client component (react-hook-form resolver) _and_ the Server Action (revalidation). Client-side
 validation is UX; server-side validation is the actual check. They cannot drift because there
 is one definition.
 
 **5. `lib/env.ts` validates the environment at build time.**
 
 ```ts
-export const env = z.object({
-  DATABASE_URL: z.string().url(),
-  DIRECT_DATABASE_URL: z.string().url(),
-  NEXT_PUBLIC_SANITY_PROJECT_ID: z.string().min(1),
-  SANITY_API_READ_TOKEN: z.string().min(1),
-  SANITY_WEBHOOK_SECRET: z.string().min(16),
-  ANTHROPIC_API_KEY: z.string().startsWith('sk-ant-'),
-  RESEND_API_KEY: z.string().min(1),
-  AUTH_SECRET: z.string().min(32),
-  APP_SALT: z.string().min(32),
-  UPSTASH_REDIS_REST_URL: z.string().url().optional(),
-}).parse(process.env)
+export const env = z
+  .object({
+    DATABASE_URL: z.string().url(),
+    DIRECT_DATABASE_URL: z.string().url(),
+    NEXT_PUBLIC_SANITY_PROJECT_ID: z.string().min(1),
+    SANITY_API_READ_TOKEN: z.string().min(1),
+    SANITY_WEBHOOK_SECRET: z.string().min(16),
+    ANTHROPIC_API_KEY: z.string().startsWith("sk-ant-"),
+    RESEND_API_KEY: z.string().min(1),
+    AUTH_SECRET: z.string().min(32),
+    APP_SALT: z.string().min(32),
+    UPSTASH_REDIS_REST_URL: z.string().url().optional(),
+  })
+  .parse(process.env);
 ```
 
 A missing key breaks the build, not a user's form submission at 11pm.
@@ -214,20 +217,24 @@ level — `../../../components` is a smell that a module is in the wrong place.
 export default {
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: 'cdn.sanity.io' },
-      { protocol: 'https', hostname: 'res.cloudinary.com' },
+      { protocol: "https", hostname: "cdn.sanity.io" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
     ],
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
   },
-  experimental: { optimizePackageImports: ['lucide-react', 'framer-motion'] },
+  experimental: { optimizePackageImports: ["lucide-react", "framer-motion"] },
   async redirects() {
     return [
-      { source: '/for-schools', destination: '/schools', permanent: true },
-      { source: '/products/:slug/', destination: '/products/:slug', permanent: true },
-    ]
+      { source: "/for-schools", destination: "/schools", permanent: true },
+      {
+        source: "/products/:slug/",
+        destination: "/products/:slug",
+        permanent: true,
+      },
+    ];
   },
-  headers: () => [{ source: '/(.*)', headers: securityHeaders }], // CSP, HSTS, X-CTO…
-} satisfies NextConfig
+  headers: () => [{ source: "/(.*)", headers: securityHeaders }], // CSP, HSTS, X-CTO…
+} satisfies NextConfig;
 ```
 
 **Code quality gate** (`.husky/pre-commit` → lint-staged): Prettier → ESLint `--max-warnings 0`

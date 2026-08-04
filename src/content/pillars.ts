@@ -58,7 +58,8 @@ export const pillars: Pillar[] = [
     key: "life-skills",
     slug: "life-skills",
     title: "Life Skills",
-    shortDescription: "Instilling road safety, ethics and civic responsibility.",
+    shortDescription:
+      "Instilling road safety, ethics and civic responsibility.",
     description:
       "Crossing a road safely, waiting your turn, telling the truth when it costs something. These are learned by rehearsal, and rehearsal is what a well-designed game gives a classroom.",
     tint: "lavender",

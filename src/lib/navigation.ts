@@ -67,18 +67,36 @@ export function whatWeDoMenu(t: Dictionary): NavGroup[] {
     {
       heading: t.menu.fivePillars,
       links: [
-        { label: t.pillars["foundational-learning"], href: `${ROUTES.pillars}/foundational-learning` },
-        { label: t.pillars["health-nutrition"], href: `${ROUTES.pillars}/health-nutrition` },
-        { label: t.pillars["climate-education"], href: `${ROUTES.pillars}/climate-education` },
-        { label: t.pillars["future-readiness"], href: `${ROUTES.pillars}/future-readiness` },
-        { label: t.pillars["life-skills"], href: `${ROUTES.pillars}/life-skills` },
+        {
+          label: t.pillars["foundational-learning"],
+          href: `${ROUTES.pillars}/foundational-learning`,
+        },
+        {
+          label: t.pillars["health-nutrition"],
+          href: `${ROUTES.pillars}/health-nutrition`,
+        },
+        {
+          label: t.pillars["climate-education"],
+          href: `${ROUTES.pillars}/climate-education`,
+        },
+        {
+          label: t.pillars["future-readiness"],
+          href: `${ROUTES.pillars}/future-readiness`,
+        },
+        {
+          label: t.pillars["life-skills"],
+          href: `${ROUTES.pillars}/life-skills`,
+        },
       ],
     },
     {
       heading: t.menu.learningKits,
       links: [
         { label: t.menu.allKits, href: ROUTES.products },
-        { label: "Project SURAKSHA", href: `${ROUTES.products}/project-suraksha` },
+        {
+          label: "Project SURAKSHA",
+          href: `${ROUTES.products}/project-suraksha`,
+        },
         { label: "Aryabhata", href: `${ROUTES.products}/aryabhata` },
         { label: "Yoga Safari", href: `${ROUTES.products}/yoga-safari` },
         { label: "Brainy Bee", href: `${ROUTES.products}/brainy-bee` },

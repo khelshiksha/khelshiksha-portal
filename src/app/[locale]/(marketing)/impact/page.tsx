@@ -71,7 +71,10 @@ export default async function ImpactPage() {
       <CTABand
         title="Bring this to your"
         accent="district."
-        primary={{ label: "Request a proposal", href: "/contact?type=government" }}
+        primary={{
+          label: "Request a proposal",
+          href: "/contact?type=government",
+        }}
         secondary={{ label: "Book a demo", href: "/contact?type=school-demo" }}
       />
     </>

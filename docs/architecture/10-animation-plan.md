@@ -8,6 +8,7 @@ If there is no answer, the animation is decoration and does not ship. This is wh
 premium site from a distracting one — and it is the constraint most "beautiful" sites fail.
 
 Corollaries:
+
 - Nothing animates purely because it entered the viewport. Reveals exist to establish reading
   order and pace, not to make scrolling feel busy.
 - Nothing loops forever within the reading area. Ambient loops are visual noise, and for users
@@ -20,15 +21,20 @@ Corollaries:
 ## Motion tokens
 
 ```css
---dur-instant: 80ms;    /* active/press */
---dur-fast:    150ms;   /* hover, colour, small state */
---dur-base:    240ms;   /* card lift, accordion */
---dur-slow:    400ms;   /* reveals, layout shift */
---dur-slower:  700ms;   /* hero entrance, page transition */
+--dur-instant: 80ms; /* active/press */
+--dur-fast: 150ms; /* hover, colour, small state */
+--dur-base: 240ms; /* card lift, accordion */
+--dur-slow: 400ms; /* reveals, layout shift */
+--dur-slower: 700ms; /* hero entrance, page transition */
 
---ease-out-quint: cubic-bezier(.22, 1, .36, 1);   /* default — decisive, no bounce */
---ease-in-out:    cubic-bezier(.65, 0, .35, 1);   /* two-way transitions */
---ease-spring:    cubic-bezier(.34, 1.56, .64, 1);/* icon bounce ONLY */
+--ease-out-quint: cubic-bezier(
+  0.22,
+  1,
+  0.36,
+  1
+); /* default — decisive, no bounce */
+--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* two-way transitions */
+--ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* icon bounce ONLY */
 ```
 
 **Distance scales inversely with duration.** A card lifts 4px in 240ms. A section reveals 24px
@@ -39,13 +45,13 @@ distance + long duration reads as lag.
 
 ## Library allocation
 
-| Tool | Used for | Budget |
-|---|---|---|
-| **CSS** (transition/animation) | Hover, focus, colour, accordion, skeletons, card lift, filter-grid fade | Free. **Default choice.** |
-| **IntersectionObserver + CSS** | Scroll reveals, animated counters | < 1KB, hand-written. |
-| **rAF + CSS transforms** | Hero parallax | < 1KB, hand-written. |
-| ~~Framer Motion~~ | — | **Removed. See below.** |
-| **GSAP + ScrollTrigger** | Reserved for the `/schools` timeline line-draw if it is ever built as a true scroll-scrubbed effect. | ~28KB gz. Not currently used. **If added: dynamically imported, desktop-only, non-blocking.** |
+| Tool                           | Used for                                                                                             | Budget                                                                                        |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| **CSS** (transition/animation) | Hover, focus, colour, accordion, skeletons, card lift, filter-grid fade                              | Free. **Default choice.**                                                                     |
+| **IntersectionObserver + CSS** | Scroll reveals, animated counters                                                                    | < 1KB, hand-written.                                                                          |
+| **rAF + CSS transforms**       | Hero parallax                                                                                        | < 1KB, hand-written.                                                                          |
+| ~~Framer Motion~~              | —                                                                                                    | **Removed. See below.**                                                                       |
+| **GSAP + ScrollTrigger**       | Reserved for the `/schools` timeline line-draw if it is ever built as a true scroll-scrubbed effect. | ~28KB gz. Not currently used. **If added: dynamically imported, desktop-only, non-blocking.** |
 
 ### Why Framer Motion was removed
 
@@ -68,7 +74,7 @@ lost. The dependency is uninstalled, not just unimported.
 
 **Revisit if** the catalogue grows past ~24 kits and reshuffling becomes disorienting, or a
 genuinely physics-driven interaction (drag, spring-following drawer) is specified. At that
-point, import it *on the one route that needs it*, dynamically — never in a shared component.
+point, import it _on the one route that needs it_, dynamically — never in a shared component.
 
 The general lesson, worth keeping: a library justified by one shared component is a library
 paid for on every page.
@@ -79,18 +85,18 @@ paid for on every page.
 
 ### Micro-interactions (CSS)
 
-| Element | Motion | Duration |
-|---|---|---|
-| Button hover | `bg` → 700 step, `scale(1.02)` | 150ms |
-| Button press | `scale(0.98)` | 80ms |
-| Card hover | `translateY(-4px)`, shadow md→lg | 240ms |
-| Product image hover | inner `scale(1.05)`, frame clips | 400ms |
-| Nav link | yellow underline scales `0→1` from left | 200ms |
-| Icon in CTA | `translateX(3px)` on parent hover | 150ms |
-| Chip select | `bg` fill + `scale(1.04)` settle | 150ms |
-| Accordion | grid-template-rows `0fr→1fr` + chevron 180° | 240ms |
-| Input focus | border colour + 3px ring | 150ms |
-| Logo strip | greyscale→colour, opacity .6→1 | 300ms |
+| Element             | Motion                                      | Duration |
+| ------------------- | ------------------------------------------- | -------- |
+| Button hover        | `bg` → 700 step, `scale(1.02)`              | 150ms    |
+| Button press        | `scale(0.98)`                               | 80ms     |
+| Card hover          | `translateY(-4px)`, shadow md→lg            | 240ms    |
+| Product image hover | inner `scale(1.05)`, frame clips            | 400ms    |
+| Nav link            | yellow underline scales `0→1` from left     | 200ms    |
+| Icon in CTA         | `translateX(3px)` on parent hover           | 150ms    |
+| Chip select         | `bg` fill + `scale(1.04)` settle            | 150ms    |
+| Accordion           | grid-template-rows `0fr→1fr` + chevron 180° | 240ms    |
+| Input focus         | border colour + 3px ring                    | 150ms    |
+| Logo strip          | greyscale→colour, opacity .6→1              | 300ms    |
 
 The accordion uses `grid-template-rows: 0fr → 1fr` rather than `max-height`. It animates to the
 true content height with no magic number and no jump on close.
@@ -156,10 +162,12 @@ instantly in its final state.**
 
 ```css
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: .01ms !important;
+    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }
@@ -167,19 +175,19 @@ instantly in its final state.**
 
 Global CSS is the safety net, not the strategy. Each JS-driven effect handles it explicitly:
 
-| Effect | Reduced-motion behaviour |
-|---|---|
-| `Reveal` | Renders at final opacity/position. No transition. |
-| `Counter` | Renders the final number immediately. |
-| Hero parallax | Not initialised at all. |
-| GSAP scroll story | `ScrollTrigger` never created; static layout. |
-| Product FLIP | `layout` prop omitted; instant reposition. |
-| Page transition | No fade. |
-| Carousels | `scroll-behavior: auto` instead of `smooth`. |
+| Effect            | Reduced-motion behaviour                          |
+| ----------------- | ------------------------------------------------- |
+| `Reveal`          | Renders at final opacity/position. No transition. |
+| `Counter`         | Renders the final number immediately.             |
+| Hero parallax     | Not initialised at all.                           |
+| GSAP scroll story | `ScrollTrigger` never created; static layout.     |
+| Product FLIP      | `layout` prop omitted; instant reposition.        |
+| Page transition   | No fade.                                          |
+| Carousels         | `scroll-behavior: auto` instead of `smooth`.      |
 
 ```tsx
-const reduced = useReducedMotion()   // Framer Motion hook
-return <motion.div {...(reduced ? {} : revealProps)}>{children}</motion.div>
+const reduced = useReducedMotion(); // Framer Motion hook
+return <motion.div {...(reduced ? {} : revealProps)}>{children}</motion.div>;
 ```
 
 `useReducedMotion` also listens for changes, so a user toggling the OS setting mid-session gets

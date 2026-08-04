@@ -221,12 +221,12 @@ change**, which is the point of the tiered design.
 
 ## Responsive rules (all pages)
 
-| Breakpoint | Behaviour |
-|---|---|
-| `< 768` | Single column · full-screen nav sheet · filters in bottom sheet · carousels replace grids · blobs removed · scroll-story degrades to a list |
-| `768–1023` | 2-up grids · nav still collapsed · sticky rails disabled |
-| `1024–1279` | 3-up grids · full nav · sticky rails enabled |
-| `≥ 1280` | Design target. 4-up where specified, max-width 1280 with wide gutters |
+| Breakpoint  | Behaviour                                                                                                                                   |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `< 768`     | Single column · full-screen nav sheet · filters in bottom sheet · carousels replace grids · blobs removed · scroll-story degrades to a list |
+| `768–1023`  | 2-up grids · nav still collapsed · sticky rails disabled                                                                                    |
+| `1024–1279` | 3-up grids · full nav · sticky rails enabled                                                                                                |
+| `≥ 1280`    | Design target. 4-up where specified, max-width 1280 with wide gutters                                                                       |
 
 Every section is designed at 375 and 1440 explicitly. The middle breakpoints are interpolated,
 but any section whose 768px rendering looks accidental gets its own treatment — "handcrafted at

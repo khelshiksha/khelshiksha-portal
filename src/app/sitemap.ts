@@ -19,7 +19,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: url(ROUTES.government), changeFrequency: "weekly", priority: 0.9 },
     { url: url(ROUTES.products), changeFrequency: "monthly", priority: 0.8 },
     { url: url(ROUTES.approach), changeFrequency: "monthly", priority: 0.8 },
-    { url: url(ROUTES.whyExperiential), changeFrequency: "monthly", priority: 0.7 },
+    {
+      url: url(ROUTES.whyExperiential),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
     { url: url(ROUTES.pillars), changeFrequency: "monthly", priority: 0.8 },
     { url: url(ROUTES.gameCorner), changeFrequency: "monthly", priority: 0.7 },
     { url: url(ROUTES.impact), changeFrequency: "monthly", priority: 0.8 },

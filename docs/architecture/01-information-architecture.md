@@ -103,13 +103,13 @@ Resources ▾  (2 columns)
 
 ## URL conventions
 
-| Rule | Example |
-|---|---|
-| Lowercase, hyphenated, no trailing slash | `/approach/pillars/climate-education` |
-| Audience hubs are single nouns at root | `/schools`, not `/for-schools` |
-| Never expose CMS IDs | `/products/aryabhata`, not `/products/a7f3-…` |
-| Category pages are `/[section]/category/[slug]` | `/blog/category/foundational-learning` |
-| Legacy/typo redirects live in `next.config.ts` | `/for-schools` → 308 → `/schools` |
+| Rule                                            | Example                                       |
+| ----------------------------------------------- | --------------------------------------------- |
+| Lowercase, hyphenated, no trailing slash        | `/approach/pillars/climate-education`         |
+| Audience hubs are single nouns at root          | `/schools`, not `/for-schools`                |
+| Never expose CMS IDs                            | `/products/aryabhata`, not `/products/a7f3-…` |
+| Category pages are `/[section]/category/[slug]` | `/blog/category/foundational-learning`        |
+| Legacy/typo redirects live in `next.config.ts`  | `/for-schools` → 308 → `/schools`             |
 
 ## Content taxonomy
 
@@ -126,17 +126,17 @@ future-readiness · life-skills
 
 **Product facets (9 filters, per the brief)**
 
-| Facet | Type | Values |
-|---|---|---|
-| Age | range | 3–5 · 6–8 · 9–11 · 12–14 · 14+ |
-| Grade | range | Pre-primary · 1–2 · 3–5 · 6–8 · 9–10 |
-| Subject | multi | Maths · Language · Science · EVS · Health · Values · Life Skills |
-| Skill | multi | Problem-solving · Teamwork · Communication · Creativity · Motor · Focus |
-| Learning goal | multi | Mapped to the 5 pillars |
-| Duration | single | <15 min · 15–30 · 30–45 · 45+ |
-| Setting | single | Indoor · Outdoor · Either |
-| Group size | single | Solo · Pair · Small (3–6) · Whole class |
-| Budget | range | Only if D5 (public pricing) is resolved yes |
+| Facet         | Type   | Values                                                                  |
+| ------------- | ------ | ----------------------------------------------------------------------- |
+| Age           | range  | 3–5 · 6–8 · 9–11 · 12–14 · 14+                                          |
+| Grade         | range  | Pre-primary · 1–2 · 3–5 · 6–8 · 9–10                                    |
+| Subject       | multi  | Maths · Language · Science · EVS · Health · Values · Life Skills        |
+| Skill         | multi  | Problem-solving · Teamwork · Communication · Creativity · Motor · Focus |
+| Learning goal | multi  | Mapped to the 5 pillars                                                 |
+| Duration      | single | <15 min · 15–30 · 30–45 · 45+                                           |
+| Setting       | single | Indoor · Outdoor · Either                                               |
+| Group size    | single | Solo · Pair · Small (3–6) · Whole class                                 |
+| Budget        | range  | Only if D5 (public pricing) is resolved yes                             |
 
 ## Navigation rules
 
@@ -153,12 +153,12 @@ future-readiness · life-skills
 Each audience hub drives exactly one primary action. Secondary actions exist but are visually
 subordinate — this is the difference between a site that converts and a site with eleven buttons.
 
-| Audience | Primary CTA | Secondary | Lands in |
-|---|---|---|---|
-| Schools | Book a Demo | Download brochure | `Lead(type=SCHOOL_DEMO)` |
-| Teachers | Download lesson plan | Join training | `ResourceDownload` + soft lead |
-| Parents | Find the right kit | Browse activities | `Lead(type=PARENT_ENQUIRY)` |
-| Government | Request a proposal | Download impact deck | `Lead(type=GOVT_PROPOSAL)` |
+| Audience   | Primary CTA          | Secondary            | Lands in                       |
+| ---------- | -------------------- | -------------------- | ------------------------------ |
+| Schools    | Book a Demo          | Download brochure    | `Lead(type=SCHOOL_DEMO)`       |
+| Teachers   | Download lesson plan | Join training        | `ResourceDownload` + soft lead |
+| Parents    | Find the right kit   | Browse activities    | `Lead(type=PARENT_ENQUIRY)`    |
+| Government | Request a proposal   | Download impact deck | `Lead(type=GOVT_PROPOSAL)`     |
 
 Every form captures `source` (page path), `utm_*`, and `pillarInterest` so the team can see
 which pillar and which content actually generates enquiries.

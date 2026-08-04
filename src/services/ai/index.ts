@@ -6,23 +6,28 @@ import { FEATURES } from "@/lib/features";
 import { formatAgeRange, formatDuration, formatGroupSize } from "@/lib/utils";
 
 /**
- * The AI port — decision D4.
+ * The AI port — architecture decision D4.
  *
- * This is the ONLY file in the codebase that imports a model SDK. Everything
- * else calls `answerQuestion`. That boundary is why moving from Anthropic to
- * Gemini touched this file and nothing else — not the route handler, not the
- * UI, not the grounding, not the rate limiting.
+ * THIS IS THE ONLY FILE IN THE CODEBASE THAT IMPORTS A MODEL SDK. Everything
+ * else — the route handler, the UI, the grounding, the rate limiting — calls
+ * `answerQuestion` and knows nothing about the provider. Preserve that. It is
+ * why swapping the underlying model provider changed this file and no other,
+ * and it is what makes the next swap cheap.
  *
- * Gemini because it is the best of the genuinely free tiers and signs in with
- * the existing Google account. Two consequences to keep in mind:
+ * Two operational properties to keep in mind when reading the rest:
  *
- *  - The free tier has a daily request cap. When it is exhausted the API
- *    errors, the route streams its fallback, and the visitor is given the
- *    phone number. Degraded, not broken — but worth watching.
- *  - Free-tier prompts and responses may be used by Google to improve their
- *    products. The privacy policy says so. This is the material difference
- *    from a paid tier and the reason the rule below about child details is
- *    load-bearing rather than decorative.
+ *  - REQUESTS ARE RATE LIMITED BY THE PROVIDER, not only by this application.
+ *    When the provider's limit is reached the API errors, the route streams
+ *    its fallback, and the visitor is given the phone number instead.
+ *    Degraded rather than broken, by design — but it means "the assistant is
+ *    quiet today" has an external cause worth checking before debugging code.
+ *
+ *  - PROMPTS AND RESPONSES MAY LEAVE THE SYSTEM. Anything sent to the model
+ *    is handled under the provider's terms, which can include retention and
+ *    use for product improvement depending on the account. That is why the
+ *    rule in the system prompt about never repeating a named child is
+ *    load-bearing rather than decorative: it is the last control before data
+ *    leaves this codebase.
  */
 
 /**
@@ -34,13 +39,16 @@ import { formatAgeRange, formatDuration, formatGroupSize } from "@/lib/utils";
  * 2.0 Flash is already shut down — and this code has no way to know when.
  *
  * So: try each in order, and step to the next ONLY on the specific "this
- * model does not exist for you" error. Every other failure (bad key, quota
- * exhausted, safety block) propagates immediately, because retrying a
- * different model would neither fix it nor tell us anything.
+ * model does not exist for you" error. Every other failure — a bad key, a
+ * rate limit, a safety block — propagates immediately, because retrying a
+ * different model would neither fix it nor tell us anything, and would turn
+ * one failed request into three.
  *
  * Flash rather than Flash-Lite deliberately. The rules in the system prompt —
- * never quote a price, never repeat a named child — are instructions, not
- * code, and instruction-following is exactly what the Lite tier trades away.
+ * never state a price, never repeat a named child — are instructions to the
+ * model rather than code, and reliable instruction-following is exactly what
+ * the smaller variant trades away. The cheaper model would be a false economy
+ * here: the constraints it would start ignoring are the safety ones.
  *
  * Set GEMINI_MODEL to pin one and skip the list entirely.
  */
@@ -79,12 +87,15 @@ function isModelUnavailable(error: unknown): boolean {
 const MAX_TOKENS = 2000;
 
 /**
- * The single gate the UI and the route both ask.
+ * The single gate. Both the UI and the route handler ask this and nothing
+ * else, so the feature can never be half-present — a rendered panel backed by
+ * a refusing endpoint would be worse than either.
  *
- * FEATURES.assistant is checked first and deliberately: it is a manual pause
- * for billing, and it has to win even when GOOGLE_API_KEY is still present in
- * the environment. Keeping the key set while the flag is false is the point —
- * switching the feature back on is one boolean, not a hunt for a credential.
+ * FEATURES.assistant is checked FIRST, and that order is deliberate: it is a
+ * manual switch (see lib/features) and it has to win even when GOOGLE_API_KEY
+ * is still set. Leaving the key in place while the switch is off is the
+ * intended way to take the feature out of service, because restoring it is
+ * then one boolean rather than a hunt for a lost credential.
  */
 export function isAssistantConfigured(): boolean {
   if (!FEATURES.assistant) return false;

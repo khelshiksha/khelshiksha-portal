@@ -18,7 +18,8 @@ export const products: Product[] = [
     _id: "product-suraksha",
     slug: "project-suraksha",
     title: "Project SURAKSHA",
-    tagline: "Road safety learned by rehearsing it, not by being warned about it.",
+    tagline:
+      "Road safety learned by rehearsing it, not by being warned about it.",
     descriptionInstitutional:
       "An interactive road safety game that teaches traffic rules, safe road behaviour and responsible decision-making through real-life scenarios. Supports the life-skills and civic-responsibility strands of NCF 2023.",
     descriptionParent:
@@ -41,13 +42,20 @@ export const products: Product[] = [
       "Recognises unsafe behaviour in a described scenario and proposes a safer alternative",
     ],
     curriculumMapping: [
-      { framework: "NCF 2023", reference: "Life skills and civic responsibility" },
-      { framework: "NEP 2020", reference: "Experiential and competency-based learning" },
+      {
+        framework: "NCF 2023",
+        reference: "Life skills and civic responsibility",
+      },
+      {
+        framework: "NEP 2020",
+        reference: "Experiential and competency-based learning",
+      },
     ],
     howToPlay: [
       {
         step: "Lay out the board and deal the scenario cards",
-        detail: "Each card describes a real junction, crossing or footpath situation.",
+        detail:
+          "Each card describes a real junction, crossing or footpath situation.",
       },
       {
         step: "Players take turns drawing a scenario",
@@ -55,9 +63,12 @@ export const products: Product[] = [
       },
       {
         step: "The group decides together whether the choice was safe",
-        detail: "Disagreement is the point — the discussion is where the learning happens.",
+        detail:
+          "Disagreement is the point — the discussion is where the learning happens.",
       },
-      { step: "Safe choices move a player forward; the group discusses the rest" },
+      {
+        step: "Safe choices move a player forward; the group discusses the rest",
+      },
     ],
     boxContents: [
       "Game board",
@@ -108,11 +119,13 @@ export const products: Product[] = [
       { step: "Shuffle the number cards and deal five to each player" },
       {
         step: "Turn over the target card",
-        detail: "Players race to reach the target using the cards in their hand.",
+        detail:
+          "Players race to reach the target using the cards in their hand.",
       },
       {
         step: "First to call a valid combination explains it",
-        detail: "An unexplained answer does not score — the reasoning is the skill.",
+        detail:
+          "An unexplained answer does not score — the reasoning is the skill.",
       },
       { step: "Play continues until a player reaches the agreed score" },
     ],
@@ -158,7 +171,10 @@ export const products: Product[] = [
       "Distinguishes an everyday food from a sometimes food, with a reason",
     ],
     curriculumMapping: [
-      { framework: "Eat Right India", reference: "Food groups and balanced diet" },
+      {
+        framework: "Eat Right India",
+        reference: "Food groups and balanced diet",
+      },
       { framework: "NCF 2023", reference: "Health and well-being, Stage 1–2" },
     ],
     howToPlay: [
@@ -223,10 +239,13 @@ export const products: Product[] = [
         step: "Roll and move along the trail",
         detail: "Each square is an animal pose.",
       },
-      { step: "The whole group holds the pose together for the count on the card" },
+      {
+        step: "The whole group holds the pose together for the count on the card",
+      },
       {
         step: "Breath cards interrupt the trail",
-        detail: "Everyone stops and follows the breathing pattern before continuing.",
+        detail:
+          "Everyone stops and follows the breathing pattern before continuing.",
       },
     ],
     boxContents: [
@@ -278,7 +297,8 @@ export const products: Product[] = [
       { step: "Lay out the object cards face up" },
       {
         step: "Players collect letters to spell what they see",
-        detail: "Start with initial sounds, then whole words as confidence grows.",
+        detail:
+          "Start with initial sounds, then whole words as confidence grows.",
       },
       { step: "Read the completed word aloud to claim the card" },
       { step: "The player with the most cards at the end wins" },
@@ -324,7 +344,10 @@ export const products: Product[] = [
       "Listens attentively through a full round without interrupting",
     ],
     curriculumMapping: [
-      { framework: "Mission LiFE", reference: "Environmental awareness and observation" },
+      {
+        framework: "Mission LiFE",
+        reference: "Environmental awareness and observation",
+      },
       { framework: "NCF 2023", reference: "Environmental studies, Stage 1–2" },
     ],
     howToPlay: [

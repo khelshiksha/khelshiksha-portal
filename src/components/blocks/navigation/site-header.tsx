@@ -284,18 +284,19 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
             proof. Appended to the same list rather than given its own block so
             the two menus stay demonstrably identical in content. */}
         <nav aria-label={t.nav.mobileMenu} className="flex flex-col gap-1">
-          {[...audienceNav(t), { href: ROUTES.impact, label: t.nav.impact }].map(
-            (link) => (
-              <Link
-                key={link.href}
-                href={href(link.href)}
-                onClick={onNavigate}
-                className="text-h3 text-ink hover:bg-sunken rounded-[var(--radius-md)] px-3 py-3 font-bold transition-colors"
-              >
-                {link.label}
-              </Link>
-            ),
-          )}
+          {[
+            ...audienceNav(t),
+            { href: ROUTES.impact, label: t.nav.impact },
+          ].map((link) => (
+            <Link
+              key={link.href}
+              href={href(link.href)}
+              onClick={onNavigate}
+              className="text-h3 text-ink hover:bg-sunken rounded-[var(--radius-md)] px-3 py-3 font-bold transition-colors"
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
         {whatWeDoMenu(t).map((group) => (

@@ -43,11 +43,11 @@ export default async function AboutPage() {
           <div className="grid gap-4 sm:grid-cols-3">
             {mission.map((item, i) => (
               <Reveal key={item} delay={staggerDelay(i)}>
-                <div className="h-full rounded-[var(--radius-lg)] border border-rule bg-surface p-6">
-                  <p className="text-[0.6875rem] font-bold tracking-[0.12em] text-ink-subtle uppercase">
+                <div className="border-rule bg-surface h-full rounded-[var(--radius-lg)] border p-6">
+                  <p className="text-ink-subtle text-[0.6875rem] font-bold tracking-[0.12em] uppercase">
                     Mission {i + 1}
                   </p>
-                  <p className="mt-2 text-body text-ink">{item}</p>
+                  <p className="text-body text-ink mt-2">{item}</p>
                 </div>
               </Reveal>
             ))}
@@ -55,7 +55,12 @@ export default async function AboutPage() {
         </Container>
       </Section>
 
-      <StatBand stats={stats} eyebrow="Credibility" title="What we have" accent="actually delivered." />
+      <StatBand
+        stats={stats}
+        eyebrow="Credibility"
+        title="What we have"
+        accent="actually delivered."
+      />
 
       <CTABand
         title="Let's transform"

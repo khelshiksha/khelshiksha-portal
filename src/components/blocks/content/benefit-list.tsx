@@ -29,15 +29,15 @@ export function BenefitList({ benefits }: { benefits: Benefit[] }) {
         <ol className="flex flex-col">
           {benefits.map((benefit, i) => (
             <Reveal as="li" key={benefit._id} delay={staggerDelay(i, 50, 200)}>
-              <div className="flex gap-5 border-b border-rule py-7 first:pt-0 last:border-b-0">
+              <div className="border-rule flex gap-5 border-b py-7 first:pt-0 last:border-b-0">
                 <span
                   aria-hidden="true"
-                  className="tabular mt-1 text-[0.8125rem] font-bold text-brand"
+                  className="tabular text-brand mt-1 text-[0.8125rem] font-bold"
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="flex flex-col gap-2">
-                  <h3 className="text-h3 font-bold text-ink">
+                  <h3 className="text-h3 text-ink font-bold">
                     {benefit.title}
                   </h3>
                   <p className="text-body text-ink-muted">

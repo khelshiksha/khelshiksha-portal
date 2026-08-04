@@ -46,20 +46,20 @@ export function InlineEnquiry({
             lede={lede}
           />
 
-          <div className="flex flex-col gap-1 text-body-sm">
-            <p className="font-bold text-ink">Or reach us directly</p>
+          <div className="text-body-sm flex flex-col gap-1">
+            <p className="text-ink font-bold">Or reach us directly</p>
             {SITE.phones.map((phone) => (
               <a
                 key={phone}
                 href={`tel:${phone.replace(/\s/g, "")}`}
-                className="w-fit text-ink-muted transition-colors hover:text-brand-deep"
+                className="text-ink-muted hover:text-brand-deep w-fit transition-colors"
               >
                 {phone}
               </a>
             ))}
             <a
               href={`mailto:${SITE.email}`}
-              className="w-fit text-ink-muted transition-colors hover:text-brand-deep"
+              className="text-ink-muted hover:text-brand-deep w-fit transition-colors"
             >
               {SITE.email}
             </a>

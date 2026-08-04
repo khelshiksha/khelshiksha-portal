@@ -176,7 +176,9 @@ test.describe("progressive enhancement", () => {
     await expect(page.getByRole("link", { name: /aryabhata/i })).toBeVisible();
 
     /* Impact counters show their real value, not zero. */
-    await expect(page.getByText("12,000+", { exact: false }).first()).toBeVisible();
+    await expect(
+      page.getByText("12,000+", { exact: false }).first(),
+    ).toBeVisible();
 
     /* Navigation is plain links and still works. On mobile the header nav is
        a <details> so it opens without JS too — open it, then navigate. */
@@ -190,7 +192,9 @@ test.describe("progressive enhancement", () => {
     ).toBeVisible();
   });
 
-  test("the enquiry form still submits without JavaScript", async ({ page }) => {
+  test("the enquiry form still submits without JavaScript", async ({
+    page,
+  }) => {
     await page.goto("/schools");
 
     await page.getByLabel(/your name/i).fill("Meera Shah");

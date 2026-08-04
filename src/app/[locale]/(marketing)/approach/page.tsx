@@ -9,7 +9,12 @@ import { GameCornerBand } from "@/components/blocks/content/game-corner-band";
 import { CTABand } from "@/components/blocks/content/cta-band";
 import { Reveal } from "@/components/ui/reveal";
 import { staggerDelay } from "@/lib/motion";
-import { getAlignments, getBenefits, getPillars, getVisionAndMission } from "@/services/cms";
+import {
+  getAlignments,
+  getBenefits,
+  getPillars,
+  getVisionAndMission,
+} from "@/services/cms";
 import { buildMetadata } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -22,17 +27,20 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function ApproachPage() {
-  const [benefits, pillars, alignments, { vision, mission }] = await Promise.all([
-    getBenefits(),
-    getPillars(),
-    getAlignments(),
-    getVisionAndMission(),
-  ]);
+  const [benefits, pillars, alignments, { vision, mission }] =
+    await Promise.all([
+      getBenefits(),
+      getPillars(),
+      getAlignments(),
+      getVisionAndMission(),
+    ]);
 
   return (
     <>
       <Container className="pt-8">
-        <Breadcrumbs trail={[{ name: "Learning Through Play", path: "/approach" }]} />
+        <Breadcrumbs
+          trail={[{ name: "Learning Through Play", path: "/approach" }]}
+        />
       </Container>
 
       <Section className="pt-10 sm:pt-12">
@@ -48,11 +56,14 @@ export default async function ApproachPage() {
           <ul className="grid gap-4 sm:grid-cols-3">
             {mission.map((item, i) => (
               <Reveal as="li" key={item} delay={staggerDelay(i)}>
-                <div className="h-full rounded-[var(--radius-lg)] border border-rule bg-surface p-6">
-                  <span aria-hidden="true" className="tabular text-[0.8125rem] font-bold text-brand">
+                <div className="border-rule bg-surface h-full rounded-[var(--radius-lg)] border p-6">
+                  <span
+                    aria-hidden="true"
+                    className="tabular text-brand text-[0.8125rem] font-bold"
+                  >
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <p className="mt-2 text-body text-ink">{item}</p>
+                  <p className="text-body text-ink mt-2">{item}</p>
                 </div>
               </Reveal>
             ))}

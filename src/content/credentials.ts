@@ -18,11 +18,20 @@ import type { CredentialGroup } from "@/services/cms/types";
  * A logo in the wrong group turns a factual statement into an implied
  * endorsement, which is the one failure mode that matters here.
  *
- * UNICEF IS THE ONE TO WATCH. Its brand guidelines prohibit third-party use
- * that implies endorsement, and "developed learning modules for UNICEF" is a
- * statement about work done, not a partnership. It is listed with an explicit
- * relationship line for that reason. If written permission is not on file,
- * delete the entry — that is a one-line change and nothing else breaks.
+ * BEFORE ADDING ANY MARK, check two things. That the organisation's brand
+ * guidelines permit the use — international agencies and government bodies
+ * commonly restrict third-party display that could imply endorsement — and
+ * that permission for this specific use is on file.
+ *
+ * Where a mark is permitted but the relationship could be over-read, give it
+ * a `relationship` line. "Learning modules developed for UNICEF" is a
+ * statement about work delivered; the logo alone would suggest a partnership,
+ * which is a different and larger claim. The qualifier is what keeps the two
+ * apart, and it is rendered as visible text rather than hidden in a tooltip
+ * for exactly that reason.
+ *
+ * Removing an entry is a one-line change and nothing else breaks. Prefer
+ * removing it to leaving a claim that cannot be evidenced.
  */
 export const credentialGroups: CredentialGroup[] = [
   {
@@ -37,7 +46,12 @@ export const credentialGroups: CredentialGroup[] = [
       /* Supplied named .svg but actually a WebP payload, so the browser tried
          to parse binary as XML and rendered a broken image. Converted to PNG
          rather than just renamed, so the file and its extension agree. */
-      { name: "Ministry of Education, Government of India", file: "ministry-of-education.png", w: 430, h: 200 },
+      {
+        name: "Ministry of Education, Government of India",
+        file: "ministry-of-education.png",
+        w: 430,
+        h: 200,
+      },
       { name: "PM SHRI", file: "pm-shri.png", w: 266, h: 200 },
       { name: "Fit India Movement", file: "fit-india.png", w: 213, h: 200 },
       { name: "Eat Right India", file: "eat-right-india.png", w: 545, h: 200 },
@@ -51,14 +65,49 @@ export const credentialGroups: CredentialGroup[] = [
     note: "Kits, modules and training programmes built with or for these organisations.",
     items: [
       /* SVGs: dimensions read off the viewBox, rounded. */
-      { name: "UNICEF", file: "unicef.svg", w: 170, h: 47, relationship: "Learning modules developed for UNICEF" },
-      { name: "GUJCOST", file: "gujcost.png", w: 200, h: 200, relationship: "Gujarat Council on Science & Technology" },
-      { name: "GEDA", file: "geda.png", w: 200, h: 200, relationship: "Gujarat Energy Development Agency" },
-      { name: "Children's University", file: "childrens-university.png", w: 200, h: 200 },
-      { name: "World Yogasana", file: "world-yogasana.png", w: 197, h: 200, relationship: "Veer's Yogasana Game Kit, 1st World Yogasana Sports Championship" },
+      {
+        name: "UNICEF",
+        file: "unicef.svg",
+        w: 170,
+        h: 47,
+        relationship: "Learning modules developed for UNICEF",
+      },
+      {
+        name: "GUJCOST",
+        file: "gujcost.png",
+        w: 200,
+        h: 200,
+        relationship: "Gujarat Council on Science & Technology",
+      },
+      {
+        name: "GEDA",
+        file: "geda.png",
+        w: 200,
+        h: 200,
+        relationship: "Gujarat Energy Development Agency",
+      },
+      {
+        name: "Children's University",
+        file: "childrens-university.png",
+        w: 200,
+        h: 200,
+      },
+      {
+        name: "World Yogasana",
+        file: "world-yogasana.png",
+        w: 197,
+        h: 200,
+        relationship:
+          "Veer's Yogasana Game Kit, 1st World Yogasana Sports Championship",
+      },
       { name: "Yogasana Bharat", file: "yogasana-bharat.png", w: 200, h: 200 },
       { name: "BAPS", file: "baps.svg", w: 279, h: 357 },
-      { name: "Ahmedabad Municipal Corporation", file: "ahmedabad-municipal-corporation.png", w: 300, h: 200 },
+      {
+        name: "Ahmedabad Municipal Corporation",
+        file: "ahmedabad-municipal-corporation.png",
+        w: 300,
+        h: 200,
+      },
       { name: "GoBananas", file: "gobananas.png", w: 544, h: 200 },
     ],
   },

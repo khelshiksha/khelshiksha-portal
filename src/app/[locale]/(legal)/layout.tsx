@@ -28,7 +28,7 @@ export default async function LegalLayout({
           <Container size="narrow">
             {/* `measure` caps line length at 68ch — legal text is the content
                 most likely to be read start to finish. */}
-            <div className="measure flex flex-col gap-5 [&_h2]:mt-8 [&_h2]:text-h3 [&_li]:text-ink-muted [&_p]:text-ink-muted [&_ul]:flex [&_ul]:list-disc [&_ul]:flex-col [&_ul]:gap-2 [&_ul]:pl-5">
+            <div className="measure [&_h2]:text-h3 [&_li]:text-ink-muted [&_p]:text-ink-muted flex flex-col gap-5 [&_h2]:mt-8 [&_ul]:flex [&_ul]:list-disc [&_ul]:flex-col [&_ul]:gap-2 [&_ul]:pl-5">
               {children}
             </div>
           </Container>

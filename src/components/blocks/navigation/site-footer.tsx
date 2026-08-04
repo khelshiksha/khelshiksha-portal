@@ -11,22 +11,22 @@ export function SiteFooter({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
 
   return (
-    <footer className="mt-auto border-t border-rule bg-sunken">
+    <footer className="border-rule bg-sunken mt-auto border-t">
       <Container className="py-16 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_repeat(3,1fr)] lg:gap-8">
           <div className="flex flex-col gap-5">
             <Logo showTagline />
-            <p className="max-w-[34ch] text-body-sm text-ink-muted">
+            <p className="text-body-sm text-ink-muted max-w-[34ch]">
               {SITE.secondary}. Gamified experiential learning kits and teacher
               training for Vidyalayas across India.
             </p>
 
-            <div className="flex flex-col gap-2 text-body-sm">
+            <div className="text-body-sm flex flex-col gap-2">
               {SITE.phones.map((phone) => (
                 <a
                   key={phone}
                   href={`tel:${phone.replace(/\s/g, "")}`}
-                  className="inline-flex w-fit items-center gap-2 text-ink-muted transition-colors hover:text-brand-deep"
+                  className="text-ink-muted hover:text-brand-deep inline-flex w-fit items-center gap-2 transition-colors"
                 >
                   <Phone size={15} aria-hidden="true" />
                   {phone}
@@ -34,7 +34,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
               ))}
               <a
                 href={`mailto:${SITE.email}`}
-                className="inline-flex w-fit items-center gap-2 text-ink-muted transition-colors hover:text-brand-deep"
+                className="text-ink-muted hover:text-brand-deep inline-flex w-fit items-center gap-2 transition-colors"
               >
                 <Mail size={15} aria-hidden="true" />
                 {SITE.email}
@@ -48,7 +48,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
               aria-label={group.heading}
               className="flex flex-col gap-3"
             >
-              <h2 className="text-[0.6875rem] font-bold tracking-[0.14em] text-ink-subtle uppercase">
+              <h2 className="text-ink-subtle text-[0.6875rem] font-bold tracking-[0.14em] uppercase">
                 {group.heading}
               </h2>
               <ul className="flex flex-col gap-2">
@@ -56,7 +56,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
                   <li key={link.href}>
                     <Link
                       href={localeHref(locale, link.href)}
-                      className="text-body-sm text-ink-muted transition-colors hover:text-brand-deep"
+                      className="text-body-sm text-ink-muted hover:text-brand-deep transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -67,8 +67,8 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           ))}
         </div>
 
-        <div className="mt-14 flex flex-col gap-4 border-t border-rule pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-[0.8125rem] text-ink-subtle">
+        <div className="border-rule mt-14 flex flex-col gap-4 border-t pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-ink-subtle text-[0.8125rem]">
             © {year} {SITE.name}. All rights reserved.
           </p>
           {/* Three real accounts, not five plausible ones. Facebook and X were
@@ -87,7 +87,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[0.8125rem] font-semibold text-ink-muted transition-colors hover:text-brand-deep"
+                  className="text-ink-muted hover:text-brand-deep text-[0.8125rem] font-semibold transition-colors"
                 >
                   {label}
                   <span className="sr-only"> (opens in a new tab)</span>

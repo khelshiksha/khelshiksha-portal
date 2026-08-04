@@ -44,8 +44,8 @@ export function PillarGrid({
                   name={pillar.icon}
                   className={PILLAR_ACCENT_CLASS[pillar.tint]}
                 />
-                <h3 className="text-h3 font-bold text-ink">{pillar.title}</h3>
-                <p className="flex-1 text-body-sm text-ink-muted">
+                <h3 className="text-h3 text-ink font-bold">{pillar.title}</h3>
+                <p className="text-body-sm text-ink-muted flex-1">
                   {pillar.shortDescription}
                 </p>
                 <ArrowRight

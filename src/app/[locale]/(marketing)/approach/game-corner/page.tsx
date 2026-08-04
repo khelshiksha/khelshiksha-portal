@@ -54,7 +54,9 @@ export default function GameCornerPage() {
             {SHELF_KEYS.map((key, i) => (
               <Reveal as="li" key={key} delay={staggerDelay(i)}>
                 <Card className="flex h-full flex-col gap-2 p-6">
-                  <h2 className="text-h3 font-bold text-ink">{SHELF_LABEL[key]}</h2>
+                  <h2 className="text-h3 text-ink font-bold">
+                    {SHELF_LABEL[key]}
+                  </h2>
                   <p className="text-body-sm text-ink-muted">{NOTES[key]}</p>
                 </Card>
               </Reveal>

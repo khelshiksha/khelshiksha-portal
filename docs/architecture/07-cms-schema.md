@@ -27,90 +27,253 @@ draft/published perspectives drive on-site preview.
 
 ```ts
 defineType({
-  name: 'product',
-  type: 'document',
-  title: 'Learning Kit',
+  name: "product",
+  type: "document",
+  title: "Learning Kit",
   groups: [
-    { name: 'content',  title: 'Content', default: true },
-    { name: 'taxonomy', title: 'Classification' },
-    { name: 'media',    title: 'Media' },
-    { name: 'teaching', title: 'For Teachers' },
-    { name: 'seo',      title: 'SEO' },
+    { name: "content", title: "Content", default: true },
+    { name: "taxonomy", title: "Classification" },
+    { name: "media", title: "Media" },
+    { name: "teaching", title: "For Teachers" },
+    { name: "seo", title: "SEO" },
   ],
   fields: [
-    { name: 'title',    type: 'string', validation: r => r.required(), group: 'content' },
-    { name: 'slug',     type: 'slug', options: { source: 'title' },
-      validation: r => r.required(), group: 'content' },
-    { name: 'tagline',  type: 'string', description: 'One line, max 90 chars',
-      validation: r => r.max(90), group: 'content' },
+    {
+      name: "title",
+      type: "string",
+      validation: (r) => r.required(),
+      group: "content",
+    },
+    {
+      name: "slug",
+      type: "slug",
+      options: { source: "title" },
+      validation: (r) => r.required(),
+      group: "content",
+    },
+    {
+      name: "tagline",
+      type: "string",
+      description: "One line, max 90 chars",
+      validation: (r) => r.max(90),
+      group: "content",
+    },
 
     // Two voices for the same kit — see journey rule 2.
-    { name: 'descriptionInstitutional', type: 'text', rows: 3, group: 'content',
-      title: 'Description — schools & government',
-      description: 'Competency language. Shown on /schools and /government.' },
-    { name: 'descriptionParent', type: 'text', rows: 3, group: 'content',
-      title: 'Description — parents',
-      description: 'Plain, warm language. No NEP/NCF jargon.' },
+    {
+      name: "descriptionInstitutional",
+      type: "text",
+      rows: 3,
+      group: "content",
+      title: "Description — schools & government",
+      description: "Competency language. Shown on /schools and /government.",
+    },
+    {
+      name: "descriptionParent",
+      type: "text",
+      rows: 3,
+      group: "content",
+      title: "Description — parents",
+      description: "Plain, warm language. No NEP/NCF jargon.",
+    },
 
-    { name: 'body', type: 'portableText', group: 'content' },
+    { name: "body", type: "portableText", group: "content" },
 
     // Taxonomy — drives all 9 filters
-    { name: 'pillars', type: 'array', of: [{ type: 'reference', to: [{ type: 'pillar' }] }],
-      validation: r => r.min(1), group: 'taxonomy' },
-    { name: 'ageMin', type: 'number', validation: r => r.required().min(2).max(18), group: 'taxonomy' },
-    { name: 'ageMax', type: 'number', validation: r => r.required().min(2).max(18), group: 'taxonomy' },
-    { name: 'grades', type: 'array', of: [{ type: 'string' }], group: 'taxonomy',
-      options: { list: ['pre-primary','1-2','3-5','6-8','9-10'] } },
-    { name: 'subjects', type: 'array', of: [{ type: 'string' }], group: 'taxonomy',
-      options: { list: ['maths','language','science','evs','health','values','life-skills'] } },
-    { name: 'skills', type: 'array', of: [{ type: 'string' }], group: 'taxonomy',
-      options: { list: ['problem-solving','teamwork','communication','creativity',
-                        'motor-skills','focus','memory','empathy'] } },
-    { name: 'durationMinutes', type: 'number', group: 'taxonomy' },
-    { name: 'setting', type: 'string', group: 'taxonomy',
-      options: { list: ['indoor','outdoor','either'], layout: 'radio' } },
-    { name: 'groupSizeMin', type: 'number', group: 'taxonomy' },
-    { name: 'groupSizeMax', type: 'number', group: 'taxonomy' },
-    { name: 'gameCornerShelf', type: 'string', group: 'taxonomy',
-      description: 'Which Game Corner compartment this sits in',
-      options: { list: ['wellbeing-values','nutrition-health','nature-discovery',
-                        'math-thinking','teamwork-citizenship','environment-sustainability'] } },
+    {
+      name: "pillars",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "pillar" }] }],
+      validation: (r) => r.min(1),
+      group: "taxonomy",
+    },
+    {
+      name: "ageMin",
+      type: "number",
+      validation: (r) => r.required().min(2).max(18),
+      group: "taxonomy",
+    },
+    {
+      name: "ageMax",
+      type: "number",
+      validation: (r) => r.required().min(2).max(18),
+      group: "taxonomy",
+    },
+    {
+      name: "grades",
+      type: "array",
+      of: [{ type: "string" }],
+      group: "taxonomy",
+      options: { list: ["pre-primary", "1-2", "3-5", "6-8", "9-10"] },
+    },
+    {
+      name: "subjects",
+      type: "array",
+      of: [{ type: "string" }],
+      group: "taxonomy",
+      options: {
+        list: [
+          "maths",
+          "language",
+          "science",
+          "evs",
+          "health",
+          "values",
+          "life-skills",
+        ],
+      },
+    },
+    {
+      name: "skills",
+      type: "array",
+      of: [{ type: "string" }],
+      group: "taxonomy",
+      options: {
+        list: [
+          "problem-solving",
+          "teamwork",
+          "communication",
+          "creativity",
+          "motor-skills",
+          "focus",
+          "memory",
+          "empathy",
+        ],
+      },
+    },
+    { name: "durationMinutes", type: "number", group: "taxonomy" },
+    {
+      name: "setting",
+      type: "string",
+      group: "taxonomy",
+      options: { list: ["indoor", "outdoor", "either"], layout: "radio" },
+    },
+    { name: "groupSizeMin", type: "number", group: "taxonomy" },
+    { name: "groupSizeMax", type: "number", group: "taxonomy" },
+    {
+      name: "gameCornerShelf",
+      type: "string",
+      group: "taxonomy",
+      description: "Which Game Corner compartment this sits in",
+      options: {
+        list: [
+          "wellbeing-values",
+          "nutrition-health",
+          "nature-discovery",
+          "math-thinking",
+          "teamwork-citizenship",
+          "environment-sustainability",
+        ],
+      },
+    },
 
     // Outcomes — the most important content on the page
-    { name: 'learningOutcomes', type: 'array', of: [{ type: 'string' }], group: 'content',
-      validation: r => r.min(2).max(8),
-      description: 'What the child can do afterwards. Observable, not aspirational.' },
-    { name: 'curriculumMapping', type: 'array', group: 'content',
-      of: [{ type: 'object', fields: [
-        { name: 'framework', type: 'string', options: { list: ['NEP 2020','NCF 2023','FLN','Fit India','Mission LiFE'] } },
-        { name: 'reference', type: 'string' },
-      ]}] },
+    {
+      name: "learningOutcomes",
+      type: "array",
+      of: [{ type: "string" }],
+      group: "content",
+      validation: (r) => r.min(2).max(8),
+      description:
+        "What the child can do afterwards. Observable, not aspirational.",
+    },
+    {
+      name: "curriculumMapping",
+      type: "array",
+      group: "content",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              name: "framework",
+              type: "string",
+              options: {
+                list: [
+                  "NEP 2020",
+                  "NCF 2023",
+                  "FLN",
+                  "Fit India",
+                  "Mission LiFE",
+                ],
+              },
+            },
+            { name: "reference", type: "string" },
+          ],
+        },
+      ],
+    },
 
     // Media
-    { name: 'heroImage', type: 'accessibleImage', validation: r => r.required(), group: 'media' },
-    { name: 'gallery',   type: 'array', of: [{ type: 'accessibleImage' }], group: 'media' },
-    { name: 'video',     type: 'videoEmbed', group: 'media' },
-    { name: 'boxContents', type: 'array', of: [{ type: 'string' }], group: 'media' },
+    {
+      name: "heroImage",
+      type: "accessibleImage",
+      validation: (r) => r.required(),
+      group: "media",
+    },
+    {
+      name: "gallery",
+      type: "array",
+      of: [{ type: "accessibleImage" }],
+      group: "media",
+    },
+    { name: "video", type: "videoEmbed", group: "media" },
+    {
+      name: "boxContents",
+      type: "array",
+      of: [{ type: "string" }],
+      group: "media",
+    },
 
     // Teacher assets
-    { name: 'howToPlay', type: 'array', group: 'teaching',
-      of: [{ type: 'object', fields: [
-        { name: 'step', type: 'string' },
-        { name: 'image', type: 'accessibleImage' },
-      ]}] },
-    { name: 'teacherGuide', type: 'reference', to: [{ type: 'resource' }], group: 'teaching' },
-    { name: 'lessonPlans', type: 'array', of: [{ type: 'reference', to: [{ type: 'resource' }] }],
-      group: 'teaching' },
+    {
+      name: "howToPlay",
+      type: "array",
+      group: "teaching",
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "step", type: "string" },
+            { name: "image", type: "accessibleImage" },
+          ],
+        },
+      ],
+    },
+    {
+      name: "teacherGuide",
+      type: "reference",
+      to: [{ type: "resource" }],
+      group: "teaching",
+    },
+    {
+      name: "lessonPlans",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "resource" }] }],
+      group: "teaching",
+    },
 
-    { name: 'relatedProducts', type: 'array', of: [{ type: 'reference', to: [{ type: 'product' }] }],
-      validation: r => r.max(3), group: 'content' },
-    { name: 'featured',    type: 'boolean', initialValue: false, group: 'content' },
-    { name: 'orderRank',   type: 'string', hidden: true },  // @sanity/orderable-document-list
-    { name: 'seo',         type: 'seo', group: 'seo' },
+    {
+      name: "relatedProducts",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "product" }] }],
+      validation: (r) => r.max(3),
+      group: "content",
+    },
+    {
+      name: "featured",
+      type: "boolean",
+      initialValue: false,
+      group: "content",
+    },
+    { name: "orderRank", type: "string", hidden: true }, // @sanity/orderable-document-list
+    { name: "seo", type: "seo", group: "seo" },
   ],
-  validation: r => r.custom(d =>
-    d.ageMin <= d.ageMax || 'Minimum age must not exceed maximum age'),
-})
+  validation: (r) =>
+    r.custom(
+      (d) => d.ageMin <= d.ageMax || "Minimum age must not exceed maximum age",
+    ),
+});
 ```
 
 ### `pillar` — the five learning pillars
@@ -135,7 +298,7 @@ defineType({
 ```
 
 `colorKey` is an enum, not a colour field. This is the mechanism that stops the design system
-drifting: an editor picks a *pillar identity*, not a hex value.
+drifting: an editor picks a _pillar identity_, not a hex value.
 
 ### `page` — composed pages (home + audience hubs)
 
@@ -169,29 +332,29 @@ title. That is the whole page-builder surface — closed vocabulary, no escape h
 
 ### Remaining documents
 
-| Type | Key fields |
-|---|---|
-| `post` (blog) | title, slug, excerpt, body, `author→`, `categories[]→`, `pillars[]→`, heroImage, publishedAt, `readingTime` (auto-derived), `featured`, seo |
-| `caseStudy` | title, slug, `school`, district, `studentsReached`, `pillars[]→`, `productsUsed[]→`, `challenge`, `approach`, `outcomes[]` (metric + before + after), quote, gallery, `downloadablePdf`, seo |
-| `testimonial` | quote, name, role, organisation, `audience` (school/teacher/parent/govt), photo, `productReference→`, `featured` |
-| `resource` | title, slug, `resourceType` (lesson-plan/activity/guide/brochure/report), `file`, previewImages[], grades[], subjects[], `pillars[]→`, `gated` (bool), `relatedProduct→` |
-| `partner` | name, logo (SVG preferred), url, `partnerType` (govt/ngo/institution/media), `displayOnHomepage` |
-| `teamMember` | name, role, photo, bio, linkedIn, orderRank |
-| `faq` | question, answer (portable text), `category`, `audience`, orderRank |
-| `galleryItem` | image/video, caption, `event`, date, `pillars[]→`, district |
-| `jobPosting` | title, slug, location, type, description, `applyEmail`, `closesAt` |
-| `category` | title, slug, description (blog taxonomy) |
-| `author` | name, role, photo, bio |
+| Type          | Key fields                                                                                                                                                                                   |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `post` (blog) | title, slug, excerpt, body, `author→`, `categories[]→`, `pillars[]→`, heroImage, publishedAt, `readingTime` (auto-derived), `featured`, seo                                                  |
+| `caseStudy`   | title, slug, `school`, district, `studentsReached`, `pillars[]→`, `productsUsed[]→`, `challenge`, `approach`, `outcomes[]` (metric + before + after), quote, gallery, `downloadablePdf`, seo |
+| `testimonial` | quote, name, role, organisation, `audience` (school/teacher/parent/govt), photo, `productReference→`, `featured`                                                                             |
+| `resource`    | title, slug, `resourceType` (lesson-plan/activity/guide/brochure/report), `file`, previewImages[], grades[], subjects[], `pillars[]→`, `gated` (bool), `relatedProduct→`                     |
+| `partner`     | name, logo (SVG preferred), url, `partnerType` (govt/ngo/institution/media), `displayOnHomepage`                                                                                             |
+| `teamMember`  | name, role, photo, bio, linkedIn, orderRank                                                                                                                                                  |
+| `faq`         | question, answer (portable text), `category`, `audience`, orderRank                                                                                                                          |
+| `galleryItem` | image/video, caption, `event`, date, `pillars[]→`, district                                                                                                                                  |
+| `jobPosting`  | title, slug, location, type, description, `applyEmail`, `closesAt`                                                                                                                           |
+| `category`    | title, slug, description (blog taxonomy)                                                                                                                                                     |
+| `author`      | name, role, photo, bio                                                                                                                                                                       |
 
 ---
 
 ## Singletons
 
-| Singleton | Contains |
-|---|---|
+| Singleton      | Contains                                                                                                                                |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | `siteSettings` | Brand name, tagline, logo variants, contact (2 phones, email), social handles, default OG image, org address for `Organization` JSON-LD |
-| `navigation` | Header links + mega-menu structure, footer column groups. Editable so a new hub doesn't need a deploy. |
-| `homePage` | A `page` document locked to the `/` route |
+| `navigation`   | Header links + mega-menu structure, footer column groups. Editable so a new hub doesn't need a deploy.                                  |
+| `homePage`     | A `page` document locked to the `/` route                                                                                               |
 
 Enforced with a `singletonPlugin` that removes create/delete actions and a Structure Builder
 desk that pins them to a fixed document ID.

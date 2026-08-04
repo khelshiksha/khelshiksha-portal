@@ -14,11 +14,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { staggerDelay } from "@/lib/motion";
 import { buildMetadata, productJsonLd } from "@/lib/seo";
 import { getDictionary } from "@/lib/i18n";
-import {
-  formatAgeRange,
-  formatDuration,
-  formatGroupSize,
-} from "@/lib/utils";
+import { formatAgeRange, formatDuration, formatGroupSize } from "@/lib/utils";
 import { SETTING_LABEL, SKILL_LABEL } from "@/lib/constants";
 import {
   getPillars,
@@ -49,7 +45,6 @@ export const revalidate = 3600;
  * already true — the content lives in the repo — so nothing is lost.
  */
 export const dynamicParams = false;
-
 
 export async function generateStaticParams() {
   return (await getProductSlugs()).map((slug) => ({ slug }));
@@ -130,14 +125,17 @@ export default async function ProductPage({
               {product.descriptionInstitutional}
             </p>
 
-            <dl className="grid grid-cols-2 gap-5 rounded-[var(--radius-lg)] border border-rule bg-surface p-5 sm:grid-cols-4">
+            <dl className="border-rule bg-surface grid grid-cols-2 gap-5 rounded-[var(--radius-lg)] border p-5 sm:grid-cols-4">
               <SpecItem
                 label={t.product.ageLabel}
                 value={formatAgeRange(product.ageMin, product.ageMax)}
               />
               <SpecItem
                 label={t.product.playersLabel}
-                value={formatGroupSize(product.groupSizeMin, product.groupSizeMax)}
+                value={formatGroupSize(
+                  product.groupSizeMin,
+                  product.groupSizeMax,
+                )}
               />
               <SpecItem
                 label={t.product.durationLabel}
@@ -182,7 +180,7 @@ export default async function ProductPage({
                   <Check
                     size={19}
                     aria-hidden="true"
-                    className="mt-1 shrink-0 text-success"
+                    className="text-success mt-1 shrink-0"
                   />
                   <span className="text-body text-ink">{outcome}</span>
                 </div>
@@ -204,11 +202,11 @@ export default async function ProductPage({
               ))}
             </ul>
 
-            <h2 className="mt-6 text-h2 text-ink">{t.product.curriculum}</h2>
+            <h2 className="text-h2 text-ink mt-6">{t.product.curriculum}</h2>
             <ul className="flex flex-col gap-3">
               {product.curriculumMapping.map((link) => (
                 <li key={link.framework} className="flex flex-col">
-                  <span className="text-[0.8125rem] font-extrabold tracking-[0.06em] text-brand uppercase">
+                  <span className="text-brand text-[0.8125rem] font-extrabold tracking-[0.06em] uppercase">
                     {link.framework}
                   </span>
                   <span className="text-body-sm text-ink-muted">
@@ -226,12 +224,12 @@ export default async function ProductPage({
                 <li key={step.step} className="flex gap-4">
                   <span
                     aria-hidden="true"
-                    className="tabular mt-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-tint text-[0.75rem] font-bold text-brand-deep"
+                    className="tabular bg-brand-tint text-brand-deep mt-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-full text-[0.75rem] font-bold"
                   >
                     {i + 1}
                   </span>
                   <div className="flex flex-col gap-1">
-                    <p className="font-semibold text-ink">{step.step}</p>
+                    <p className="text-ink font-semibold">{step.step}</p>
                     {step.detail ? (
                       <p className="text-body-sm text-ink-muted">
                         {step.detail}
@@ -242,12 +240,12 @@ export default async function ProductPage({
               ))}
             </ol>
 
-            <h2 className="mt-6 text-h2 text-ink">{t.product.inTheBox}</h2>
+            <h2 className="text-h2 text-ink mt-6">{t.product.inTheBox}</h2>
             <ul className="flex flex-col gap-2">
               {product.boxContents.map((item) => (
                 <li
                   key={item}
-                  className="border-b border-rule py-2 text-body-sm text-ink-muted last:border-b-0"
+                  className="border-rule text-body-sm text-ink-muted border-b py-2 last:border-b-0"
                 >
                   {item}
                 </li>

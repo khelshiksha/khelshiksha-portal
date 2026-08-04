@@ -55,7 +55,7 @@ export function MediaFrame({
   return (
     <div
       className={cn(
-        "relative overflow-hidden bg-sunken",
+        "bg-sunken relative overflow-hidden",
         RADIUS[radius],
         RATIO[ratio],
         className,

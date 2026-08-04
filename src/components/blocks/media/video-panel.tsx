@@ -56,7 +56,9 @@ export function VideoPanel({
               className="text-ink group flex size-full flex-col items-center justify-center gap-3 p-6 text-center"
             >
               <Film aria-hidden="true" className="text-energy-text size-10" />
-              <span className="text-h4">Films from the classroom are coming</span>
+              <span className="text-h4">
+                Films from the classroom are coming
+              </span>
               <span className="text-body-sm text-ink-muted max-w-[48ch]">
                 We are filming sessions in schools now. Subscribe on YouTube and
                 you will see them first.
@@ -90,7 +92,11 @@ export function VideoPanel({
               />
               <span className="absolute inset-0 flex items-center justify-center">
                 <span className="bg-brand text-on-brand flex size-16 items-center justify-center rounded-full shadow-lg transition group-hover:scale-110">
-                  <Play aria-hidden="true" className="size-7 translate-x-0.5" fill="currentColor" />
+                  <Play
+                    aria-hidden="true"
+                    className="size-7 translate-x-0.5"
+                    fill="currentColor"
+                  />
                 </span>
               </span>
               <span className="sr-only">Play video: {heading}</span>

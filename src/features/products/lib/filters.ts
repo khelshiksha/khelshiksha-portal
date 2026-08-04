@@ -34,7 +34,9 @@ export const EMPTY_FILTERS: ProductFilters = {
   groupSize: [],
 };
 
-export const FILTER_KEYS = Object.keys(EMPTY_FILTERS) as (keyof ProductFilters)[];
+export const FILTER_KEYS = Object.keys(
+  EMPTY_FILTERS,
+) as (keyof ProductFilters)[];
 
 /** Pure predicate — no React, no URL, trivially testable. */
 export function matchesFilters(
@@ -95,7 +97,9 @@ export function matchesFilters(
     const hit = filters.groupSize.some((key) => {
       const band = GROUP_SIZES.find((b) => b.key === key);
       if (!band) return false;
-      return product.groupSizeMin <= band.max && product.groupSizeMax >= band.min;
+      return (
+        product.groupSizeMin <= band.max && product.groupSizeMax >= band.min
+      );
     });
     if (!hit) return false;
   }

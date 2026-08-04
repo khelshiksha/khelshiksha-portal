@@ -38,7 +38,12 @@ export function FeaturedKits({
             removing either one brings the ragged bottoms back. */}
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((product, i) => (
-            <Reveal as="li" key={product._id} delay={staggerDelay(i)} className="h-full">
+            <Reveal
+              as="li"
+              key={product._id}
+              delay={staggerDelay(i)}
+              className="h-full"
+            >
               <ProductCard product={product} pillars={pillars} />
             </Reveal>
           ))}

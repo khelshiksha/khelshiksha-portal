@@ -28,7 +28,9 @@ describe("leadSchema — phone", () => {
     ["97798733331", "eleven digits"],
     ["", "empty"],
   ])("rejects %s (%s)", (input) => {
-    expect(leadSchema.safeParse({ ...valid, phone: input }).success).toBe(false);
+    expect(leadSchema.safeParse({ ...valid, phone: input }).success).toBe(
+      false,
+    );
   });
 
   it("tells the user how to fix it, rather than just 'invalid'", () => {

@@ -272,14 +272,6 @@ export function Post({
   material?: MaterialName;
 }) {
   return (
-    <Box
-      gx={gx}
-      gy={gy}
-      gz={gz}
-      w={0.14}
-      d={0.14}
-      h={h}
-      material={material}
-    />
+    <Box gx={gx} gy={gy} gz={gz} w={0.14} d={0.14} h={h} material={material} />
   );
 }

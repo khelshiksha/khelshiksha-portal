@@ -46,14 +46,14 @@ export function StatBand({
               delay={staggerDelay(i)}
               className="flex flex-col items-center gap-2 text-center"
             >
-              <dt className="order-2 max-w-[16ch] text-[0.9375rem] font-bold text-ink">
+              <dt className="text-ink order-2 max-w-[16ch] text-[0.9375rem] font-bold">
                 {stat.label}
               </dt>
-              <dd className="order-1 text-display-2 font-extrabold text-brand">
+              <dd className="text-display-2 text-brand order-1 font-extrabold">
                 <Counter to={stat.value} suffix={stat.suffix} />
               </dd>
               {stat.detail ? (
-                <dd className="order-3 max-w-[22ch] text-body-sm text-ink-muted">
+                <dd className="text-body-sm text-ink-muted order-3 max-w-[22ch]">
                   {stat.detail}
                 </dd>
               ) : null}
