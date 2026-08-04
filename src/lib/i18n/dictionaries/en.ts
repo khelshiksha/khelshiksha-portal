@@ -58,8 +58,7 @@ export const en = {
     heading: "Filter kits",
     clearAll: "Clear all",
     apply: "Show results",
-    resultCount: (n: number) =>
-      n === 1 ? "1 kit matches" : `${n} kits match`,
+    resultCount: (n: number) => (n === 1 ? "1 kit matches" : `${n} kits match`),
     emptyTitle: "No kits match those filters",
     emptyBody: "Try removing a filter — here are some close alternatives.",
     age: "Age",

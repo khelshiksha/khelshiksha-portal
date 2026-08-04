@@ -38,19 +38,19 @@ export function FaqAccordion({
 
         <ul className="flex flex-col">
           {items.map((item) => (
-            <li key={item._id} className="border-b border-rule">
+            <li key={item._id} className="border-rule border-b">
               <details className="group">
-                <summary className="flex cursor-pointer items-start justify-between gap-5 py-5 text-left list-none [&::-webkit-details-marker]:hidden">
-                  <h3 className="text-[1.0625rem] font-bold text-ink">
+                <summary className="flex cursor-pointer list-none items-start justify-between gap-5 py-5 text-left [&::-webkit-details-marker]:hidden">
+                  <h3 className="text-ink text-[1.0625rem] font-bold">
                     {item.question}
                   </h3>
                   <Plus
                     size={19}
                     aria-hidden="true"
-                    className="mt-0.5 shrink-0 text-brand transition-transform duration-200 group-open:rotate-45"
+                    className="text-brand mt-0.5 shrink-0 transition-transform duration-200 group-open:rotate-45"
                   />
                 </summary>
-                <p className="pb-6 text-body text-ink-muted">{item.answer}</p>
+                <p className="text-body text-ink-muted pb-6">{item.answer}</p>
               </details>
             </li>
           ))}

@@ -32,10 +32,10 @@ export default function PrivacyPage() {
 
       <h2>What we never collect</h2>
       <p>
-        <strong>We do not collect information about children.</strong> Our
-        forms ask about a child&rsquo;s age band and interests only — never a
-        name, school, photograph or any other identifying detail. This is a
-        deliberate product constraint, not only a policy statement.
+        <strong>We do not collect information about children.</strong> Our forms
+        ask about a child&rsquo;s age band and interests only — never a name,
+        school, photograph or any other identifying detail. This is a deliberate
+        product constraint, not only a policy statement.
       </p>
       <p>
         We also do not store your IP address. Where we need to limit repeated
@@ -60,9 +60,9 @@ export default function PrivacyPage() {
         The one exception is the AI assistant on this site. If you type a
         question into it, that question is sent to Google to generate the
         answer, and Google may use it to improve their services. Do not put
-        anything into the assistant that you would not want processed that way
-        — if you would rather talk to us privately, use the enquiry form or
-        call us.
+        anything into the assistant that you would not want processed that way —
+        if you would rather talk to us privately, use the enquiry form or call
+        us.
       </p>
 
       <h2>How long we keep it</h2>

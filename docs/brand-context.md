@@ -36,24 +36,24 @@ Positioning line: **"Shifting from rote memorization to Learning by Doing."**
 
 Framed as "A Complete Learning Ecosystem for Holistic Development":
 
-| Pillar | Description |
-| --- | --- |
-| Foundational Learning (FLN) | Strengthening early literacy and numeracy |
-| Health & Nutrition | Promoting well-being and holistic physical fitness |
-| Climate Education | Building environmentally responsible citizens |
-| Future Readiness | Early-stage career awareness and goal setting |
-| Life Skills | Instilling road safety, ethics, and civic responsibility |
+| Pillar                      | Description                                              |
+| --------------------------- | -------------------------------------------------------- |
+| Foundational Learning (FLN) | Strengthening early literacy and numeracy                |
+| Health & Nutrition          | Promoting well-being and holistic physical fitness       |
+| Climate Education           | Building environmentally responsible citizens            |
+| Future Readiness            | Early-stage career awareness and goal setting            |
+| Life Skills                 | Instilling road safety, ethics, and civic responsibility |
 
 ## Products (games shown on the brochure)
 
-| Game | Description |
-| --- | --- |
+| Game             | Description                                                                                                                                   |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | Project SURAKSHA | Interactive road safety game teaching traffic rules, safe road behavior, and responsible decision-making through real-life scenarios and play |
-| Aryabhata | Fast-paced mathematics game strengthening arithmetic, logical thinking, and problem-solving skills |
-| Aahar | Fun nutrition card game helping children understand healthy food choices through play |
-| Yoga Safari | Playful yoga game introducing mindfulness, movement, focus, and emotional well-being |
-| Brainy Bee | Word-building game where children match objects with letters, form words, and strengthen early vocabulary and thinking skills |
-| Naturebola | Sound-based game where children listen, identify, and match nature and animal sounds through fun group play |
+| Aryabhata        | Fast-paced mathematics game strengthening arithmetic, logical thinking, and problem-solving skills                                            |
+| Aahar            | Fun nutrition card game helping children understand healthy food choices through play                                                         |
+| Yoga Safari      | Playful yoga game introducing mindfulness, movement, focus, and emotional well-being                                                          |
+| Brainy Bee       | Word-building game where children match objects with letters, form words, and strengthen early vocabulary and thinking skills                 |
+| Naturebola       | Sound-based game where children listen, identify, and match nature and animal sounds through fun group play                                   |
 
 Additional titles visible on the Game Corner shelf (not individually described in the brochure):
 **Santulan**, **Climato**, **Vasudhaiv Kutumbkam**, and one more (partially obscured — reads
@@ -118,7 +118,7 @@ navbharatonline.com, and a Gujarati-script wordmark.
 - **Accents:** magenta/pink pill badges, red, green, orange
 - **Cards:** pastel tints (pink, blue, mint, peach, lavender) with wavy/scalloped edges
 - **Type:** bold sans-serif headings with italic serif-ish emphasis on key phrases
-  ("*Learning by Doing.*", "*Holistic Development*", "*Credibility*")
+  ("_Learning by Doing._", "_Holistic Development_", "_Credibility_")
 - **Imagery:** 3D-rendered cartoon children with books, dice, and a globe; playful, rounded, high-gloss
 - **Overall feel:** bright, childlike, optimistic — but paired with government/institutional
   credibility markers

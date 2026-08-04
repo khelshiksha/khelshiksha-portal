@@ -8,18 +8,18 @@ and the instrumentation that proves it worked.
 ## J1 — Meera, Principal (PM SHRI school, Mehsana district)
 
 **Arrives from:** a WhatsApp forward from another principal, or a Google search for
-*"NEP 2020 activity based learning kits Gujarat"*. On a desktop, between periods, ~4 minutes.
+_"NEP 2020 activity based learning kits Gujarat"_. On a desktop, between periods, ~4 minutes.
 
-**Her real question:** *"Is this legitimate, has the government already approved it, and how
-much of my staff's time will it cost me?"*
+**Her real question:** _"Is this legitimate, has the government already approved it, and how
+much of my staff's time will it cost me?"_
 
-| Step | Page | What must be true |
-|---|---|---|
-| 1 | `/` | Within one viewport she sees **12,000+ kits · PM SHRI · UNICEF · NCF 2023**. Credibility before pitch. |
-| 2 | `/schools` | The rollout is shown as a **timeline, not a brochure** — Week 0 audit → Week 2 install → Week 3 training → ongoing. Removes the "how much work is this" fear. |
-| 3 | `/schools/teacher-training` | Explicit hours, format, and who delivers it. Her staff's time is the real currency. |
-| 4 | `/impact/case-studies/[slug]` | One school like hers, with a before/after outcome she recognises. |
-| 5 | `/schools` → Book a Demo | Form is **5 fields max**: name, school, district, phone, preferred time. Nothing else. |
+| Step | Page                          | What must be true                                                                                                                                             |
+| ---- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | `/`                           | Within one viewport she sees **12,000+ kits · PM SHRI · UNICEF · NCF 2023**. Credibility before pitch.                                                        |
+| 2    | `/schools`                    | The rollout is shown as a **timeline, not a brochure** — Week 0 audit → Week 2 install → Week 3 training → ongoing. Removes the "how much work is this" fear. |
+| 3    | `/schools/teacher-training`   | Explicit hours, format, and who delivers it. Her staff's time is the real currency.                                                                           |
+| 4    | `/impact/case-studies/[slug]` | One school like hers, with a before/after outcome she recognises.                                                                                             |
+| 5    | `/schools` → Book a Demo      | Form is **5 fields max**: name, school, district, phone, preferred time. Nothing else.                                                                        |
 
 **Friction that loses her:** a product grid before an outcomes statement; a form asking for
 student count and budget before she has decided to talk to anyone; any page that implies this
@@ -33,24 +33,24 @@ demo-form field-drop-off.
 
 ## J2 — Rakesh, Grade 4 Teacher (municipal school, Ahmedabad)
 
-**Arrives from:** organic search for *"grade 4 maths activity worksheet free"* — a long-tail
+**Arrives from:** organic search for _"grade 4 maths activity worksheet free"_ — a long-tail
 resource query, on Android, on 4G, between classes. He has never heard of Khel Shiksha.
 
-**His real question:** *"Can I get something I can use tomorrow morning, free, in under two
-minutes?"*
+**His real question:** _"Can I get something I can use tomorrow morning, free, in under two
+minutes?"_
 
-| Step | Page | What must be true |
-|---|---|---|
-| 1 | `/blog/[slug]` or `/teachers/lesson-plans` | Lands deep. The page must stand alone — he did not come through the homepage. |
-| 2 | resource card | Preview visible **before** any email gate. Show him the value first. |
-| 3 | email gate | One field. Email only. Grade/subject optional and clearly skippable. |
-| 4 | download + thank-you | Immediate PDF. Then, and only then, a soft cross-sell: *"This activity is from the Aryabhata kit — see how it works in a full classroom set."* |
-| 5 | `/products/aryabhata` | Now he is a warm lead who has already used our material. |
+| Step | Page                                       | What must be true                                                                                                                              |
+| ---- | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | `/blog/[slug]` or `/teachers/lesson-plans` | Lands deep. The page must stand alone — he did not come through the homepage.                                                                  |
+| 2    | resource card                              | Preview visible **before** any email gate. Show him the value first.                                                                           |
+| 3    | email gate                                 | One field. Email only. Grade/subject optional and clearly skippable.                                                                           |
+| 4    | download + thank-you                       | Immediate PDF. Then, and only then, a soft cross-sell: _"This activity is from the Aryabhata kit — see how it works in a full classroom set."_ |
+| 5    | `/products/aryabhata`                      | Now he is a warm lead who has already used our material.                                                                                       |
 
 **Friction that loses him:** a gate before the preview; a multi-field form; a 3MB hero image
 on a lesson-plan page; a PDF that opens in a broken mobile viewer.
 
-**Why he matters strategically:** teachers do not buy, but they *recommend*. Rakesh telling
+**Why he matters strategically:** teachers do not buy, but they _recommend_. Rakesh telling
 Meera the kits are good is worth more than any ad. The resource library is the top of that funnel.
 
 **Success:** `ResourceDownload` row + newsletter opt-in.
@@ -60,18 +60,18 @@ Meera the kits are good is worth more than any ad. The resource library is the t
 
 ## J3 — Priya, Parent (two children, ages 6 and 9, Surat)
 
-**Arrives from:** Instagram (`@khelshiksha`) or a search for *"screen free learning games for
-6 year old"*. Mobile, evening, browsing mood.
+**Arrives from:** Instagram (`@khelshiksha`) or a search for _"screen free learning games for
+6 year old"_. Mobile, evening, browsing mood.
 
-**Her real question:** *"Will my child actually enjoy this, or will it sit in a cupboard?"*
+**Her real question:** _"Will my child actually enjoy this, or will it sit in a cupboard?"_
 
-| Step | Page | What must be true |
-|---|---|---|
-| 1 | `/parents` | Warm, video-first. A real child playing, not a rendered illustration. |
-| 2 | `/parents/choosing-a-kit` | A short guided finder: age → interest → time available. Three questions, not a nine-facet filter. |
-| 3 | results | 2–3 recommendations with **learning outcomes in parent language** — "builds number confidence", not "strengthens numeracy competencies per FLN framework". |
-| 4 | `/products/[slug]` | Video of gameplay above the fold. Age, duration, players, what's in the box. |
-| 5 | enquiry / buy | Depends on open question D5. If no public pricing, this is "Enquire" and must say why (bulk/school pricing). |
+| Step | Page                      | What must be true                                                                                                                                          |
+| ---- | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | `/parents`                | Warm, video-first. A real child playing, not a rendered illustration.                                                                                      |
+| 2    | `/parents/choosing-a-kit` | A short guided finder: age → interest → time available. Three questions, not a nine-facet filter.                                                          |
+| 3    | results                   | 2–3 recommendations with **learning outcomes in parent language** — "builds number confidence", not "strengthens numeracy competencies per FLN framework". |
+| 4    | `/products/[slug]`        | Video of gameplay above the fold. Age, duration, players, what's in the box.                                                                               |
+| 5    | enquiry / buy             | Depends on open question D5. If no public pricing, this is "Enquire" and must say why (bulk/school pricing).                                               |
 
 **Friction that loses her:** institutional language; NEP/NCF jargon on parent pages (it belongs
 on `/schools` and `/government`, not here); a nine-facet filter bar; no video.
@@ -86,16 +86,16 @@ on `/schools` and `/government`, not here); a nine-facet filter bar; no video.
 **Arrives from:** a direct link in an email, or a vendor search. Desktop, evaluating against
 a procurement checklist, likely printing the page.
 
-**His real question:** *"Can this vendor deliver at district scale, and does it map to the
-schemes I am already accountable for?"*
+**His real question:** _"Can this vendor deliver at district scale, and does it map to the
+schemes I am already accountable for?"_
 
-| Step | Page | What must be true |
-|---|---|---|
-| 1 | `/government` | Scheme alignment stated in the first screen: **NEP 2020 · NCF 2023 · Fit India · Mission LiFE · Eat Right India**. Named, not implied. |
-| 2 | `/government/pm-shri` | The 12,000-kit deployment as a full case study — timeline, districts, logistics, outcomes. This single page is the strongest asset on the site. |
-| 3 | `/government/scale` | Manufacturing capacity, delivery logistics, training-the-trainer model. |
-| 4 | `/impact` | Third-party validation: UNICEF, GUJCOST, press coverage. |
-| 5 | Request a proposal | Longer form is acceptable here — he expects it. Capture department, district, scale, timeline. |
+| Step | Page                  | What must be true                                                                                                                               |
+| ---- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | `/government`         | Scheme alignment stated in the first screen: **NEP 2020 · NCF 2023 · Fit India · Mission LiFE · Eat Right India**. Named, not implied.          |
+| 2    | `/government/pm-shri` | The 12,000-kit deployment as a full case study — timeline, districts, logistics, outcomes. This single page is the strongest asset on the site. |
+| 3    | `/government/scale`   | Manufacturing capacity, delivery logistics, training-the-trainer model.                                                                         |
+| 4    | `/impact`             | Third-party validation: UNICEF, GUJCOST, press coverage.                                                                                        |
+| 5    | Request a proposal    | Longer form is acceptable here — he expects it. Capture department, district, scale, timeline.                                                  |
 
 **Friction that loses him:** vague claims without numbers; no downloadable PDF (he needs to
 forward it); a page that prints badly.
@@ -111,16 +111,16 @@ affects a high-value journey.
 
 ## J5 — Anjali, Programme Manager (education NGO, 40 partner schools)
 
-**Arrives from:** referral or a search for *"experiential learning partner NGO India"*.
+**Arrives from:** referral or a search for _"experiential learning partner NGO India"_.
 
-**Her real question:** *"Can I run this across 40 schools with my existing field team, and can
-I report outcomes to my funder?"*
+**Her real question:** _"Can I run this across 40 schools with my existing field team, and can
+I report outcomes to my funder?"_
 
 She follows a hybrid of J1 and J4 — the rollout mechanics of a principal, the scale and
 evidence requirements of a government buyer. She is served by `/government` (which covers
 NGOs) plus `/schools/outcomes`.
 
-**Her unique need — and the one thing no competitor does well:** *funder-grade measurement*.
+**Her unique need — and the one thing no competitor does well:** _funder-grade measurement_.
 `/schools/outcomes` must show what is measured, how, and what a report looks like. A sample
 outcome report as a downloadable PDF is the single highest-leverage asset for this persona.
 

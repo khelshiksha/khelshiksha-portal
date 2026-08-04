@@ -26,8 +26,8 @@ export function ComparisonSplit({
 
         <div className="grid gap-4 lg:grid-cols-2">
           <Reveal>
-            <div className="h-full rounded-[var(--radius-xl)] border border-rule bg-sunken p-8">
-              <h3 className="text-h3 font-bold text-ink-muted">
+            <div className="border-rule bg-sunken h-full rounded-[var(--radius-xl)] border p-8">
+              <h3 className="text-h3 text-ink-muted font-bold">
                 {problem.heading}
               </h3>
               <ul className="mt-5 flex flex-col gap-4">
@@ -36,7 +36,7 @@ export function ComparisonSplit({
                     <Minus
                       size={18}
                       aria-hidden="true"
-                      className="mt-1 shrink-0 text-ink-subtle"
+                      className="text-ink-subtle mt-1 shrink-0"
                     />
                     <span className="text-body text-ink-muted">{item}</span>
                   </li>
@@ -46,15 +46,15 @@ export function ComparisonSplit({
           </Reveal>
 
           <Reveal delay={80}>
-            <div className="h-full rounded-[var(--radius-xl)] border border-transparent bg-tint-mint p-8">
-              <h3 className="text-h3 font-bold text-ink">{outcome.heading}</h3>
+            <div className="bg-tint-mint h-full rounded-[var(--radius-xl)] border border-transparent p-8">
+              <h3 className="text-h3 text-ink font-bold">{outcome.heading}</h3>
               <ul className="mt-5 flex flex-col gap-4">
                 {outcome.items.map((item) => (
                   <li key={item} className="flex gap-3">
                     <Check
                       size={18}
                       aria-hidden="true"
-                      className="mt-1 shrink-0 text-pillar-mint"
+                      className="text-pillar-mint mt-1 shrink-0"
                     />
                     <span className="text-body text-ink">{item}</span>
                   </li>

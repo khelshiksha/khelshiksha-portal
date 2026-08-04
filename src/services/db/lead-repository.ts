@@ -92,7 +92,13 @@ class PostgresLeadRepository implements LeadRepository {
             }
           : {}),
       },
-      select: { id: true, type: true, name: true, phone: true, createdAt: true },
+      select: {
+        id: true,
+        type: true,
+        name: true,
+        phone: true,
+        createdAt: true,
+      },
     });
 
     return {

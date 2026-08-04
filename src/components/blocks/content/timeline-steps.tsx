@@ -42,18 +42,18 @@ export function TimelineSteps({
                 {i < steps.length - 1 ? (
                   <span
                     aria-hidden="true"
-                    className="absolute top-[13px] left-8 hidden h-0.5 w-[calc(100%-1rem)] bg-rule lg:block"
+                    className="bg-rule absolute top-[13px] left-8 hidden h-0.5 w-[calc(100%-1rem)] lg:block"
                   />
                 ) : null}
 
-                <span className="relative z-10 inline-flex size-7 items-center justify-center rounded-full bg-brand text-[0.75rem] font-bold text-on-brand">
+                <span className="bg-brand text-on-brand relative z-10 inline-flex size-7 items-center justify-center rounded-full text-[0.75rem] font-bold">
                   {i + 1}
                 </span>
 
-                <p className="text-[0.75rem] font-bold tracking-[0.1em] text-brand uppercase">
+                <p className="text-brand text-[0.75rem] font-bold tracking-[0.1em] uppercase">
                   {step.label}
                 </p>
-                <h3 className="text-h3 font-bold text-ink">{step.title}</h3>
+                <h3 className="text-h3 text-ink font-bold">{step.title}</h3>
                 <p className="text-body-sm text-ink-muted">
                   {step.description}
                 </p>

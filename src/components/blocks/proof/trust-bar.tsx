@@ -48,16 +48,15 @@ type Alignment = { framework: string };
  * content/credentials.ts and are shown by the logo wall on /impact; this bar
  * deliberately does not duplicate them.
  */
-export function TrustBar({
-  alignments,
-}: {
-  alignments: Alignment[];
-}) {
+export function TrustBar({ alignments }: { alignments: Alignment[] }) {
   return (
     <section aria-labelledby="trust-heading" className="pt-4 pb-2 sm:pt-6">
       <Container>
-        <div className="flex flex-col items-center gap-5 rounded-[var(--radius-2xl)] border border-rule bg-sunken px-6 py-9 text-center sm:gap-6 sm:px-10 sm:py-10">
-          <h2 id="trust-heading" className="text-h3 font-bold text-balance text-ink">
+        <div className="border-rule bg-sunken flex flex-col items-center gap-5 rounded-[var(--radius-2xl)] border px-6 py-9 text-center sm:gap-6 sm:px-10 sm:py-10">
+          <h2
+            id="trust-heading"
+            className="text-h3 text-ink font-bold text-balance"
+          >
             <span className="text-brand-deep">12,000+ kits</span> delivered to
             PM SHRI schools across Gujarat
           </h2>
@@ -68,12 +67,12 @@ export function TrustBar({
               padding rather than as proof. The headline claim and the
               framework line stay, because neither is repeated anywhere. */}
 
-          <p className="measure text-[0.75rem] text-ink-subtle sm:text-[0.8125rem]">
+          <p className="measure text-ink-subtle text-[0.75rem] sm:text-[0.8125rem]">
             Built against{" "}
             {alignments.map((alignment, i) => (
               <span key={alignment.framework}>
                 {i > 0 ? (i === alignments.length - 1 ? " and " : ", ") : ""}
-                <span className="font-semibold text-ink-muted">
+                <span className="text-ink-muted font-semibold">
                   {alignment.framework}
                 </span>
               </span>

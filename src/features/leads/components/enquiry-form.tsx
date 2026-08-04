@@ -47,16 +47,21 @@ export function EnquiryForm({
     return (
       <div
         role="status"
-        className="flex flex-col items-start gap-3 rounded-[var(--radius-xl)] border border-transparent bg-tint-mint p-8"
+        className="bg-tint-mint flex flex-col items-start gap-3 rounded-[var(--radius-xl)] border border-transparent p-8"
       >
-        <CheckCircle2 size={26} aria-hidden="true" className="text-pillar-mint" />
-        <h3 className="text-h3 font-bold text-ink">{t.form.successTitle}</h3>
+        <CheckCircle2
+          size={26}
+          aria-hidden="true"
+          className="text-pillar-mint"
+        />
+        <h3 className="text-h3 text-ink font-bold">{t.form.successTitle}</h3>
         <p className="text-body text-ink-muted">{state.message}</p>
       </div>
     );
   }
 
-  const err = (field: string) => state?.ok === false && state.fieldErrors?.[field]?.[0];
+  const err = (field: string) =>
+    state?.ok === false && state.fieldErrors?.[field]?.[0];
 
   return (
     <form action={formAction} className="flex flex-col gap-5" noValidate>
@@ -70,7 +75,10 @@ export function EnquiryForm({
 
       {/* Honeypot — visually hidden, off the tab order, and told not to
           autofill so a password manager never populates it for a real user. */}
-      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+      <div
+        aria-hidden="true"
+        className="absolute -left-[9999px] h-0 w-0 overflow-hidden"
+      >
         <label htmlFor={`${uid}-cw`}>Company website</label>
         <input
           id={`${uid}-cw`}
@@ -84,9 +92,13 @@ export function EnquiryForm({
       {state?.ok === false && !state.fieldErrors ? (
         <p
           role="alert"
-          className="flex items-start gap-2 rounded-[var(--radius-md)] bg-tint-blush p-4 text-body-sm text-ink"
+          className="bg-tint-blush text-body-sm text-ink flex items-start gap-2 rounded-[var(--radius-md)] p-4"
         >
-          <AlertCircle size={18} aria-hidden="true" className="mt-0.5 shrink-0 text-magenta" />
+          <AlertCircle
+            size={18}
+            aria-hidden="true"
+            className="text-magenta mt-0.5 shrink-0"
+          />
           {state.error}
         </p>
       ) : null}
@@ -147,10 +159,10 @@ export function EnquiryForm({
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor={`${uid}-slot`}
-              className="text-[0.8125rem] font-bold text-ink"
+              className="text-ink text-[0.8125rem] font-bold"
             >
               {t.form.preferredTime}{" "}
-              <span className="font-medium text-ink-subtle">
+              <span className="text-ink-subtle font-medium">
                 ({t.form.optional})
               </span>
             </label>
@@ -158,7 +170,7 @@ export function EnquiryForm({
               id={`${uid}-slot`}
               name="preferredSlot"
               defaultValue="either"
-              className="h-12 rounded-[var(--radius-md)] border border-rule-strong bg-surface px-3 text-body text-ink"
+              className="border-rule-strong bg-surface text-body text-ink h-12 rounded-[var(--radius-md)] border px-3"
             >
               <option value="morning">Morning</option>
               <option value="afternoon">Afternoon</option>
@@ -172,10 +184,10 @@ export function EnquiryForm({
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor={`${uid}-message`}
-            className="text-[0.8125rem] font-bold text-ink"
+            className="text-ink text-[0.8125rem] font-bold"
           >
             {t.form.message}{" "}
-            <span className="font-medium text-ink-subtle">
+            <span className="text-ink-subtle font-medium">
               ({t.form.optional})
             </span>
           </label>
@@ -183,12 +195,12 @@ export function EnquiryForm({
             id={`${uid}-message`}
             name="message"
             rows={4}
-            className="rounded-[var(--radius-md)] border border-rule-strong bg-surface p-3 text-body text-ink"
+            className="border-rule-strong bg-surface text-body text-ink rounded-[var(--radius-md)] border p-3"
           />
         </div>
       ) : null}
 
-      <label className="flex items-start gap-3 text-body-sm text-ink-muted">
+      <label className="text-body-sm text-ink-muted flex items-start gap-3">
         {/* Never pre-checked. */}
         <input
           type="checkbox"
@@ -235,10 +247,10 @@ function Field({
 
   return (
     <div className={`flex flex-col gap-1.5 ${className ?? ""}`}>
-      <label htmlFor={id} className="text-[0.8125rem] font-bold text-ink">
+      <label htmlFor={id} className="text-ink text-[0.8125rem] font-bold">
         {label}{" "}
         {!required ? (
-          <span className="font-medium text-ink-subtle">
+          <span className="text-ink-subtle font-medium">
             ({t.form.optional})
           </span>
         ) : null}
@@ -249,12 +261,15 @@ function Field({
         required={required}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
-        className="h-12 rounded-[var(--radius-md)] border border-rule-strong bg-surface px-3 text-body text-ink aria-invalid:border-magenta"
+        className="border-rule-strong bg-surface text-body text-ink aria-invalid:border-magenta h-12 rounded-[var(--radius-md)] border px-3"
         {...rest}
       />
       {/* Errors are tied by aria-describedby and say HOW to fix it. */}
       {error ? (
-        <p id={`${id}-error`} className="text-[0.8125rem] font-medium text-magenta">
+        <p
+          id={`${id}-error`}
+          className="text-magenta text-[0.8125rem] font-medium"
+        >
           {error}
         </p>
       ) : null}

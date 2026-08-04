@@ -79,12 +79,12 @@ export function ProductCard({
           </div>
         ) : null}
 
-        <h3 className="text-h3 font-bold text-ink">{product.title}</h3>
+        <h3 className="text-h3 text-ink font-bold">{product.title}</h3>
 
         {/* Absorbs the difference between a short tagline and a long one, so
             the meta line lands on the same baseline across the row. Only
             works because the card is h-full — see above. */}
-        <p className="flex-1 text-body-sm text-ink-muted">{product.tagline}</p>
+        <p className="text-body-sm text-ink-muted flex-1">{product.tagline}</p>
 
         {/* The arrow is a SIBLING of the meta line, not the last item in it.
             Inside the wrapping row it was pushed onto a line of its own the
@@ -92,7 +92,7 @@ export function ProductCard({
             the text on every card. Out here it stays pinned right and
             vertically centred however many lines the meta takes. */}
         <div className="flex items-center gap-3">
-          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.8125rem] font-semibold text-brand-deep">
+          <p className="text-brand-deep flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.8125rem] font-semibold">
             {formatDuration(product.durationMinutes)}
             <Dot />
             {product.groupSizeMin}–{product.groupSizeMax} players

@@ -91,9 +91,18 @@ function DieCube() {
           sitting on grass, on stone or against the sky, and a dark edge is the
           only treatment that survives all three. */}
       <g stroke="var(--ink)" strokeWidth="2.5" strokeLinejoin="round">
-        <polygon points={points([left, front, frontB, leftB])} fill="var(--w-roof-left)" />
-        <polygon points={points([right, front, frontB, rightB])} fill="var(--w-roof-right)" />
-        <polygon points={points([back, right, front, left])} fill="var(--accent)" />
+        <polygon
+          points={points([left, front, frontB, leftB])}
+          fill="var(--w-roof-left)"
+        />
+        <polygon
+          points={points([right, front, frontB, rightB])}
+          fill="var(--w-roof-right)"
+        />
+        <polygon
+          points={points([back, right, front, left])}
+          fill="var(--accent)"
+        />
       </g>
 
       {FACES.map((face, i) => (
@@ -103,7 +112,16 @@ function DieCube() {
             /* A circle lying in the ground plane projects to a 2:1 ellipse
                under this camera, so the pips sit ON the face instead of
                hovering above it. */
-            return <ellipse key={`${u},${v}`} cx={p.x} cy={p.y} rx="7" ry="3.5" fill="var(--ink)" />;
+            return (
+              <ellipse
+                key={`${u},${v}`}
+                cx={p.x}
+                cy={p.y}
+                rx="7"
+                ry="3.5"
+                fill="var(--ink)"
+              />
+            );
           })}
         </g>
       ))}
@@ -120,11 +138,14 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
     const die = dieRef.current;
     if (root === null || die === null) return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     const zoneEls = new Map<string, Element>();
     for (const el of root.querySelectorAll("[data-zone]")) {
       const slug = el.getAttribute("data-zone");
-      if (slug !== null && el.tagName.toLowerCase() === "g") zoneEls.set(slug, el);
+      if (slug !== null && el.tagName.toLowerCase() === "g")
+        zoneEls.set(slug, el);
     }
 
     const origin = iso(0, 0, 0);
@@ -142,7 +163,10 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
 
     const showFace = (n: number) => {
       for (const g of die.querySelectorAll(".kv-die-face")) {
-        g.classList.toggle("is-shown", Number(g.getAttribute("data-face")) === n);
+        g.classList.toggle(
+          "is-shown",
+          Number(g.getAttribute("data-face")) === n,
+        );
       }
     };
 
@@ -155,9 +179,13 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
        introduces its own pillars one at a time — see .kv-pin in globals.css
        for why five permanent labels were the least simple thing here. */
     const lightOnly = (slug: string) => {
-      for (const [key, el] of zoneEls) el.classList.toggle("is-active", key === slug);
+      for (const [key, el] of zoneEls)
+        el.classList.toggle("is-active", key === slug);
       for (const pin of root.querySelectorAll("[data-zone-link]")) {
-        pin.classList.toggle("is-current", pin.getAttribute("data-zone-link") === slug);
+        pin.classList.toggle(
+          "is-current",
+          pin.getAttribute("data-zone-link") === slug,
+        );
       }
     };
 
@@ -276,12 +304,12 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
           {children}
 
           <svg
-          viewBox={VIEW_BOX}
-          className="pointer-events-none absolute inset-0 size-full"
-          preserveAspectRatio="xMidYMid meet"
-          aria-hidden="true"
-          focusable="false"
-        >
+            viewBox={VIEW_BOX}
+            className="pointer-events-none absolute inset-0 size-full"
+            preserveAspectRatio="xMidYMid meet"
+            aria-hidden="true"
+            focusable="false"
+          >
             <g ref={dieRef} className="kv-die">
               <DieCube />
             </g>

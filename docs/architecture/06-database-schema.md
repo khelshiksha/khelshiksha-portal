@@ -413,14 +413,14 @@ table catches what slips past and gives a durable audit trail.
 
 ## Privacy & retention
 
-| Concern | Decision |
-|---|---|
-| IP addresses | Never stored raw. `SHA-256(ip + APP_SALT)` only, for rate limiting and dedup. |
-| Consent | Explicit boolean + timestamp. Never pre-checked, never inferred from form submission. |
-| Retention | `SearchQuery` and `FormSubmissionLog` purged at 180 days by a cron. `Lead` retained until the business deletes it. |
-| Deletion | A `deleteUserData(email)` service removes/anonymises across `Lead`, `ResourceDownload`, `NewsletterSubscriber`, `User`. Built in phase 2, not retrofitted. |
-| AI conversations | `messages` JSON stores the user's text. Not linked to a `User` unless authenticated. Purged at 90 days. |
-| Children's data | **The site never collects data about a child.** Parent forms ask for the child's *age band* and *interests* — never name, school, or photo. This is a hard product constraint, not a preference. |
+| Concern          | Decision                                                                                                                                                                                         |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| IP addresses     | Never stored raw. `SHA-256(ip + APP_SALT)` only, for rate limiting and dedup.                                                                                                                    |
+| Consent          | Explicit boolean + timestamp. Never pre-checked, never inferred from form submission.                                                                                                            |
+| Retention        | `SearchQuery` and `FormSubmissionLog` purged at 180 days by a cron. `Lead` retained until the business deletes it.                                                                               |
+| Deletion         | A `deleteUserData(email)` service removes/anonymises across `Lead`, `ResourceDownload`, `NewsletterSubscriber`, `User`. Built in phase 2, not retrofitted.                                       |
+| AI conversations | `messages` JSON stores the user's text. Not linked to a `User` unless authenticated. Purged at 90 days.                                                                                          |
+| Children's data  | **The site never collects data about a child.** Parent forms ask for the child's _age band_ and _interests_ — never name, school, or photo. This is a hard product constraint, not a preference. |
 
 ---
 

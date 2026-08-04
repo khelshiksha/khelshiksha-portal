@@ -62,7 +62,11 @@ const ENQUIRY_COPY: Record<
   },
 };
 
-export async function AudiencePage({ audienceKey }: { audienceKey: AudienceKey }) {
+export async function AudiencePage({
+  audienceKey,
+}: {
+  audienceKey: AudienceKey;
+}) {
   const hub = await getAudienceHub(audienceKey);
   if (!hub) notFound();
 
@@ -75,7 +79,8 @@ export async function AudiencePage({ audienceKey }: { audienceKey: AudienceKey }
   ]);
 
   const copy = ENQUIRY_COPY[audienceKey];
-  const isInstitutional = audienceKey === "schools" || audienceKey === "government";
+  const isInstitutional =
+    audienceKey === "schools" || audienceKey === "government";
 
   return (
     <>
@@ -98,7 +103,7 @@ export async function AudiencePage({ audienceKey }: { audienceKey: AudienceKey }
               {hub.included.map((item, i) => (
                 <Reveal as="li" key={item.title} delay={staggerDelay(i)}>
                   <Card className="flex h-full flex-col gap-2 p-6">
-                    <h3 className="text-h3 font-bold text-ink">{item.title}</h3>
+                    <h3 className="text-h3 text-ink font-bold">{item.title}</h3>
                     <p className="text-body-sm text-ink-muted">
                       {item.description}
                     </p>

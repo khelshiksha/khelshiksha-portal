@@ -57,96 +57,108 @@ export default async function ProductOgImage({
     : [];
 
   return new ImageResponse(
-    (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          background: INK,
-          padding: "68px 80px",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <div style={{ display: "flex", fontSize: 30, fontWeight: 700, color: BRAND }}>
-            Khel
-          </div>
-          <div style={{ display: "flex", fontSize: 30, fontWeight: 700, color: PAPER }}>
-            Shiksha
-          </div>
-          <div
-            style={{
-              display: "flex",
-              marginLeft: 18,
-              paddingLeft: 18,
-              borderLeft: "2px solid #2b3550",
-              fontSize: 22,
-              color: "#8e94ac",
-              letterSpacing: 3,
-            }}
-          >
-            LEARNING KIT
-          </div>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        background: INK,
+        padding: "68px 80px",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        <div
+          style={{
+            display: "flex",
+            fontSize: 30,
+            fontWeight: 700,
+            color: BRAND,
+          }}
+        >
+          Khel
         </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 86,
-              fontWeight: 700,
-              color: PAPER,
-              lineHeight: 1.05,
-              letterSpacing: -3,
-              maxWidth: 900,
-            }}
-          >
-            {title}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 32,
-              color: "#a5aac0",
-              lineHeight: 1.35,
-              maxWidth: 820,
-            }}
-          >
-            {tagline}
-          </div>
+        <div
+          style={{
+            display: "flex",
+            fontSize: 30,
+            fontWeight: 700,
+            color: PAPER,
+          }}
+        >
+          Shiksha
         </div>
-
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          {specs.map((spec) => (
-            <div
-              key={spec}
-              style={{
-                display: "flex",
-                padding: "12px 22px",
-                borderRadius: 999,
-                border: "2px solid #2b3550",
-                fontSize: 22,
-                color: PAPER,
-              }}
-            >
-              {spec}
-            </div>
-          ))}
-          <div
-            style={{
-              display: "flex",
-              marginLeft: "auto",
-              height: 6,
-              width: 64,
-              background: ACCENT,
-              borderRadius: 999,
-            }}
-          />
+        <div
+          style={{
+            display: "flex",
+            marginLeft: 18,
+            paddingLeft: 18,
+            borderLeft: "2px solid #2b3550",
+            fontSize: 22,
+            color: "#8e94ac",
+            letterSpacing: 3,
+          }}
+        >
+          LEARNING KIT
         </div>
       </div>
-    ),
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+        <div
+          style={{
+            display: "flex",
+            fontSize: 86,
+            fontWeight: 700,
+            color: PAPER,
+            lineHeight: 1.05,
+            letterSpacing: -3,
+            maxWidth: 900,
+          }}
+        >
+          {title}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            fontSize: 32,
+            color: "#a5aac0",
+            lineHeight: 1.35,
+            maxWidth: 820,
+          }}
+        >
+          {tagline}
+        </div>
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        {specs.map((spec) => (
+          <div
+            key={spec}
+            style={{
+              display: "flex",
+              padding: "12px 22px",
+              borderRadius: 999,
+              border: "2px solid #2b3550",
+              fontSize: 22,
+              color: PAPER,
+            }}
+          >
+            {spec}
+          </div>
+        ))}
+        <div
+          style={{
+            display: "flex",
+            marginLeft: "auto",
+            height: 6,
+            width: 64,
+            background: ACCENT,
+            borderRadius: 999,
+          }}
+        />
+      </div>
+    </div>,
     size,
   );
 }

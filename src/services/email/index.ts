@@ -107,7 +107,9 @@ export async function sendLeadNotification(
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const { error } = await resend.emails.send({
-      from: process.env.LEAD_NOTIFY_FROM ?? `enquiries@${new URL(SITE.url).hostname}`,
+      from:
+        process.env.LEAD_NOTIFY_FROM ??
+        `enquiries@${new URL(SITE.url).hostname}`,
       to: (process.env.LEAD_NOTIFY_TO ?? "").split(",").map((s) => s.trim()),
       /* So hitting reply in the inbox goes straight to the enquirer. */
       replyTo: lead.email || undefined,

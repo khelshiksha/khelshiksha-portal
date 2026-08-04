@@ -35,10 +35,10 @@ export function AudienceSplit({ audiences }: { audiences: AudienceHub[] }) {
                 tint={audience.tint}
                 className="flex h-full flex-col gap-3 p-7"
               >
-                <h3 className="text-h3 font-bold text-ink">
+                <h3 className="text-h3 text-ink font-bold">
                   {audience.eyebrow.replace(/^For /, "")}
                 </h3>
-                <p className="flex-1 text-body-sm text-ink-muted">
+                <p className="text-body-sm text-ink-muted flex-1">
                   {audience.lede}
                 </p>
                 <span

@@ -8,7 +8,14 @@ import {
   StageYard,
 } from "./landmarks";
 import { Sky } from "./sky";
-import { PLATFORM, PLATFORM_H, PLAZA, PLAZA_CENTRE, ZONES, zoneCentre } from "./zones";
+import {
+  PLATFORM,
+  PLATFORM_H,
+  PLAZA,
+  PLAZA_CENTRE,
+  ZONES,
+  zoneCentre,
+} from "./zones";
 
 /**
  * The static geometry of KhelVerse.
@@ -182,7 +189,14 @@ function Plaza() {
 
   return (
     <g>
-      <Box gx={PLAZA.gx} gy={PLAZA.gy} w={PLAZA.size} d={PLAZA.size} h={PLAZA.h} material="stone" />
+      <Box
+        gx={PLAZA.gx}
+        gy={PLAZA.gy}
+        w={PLAZA.size}
+        d={PLAZA.size}
+        h={PLAZA.h}
+        material="stone"
+      />
 
       {/* Ring of brand blue inlaid in the paving, so the plaza reads as a
           designed square rather than a slab. */}
@@ -198,13 +212,35 @@ function Plaza() {
       />
 
       {/* Stepped plinth */}
-      <Box gx={cx - 1.05} gy={cy - 1.05} gz={PLAZA.h} w={2.1} d={2.1} h={0.12} material="stone" />
-      <Box gx={cx - 0.82} gy={cy - 0.82} gz={PLAZA.h + 0.12} w={1.64} d={1.64} h={0.12} material="wood" />
+      <Box
+        gx={cx - 1.05}
+        gy={cy - 1.05}
+        gz={PLAZA.h}
+        w={2.1}
+        d={2.1}
+        h={0.12}
+        material="stone"
+      />
+      <Box
+        gx={cx - 0.82}
+        gy={cy - 0.82}
+        gz={PLAZA.h + 0.12}
+        w={1.64}
+        d={1.64}
+        h={0.12}
+        material="wood"
+      />
 
       {/* The two pages. Different tones so they read as two planes meeting at
           a ridge, exactly like every roof in the world. */}
-      <polygon points={points([spineA, spineB, backB, backA])} fill="var(--w-stone-top)" />
-      <polygon points={points([spineA, spineB, frontB, frontA])} fill="var(--w-stone-left)" />
+      <polygon
+        points={points([spineA, spineB, backB, backA])}
+        fill="var(--w-stone-top)"
+      />
+      <polygon
+        points={points([spineA, spineB, frontB, frontA])}
+        fill="var(--w-stone-left)"
+      />
       <line
         x1={spineA.x}
         y1={spineA.y}
@@ -354,8 +390,12 @@ function ZonePlatform({ slug }: { slug: string }) {
           grass rather than a raised bank of earth — the cheapest depth cue
           in the scene and the one that does the most work. */}
       <ellipse
-        cx={iso(zone.gx + PLATFORM / 2 + 0.18, zone.gy + PLATFORM / 2 + 0.18, 0).x}
-        cy={iso(zone.gx + PLATFORM / 2 + 0.18, zone.gy + PLATFORM / 2 + 0.18, 0).y}
+        cx={
+          iso(zone.gx + PLATFORM / 2 + 0.18, zone.gy + PLATFORM / 2 + 0.18, 0).x
+        }
+        cy={
+          iso(zone.gx + PLATFORM / 2 + 0.18, zone.gy + PLATFORM / 2 + 0.18, 0).y
+        }
         rx="112"
         ry="56"
         fill="var(--w-grass-right)"

@@ -110,11 +110,7 @@ export function organizationJsonLd() {
     /* sameAs is how a search engine ties these profiles to this organisation,
        so a URL that does not resolve is an active claim about the wrong
        entity. Confirmed accounts only — see constants.ts. */
-    sameAs: [
-      SITE.social.instagram,
-      SITE.social.linkedin,
-      SITE.social.youtube,
-    ],
+    sameAs: [SITE.social.instagram, SITE.social.linkedin, SITE.social.youtube],
   };
 }
 

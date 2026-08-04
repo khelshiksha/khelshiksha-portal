@@ -36,7 +36,10 @@ export default function GlobalNotFound() {
   const t = getDictionary(DEFAULT_LOCALE);
 
   return (
-    <html lang={LOCALE_TAG[DEFAULT_LOCALE]} className={`${fontVariables} h-full`}>
+    <html
+      lang={LOCALE_TAG[DEFAULT_LOCALE]}
+      className={`${fontVariables} h-full`}
+    >
       <body className="bg-paper text-ink flex min-h-full flex-col antialiased">
         <a
           href="#main"

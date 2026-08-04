@@ -37,12 +37,17 @@ export function LogoWall({
           <div key={group._id} className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
               <h2 className="text-h3 text-ink">{group.heading}</h2>
-              <p className="measure text-body-sm text-ink-muted">{group.note}</p>
+              <p className="measure text-body-sm text-ink-muted">
+                {group.note}
+              </p>
             </div>
 
             <ul className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
               {group.items.map((item) => (
-                <li key={item.name} className="flex flex-col items-center gap-2 text-center">
+                <li
+                  key={item.name}
+                  className="flex flex-col items-center gap-2 text-center"
+                >
                   {/* The row is a fixed 4rem tall and each mark keeps its own
                       ratio inside it — declared per file rather than as one
                       shared 160x64, which letterboxed every logo into a box

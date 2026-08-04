@@ -55,14 +55,14 @@ export function HeroHome() {
           {SITE.tagline}
         </p>
 
-        <h1 className="text-display-1 max-sm:text-[2.35rem] max-sm:leading-[1.06] text-ink">
+        <h1 className="text-display-1 text-ink max-sm:text-[2.35rem] max-sm:leading-[1.06]">
           Learning through play.
           {/* The line break is desktop-only. On a 390px screen it forced
               "play." onto a line of its own and the headline ran to SIX lines,
               which is most of the first screen spent on one sentence. Let it
               flow and it settles into four. */}
-          <br className="max-sm:hidden" />{" "}
-          Every classroom a hub of <RotatingWord words={WORDS} />
+          <br className="max-sm:hidden" /> Every classroom a hub of{" "}
+          <RotatingWord words={WORDS} />
         </h1>
 
         {/* NO BUTTONS HERE, and that is a decision rather than an omission.
@@ -116,7 +116,6 @@ export function HeroHome() {
           and teacher training — built for Vidyalayas and aligned to NEP 2020
           and NCF 2023.
         </p>
-
       </Container>
     </section>
   );

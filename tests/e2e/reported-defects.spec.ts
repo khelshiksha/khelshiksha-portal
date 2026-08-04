@@ -46,23 +46,27 @@ test.describe("mobile navigation", () => {
         .map((a) => a.getAttribute("href")!)
         .filter((href) => !href.includes("contact")),
     );
-    expect(desktop, "desktop bar has no /impact link to compare against").toContain(
-      "/impact",
-    );
+    expect(
+      desktop,
+      "desktop bar has no /impact link to compare against",
+    ).toContain("/impact");
 
     await page.locator("header details.lg\\:hidden > summary").click();
     await expect(page.locator("#mobile-nav")).toBeVisible();
 
     const mobile = new Set(
       await page.evaluate(() =>
-        [...document.querySelectorAll("#mobile-nav a[href^='/']")].map(
-          (a) => a.getAttribute("href")!,
+        [...document.querySelectorAll("#mobile-nav a[href^='/']")].map((a) =>
+          a.getAttribute("href")!,
         ),
       ),
     );
 
     const missing = desktop.filter((href) => !mobile.has(href));
-    expect(missing, `missing from the mobile menu: ${missing.join(", ")}`).toEqual([]);
+    expect(
+      missing,
+      `missing from the mobile menu: ${missing.join(", ")}`,
+    ).toEqual([]);
   });
 
   /* SYMPTOM: on iOS the menu button worked at the top of the page and stopped
@@ -84,7 +88,10 @@ test.describe("mobile navigation", () => {
       const summary = page.locator("header details.lg\\:hidden > summary");
       await expect(summary, `menu button not visible at ${y}px`).toBeVisible();
       await summary.click();
-      await expect(page.locator("#mobile-nav"), `menu did not open at ${y}px`).toBeVisible();
+      await expect(
+        page.locator("#mobile-nav"),
+        `menu did not open at ${y}px`,
+      ).toBeVisible();
 
       /* And it must close again, or the next iteration proves nothing. */
       await summary.click();
@@ -124,13 +131,16 @@ test.describe("kit cards", () => {
         const byTop = new Map<number, number[]>();
         /* main only — the header's What We Do menu links to /products/* too,
            and on a phone those are in the DOM at every scroll position. */
-        for (const a of document.querySelectorAll("main a[href^='/products/']")) {
+        for (const a of document.querySelectorAll(
+          "main a[href^='/products/']",
+        )) {
           const r = a.getBoundingClientRect();
           if (r.height === 0) continue;
           const top = Math.round(r.top);
           /* Grouped with a 2px tolerance to absorb sub-pixel layout — not
              enough slack to hide a real misalignment. */
-          const key = [...byTop.keys()].find((k) => Math.abs(k - top) <= 2) ?? top;
+          const key =
+            [...byTop.keys()].find((k) => Math.abs(k - top) <= 2) ?? top;
           byTop.set(key, [...(byTop.get(key) ?? []), Math.round(r.height)]);
         }
         return [...byTop.values()];
@@ -154,7 +164,9 @@ test.describe("kit cards", () => {
      Both now sit behind (hover: hover) and (pointer: fine). Playwright's
      mobile project sets hasTouch, so this exercises the real condition rather
      than the presence of a class. */
-  test("a card does not lift or zoom on a touch device", async ({ page }, info) => {
+  test("a card does not lift or zoom on a touch device", async ({
+    page,
+  }, info) => {
     test.skip(info.project.name !== "mobile", "touch-only behaviour");
     await page.goto("/");
     await settlePage(page);
@@ -169,7 +181,9 @@ test.describe("kit cards", () => {
       media: getComputedStyle(el.querySelector("img")!).transform,
     }));
     expect(state.card, "the card lifted under a touch pointer").toBe("none");
-    expect(state.media, "the card image zoomed under a touch pointer").toBe("none");
+    expect(state.media, "the card image zoomed under a touch pointer").toBe(
+      "none",
+    );
   });
 });
 
@@ -179,7 +193,9 @@ test.describe("hero", () => {
      The zone caption is the only thing that names the five pillars on a
      phone. Pinned to the bottom edge of the campus it landed below the fold
      on an iPhone 13 — present, and useless. */
-  test("the campus caption is above the fold on a phone", async ({ page }, info) => {
+  test("the campus caption is above the fold on a phone", async ({
+    page,
+  }, info) => {
     test.skip(info.project.name !== "mobile", "mobile framing");
     await page.goto("/");
     await settlePage(page);
@@ -189,7 +205,9 @@ test.describe("hero", () => {
       .first()
       .boundingBox({ timeout: 10_000 });
     expect(box, "no zone caption is showing").not.toBeNull();
-    expect(box!.y + box!.height).toBeLessThanOrEqual(page.viewportSize()!.height);
+    expect(box!.y + box!.height).toBeLessThanOrEqual(
+      page.viewportSize()!.height,
+    );
   });
 
   /* The sky went in, came out because clouds drifted across the hero
@@ -207,8 +225,15 @@ test.describe("hero", () => {
         const a = s.getBoundingClientRect();
         for (const c of copy) {
           const b = c.getBoundingClientRect();
-          if (a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top) {
-            hits.push(`${s.getAttribute("class")} over "${c.textContent?.slice(0, 30)}"`);
+          if (
+            a.left < b.right &&
+            a.right > b.left &&
+            a.top < b.bottom &&
+            a.bottom > b.top
+          ) {
+            hits.push(
+              `${s.getAttribute("class")} over "${c.textContent?.slice(0, 30)}"`,
+            );
           }
         }
       }
@@ -224,7 +249,9 @@ test.describe("outbound links", () => {
      sameAs, where a wrong URL tells a search engine the wrong entity is us.
      This does not check that the accounts exist — it checks that nobody has
      quietly added a placeholder back. */
-  test("every social link is one of the confirmed accounts", async ({ page }) => {
+  test("every social link is one of the confirmed accounts", async ({
+    page,
+  }) => {
     await page.goto("/");
     await settlePage(page);
 
@@ -235,8 +262,8 @@ test.describe("outbound links", () => {
     ];
 
     const hrefs = await page.evaluate(() =>
-      [...document.querySelectorAll("footer a[href^='http']")].map(
-        (a) => a.getAttribute("href")!,
+      [...document.querySelectorAll("footer a[href^='http']")].map((a) =>
+        a.getAttribute("href")!,
       ),
     );
 

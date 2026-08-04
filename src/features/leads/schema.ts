@@ -70,7 +70,11 @@ export type LeadInput = z.infer<typeof leadSchema>;
 
 /** A school demo additionally requires the school name. */
 export const schoolDemoSchema = leadSchema.extend({
-  organisation: z.string().trim().min(2, "Please enter your school's name").max(200),
+  organisation: z
+    .string()
+    .trim()
+    .min(2, "Please enter your school's name")
+    .max(200),
 });
 
 export type ActionResult =

@@ -47,16 +47,23 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [audiences, benefits, pillars, featured, stats, alignments, credentials] =
-    await Promise.all([
-      getAudienceHubs(),
-      getBenefits(),
-      getPillars(),
-      getFeaturedProducts(4),
-      getImpactStats(),
-      getAlignments(),
-      getCredentialGroups(),
-    ]);
+  const [
+    audiences,
+    benefits,
+    pillars,
+    featured,
+    stats,
+    alignments,
+    credentials,
+  ] = await Promise.all([
+    getAudienceHubs(),
+    getBenefits(),
+    getPillars(),
+    getFeaturedProducts(4),
+    getImpactStats(),
+    getAlignments(),
+    getCredentialGroups(),
+  ]);
 
   return (
     <>

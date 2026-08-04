@@ -42,7 +42,12 @@ export default async function PillarsPage() {
         </Container>
       </Section>
 
-      <PillarGrid pillars={pillars} eyebrow="" title="Explore each pillar" accent="" />
+      <PillarGrid
+        pillars={pillars}
+        eyebrow=""
+        title="Explore each pillar"
+        accent=""
+      />
 
       <CTABand
         title="Which pillars matter most to"

@@ -86,7 +86,10 @@ describe("linkifyPaths", () => {
   /* The point of the labels: a sentence should read as prose, not as a URL. */
   describe("readable link text", () => {
     it("uses the page name instead of the raw path", () => {
-      const nodes = linkifyPaths("You can explore /products/aryabhata now", LABELS);
+      const nodes = linkifyPaths(
+        "You can explore /products/aryabhata now",
+        LABELS,
+      );
       expect(labelsOf(nodes)).toEqual(["Aryabhata"]);
       expect(hrefs(nodes)).toEqual(["/products/aryabhata"]);
     });
@@ -142,7 +145,12 @@ describe("linkifyPaths", () => {
 
     it("still refuses a path inside an external URL", () => {
       expect(
-        hrefs(linkifyPaths("Visit https://evil.example.com/products/aryabhata", LABELS)),
+        hrefs(
+          linkifyPaths(
+            "Visit https://evil.example.com/products/aryabhata",
+            LABELS,
+          ),
+        ),
       ).toEqual([]);
     });
   });

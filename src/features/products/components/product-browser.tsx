@@ -92,20 +92,48 @@ export function ProductBrowser({
   };
 
   const groups = [
-    { key: "age" as const, label: t.filters.age, options: AGE_BANDS.map((b) => ({ value: b.key, label: b.label })) },
-    { key: "subjects" as const, label: t.filters.subject, options: SUBJECTS.map((s) => ({ value: s, label: SUBJECT_LABEL[s] })) },
-    { key: "skills" as const, label: t.filters.skill, options: SKILLS.map((s) => ({ value: s, label: SKILL_LABEL[s] })) },
-    { key: "pillars" as const, label: t.filters.pillar, options: pillars.map((p) => ({ value: p.key, label: p.title })) },
-    { key: "duration" as const, label: t.filters.duration, options: DURATION_BANDS.map((b) => ({ value: b.key, label: b.label })) },
-    { key: "setting" as const, label: t.filters.setting, options: SETTINGS.map((s) => ({ value: s, label: SETTING_LABEL[s] })) },
-    { key: "groupSize" as const, label: t.filters.groupSize, options: GROUP_SIZES.map((b) => ({ value: b.key, label: b.label })) },
+    {
+      key: "age" as const,
+      label: t.filters.age,
+      options: AGE_BANDS.map((b) => ({ value: b.key, label: b.label })),
+    },
+    {
+      key: "subjects" as const,
+      label: t.filters.subject,
+      options: SUBJECTS.map((s) => ({ value: s, label: SUBJECT_LABEL[s] })),
+    },
+    {
+      key: "skills" as const,
+      label: t.filters.skill,
+      options: SKILLS.map((s) => ({ value: s, label: SKILL_LABEL[s] })),
+    },
+    {
+      key: "pillars" as const,
+      label: t.filters.pillar,
+      options: pillars.map((p) => ({ value: p.key, label: p.title })),
+    },
+    {
+      key: "duration" as const,
+      label: t.filters.duration,
+      options: DURATION_BANDS.map((b) => ({ value: b.key, label: b.label })),
+    },
+    {
+      key: "setting" as const,
+      label: t.filters.setting,
+      options: SETTINGS.map((s) => ({ value: s, label: SETTING_LABEL[s] })),
+    },
+    {
+      key: "groupSize" as const,
+      label: t.filters.groupSize,
+      options: GROUP_SIZES.map((b) => ({ value: b.key, label: b.label })),
+    },
   ];
 
   const filterPanel = (
     <div className="flex flex-col gap-7">
       {groups.map((group) => (
         <fieldset key={group.key} className="flex flex-col gap-3 border-0 p-0">
-          <legend className="text-[0.6875rem] font-bold tracking-[0.1em] text-ink-subtle uppercase">
+          <legend className="text-ink-subtle text-[0.6875rem] font-bold tracking-[0.1em] uppercase">
             {group.label}
           </legend>
           <div className="flex flex-wrap gap-2">
@@ -129,8 +157,8 @@ export function ProductBrowser({
                     /* Selected state changes BORDER as well as fill, so it
                        survives greyscale and High Contrast Mode. */
                     selected
-                      ? "border-2 border-brand-deep bg-brand text-on-brand"
-                      : "border-2 border-rule bg-surface text-ink-muted hover:border-rule-strong hover:text-ink",
+                      ? "border-brand-deep bg-brand text-on-brand border-2"
+                      : "border-rule bg-surface text-ink-muted hover:border-rule-strong hover:text-ink border-2",
                   )}
                 >
                   {option.label}
@@ -148,14 +176,14 @@ export function ProductBrowser({
       <aside className="hidden lg:block">
         <div className="sticky top-28 flex flex-col gap-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-[0.9375rem] font-bold text-ink">
+            <h2 className="text-ink text-[0.9375rem] font-bold">
               {t.filters.heading}
             </h2>
             {active > 0 ? (
               <button
                 type="button"
                 onClick={() => applyFilters(EMPTY_FILTERS)}
-                className="text-[0.8125rem] font-semibold text-brand-deep underline underline-offset-2"
+                className="text-brand-deep text-[0.8125rem] font-semibold underline underline-offset-2"
               >
                 {t.filters.clearAll}
               </button>
@@ -169,7 +197,10 @@ export function ProductBrowser({
         <div className="flex items-center justify-between gap-4">
           {/* Result count is announced, so a screen-reader user knows the
               grid changed under them. */}
-          <p aria-live="polite" className="text-body-sm font-semibold text-ink-muted">
+          <p
+            aria-live="polite"
+            className="text-body-sm text-ink-muted font-semibold"
+          >
             {t.filters.resultCount(results.length)}
           </p>
 
@@ -187,11 +218,11 @@ export function ProductBrowser({
         </div>
 
         {results.length === 0 ? (
-          <div className="rounded-[var(--radius-xl)] border border-rule bg-sunken p-10 text-center">
-            <h3 className="text-h3 font-bold text-ink">
+          <div className="border-rule bg-sunken rounded-[var(--radius-xl)] border p-10 text-center">
+            <h3 className="text-h3 text-ink font-bold">
               {t.filters.emptyTitle}
             </h3>
-            <p className="mx-auto mt-2 max-w-[42ch] text-body text-ink-muted">
+            <p className="text-body text-ink-muted mx-auto mt-2 max-w-[42ch]">
               {t.filters.emptyBody}
             </p>
             <Button
@@ -238,20 +269,20 @@ export function ProductBrowser({
       </div>
 
       {sheetOpen ? (
-        <div className="fixed inset-0 z-50 flex flex-col bg-paper lg:hidden">
-          <div className="flex items-center justify-between border-b border-rule px-5 py-4">
-            <h2 className="text-h3 font-bold text-ink">{t.filters.heading}</h2>
+        <div className="bg-paper fixed inset-0 z-50 flex flex-col lg:hidden">
+          <div className="border-rule flex items-center justify-between border-b px-5 py-4">
+            <h2 className="text-h3 text-ink font-bold">{t.filters.heading}</h2>
             <button
               type="button"
               onClick={() => setSheetOpen(false)}
               aria-label={t.nav.closeMenu}
-              className="inline-flex size-11 items-center justify-center rounded-[var(--radius-md)] text-ink"
+              className="text-ink inline-flex size-11 items-center justify-center rounded-[var(--radius-md)]"
             >
               <X size={22} aria-hidden="true" />
             </button>
           </div>
           <div className="flex-1 overflow-y-auto px-5 py-6">{filterPanel}</div>
-          <div className="flex gap-3 border-t border-rule px-5 py-4">
+          <div className="border-rule flex gap-3 border-t px-5 py-4">
             <Button
               variant="secondary"
               className="flex-1"
