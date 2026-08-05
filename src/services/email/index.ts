@@ -106,6 +106,10 @@ export async function sendLeadNotification(
     .concat(["", `Lead id: ${leadId}`])
     .join("\n");
 
+  const from =
+    process.env.LEAD_NOTIFY_FROM ?? `enquiries@${new URL(SITE.url).hostname}`;
+  const to = (process.env.LEAD_NOTIFY_TO ?? "").split(",").map((s) => s.trim());
+
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
     /* Bounded, because this is now awaited by the server action: without a
@@ -115,10 +119,8 @@ export async function sendLeadNotification(
        person would sit through. Losing the notification is recoverable;
        leaving someone staring at a spinner is not. */
     const send = resend.emails.send({
-      from:
-        process.env.LEAD_NOTIFY_FROM ??
-        `enquiries@${new URL(SITE.url).hostname}`,
-      to: (process.env.LEAD_NOTIFY_TO ?? "").split(",").map((s) => s.trim()),
+      from,
+      to,
       /* So hitting reply in the inbox goes straight to the enquirer. */
       replyTo: lead.email || undefined,
       subject,
@@ -144,9 +146,27 @@ export async function sendLeadNotification(
       console.error(
         `[email] send failed for lead ${leadId}:`,
         result.error.message,
+        `(from ${from} to ${to.join(", ")})`,
         "- the lead IS STORED, nobody has been notified",
       );
+      return;
     }
+
+    /* ACCEPTED IS NOT DELIVERED, and the gap between the two is where this
+       last went wrong. The provider returns an id the moment it takes the
+       request; whether the message then reaches a mailbox depends on sender
+       verification, the recipient's filters and the recipient's server, none
+       of which report back here.
+
+       So log the id and both addresses. Without the id there is nothing to
+       look up in the provider's own delivery log, and "the code says it sent
+       it" is not evidence that anyone received it. Without the addresses,
+       sending to the wrong mailbox is indistinguishable from not sending. */
+    console.info(
+      `[email] accepted by provider for lead ${leadId}: id ${result.data?.id ?? "unknown"}, ` +
+        `from ${from}, to ${to.join(", ")}. Accepted is not delivered - ` +
+        `check the provider's delivery log for this id if it does not arrive.`,
+    );
   } catch (error) {
     console.error(
       `[email] send threw for lead ${leadId}:`,
