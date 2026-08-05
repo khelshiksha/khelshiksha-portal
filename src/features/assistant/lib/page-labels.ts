@@ -5,7 +5,7 @@ import { getPillars, getProducts } from "@/services/cms";
  * Human names for the paths the assistant is allowed to mention.
  *
  * Built from services/cms rather than hardcoded so a renamed kit renames its
- * link too — a static list here would silently drift from the catalogue the
+ * link too - a static list here would silently drift from the catalogue the
  * model is grounded on, which is the one thing this whole feature is trying
  * to avoid.
  *
@@ -16,7 +16,7 @@ export async function getPageLabels(): Promise<Record<string, string>> {
   const [products, pillars] = await Promise.all([getProducts(), getPillars()]);
 
   return {
-    /* Longest, most specific paths matter most — a demo link is the single
+    /* Longest, most specific paths matter most - a demo link is the single
        most valuable thing the assistant can hand someone. */
     "/contact?type=school-demo": "book a demo",
     [ROUTES.contact]: "contact us",

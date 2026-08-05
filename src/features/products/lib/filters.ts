@@ -10,7 +10,7 @@ import {
 import type { Product } from "@/services/cms/types";
 
 /**
- * Eight facets, not nine. `budget` is deliberately absent — decision D7 makes
+ * Eight facets, not nine. `budget` is deliberately absent - decision D7 makes
  * products a portfolio with no public pricing, so a budget filter would be
  * filtering on data that does not exist.
  */
@@ -38,7 +38,7 @@ export const FILTER_KEYS = Object.keys(
   EMPTY_FILTERS,
 ) as (keyof ProductFilters)[];
 
-/** Pure predicate — no React, no URL, trivially testable. */
+/** Pure predicate - no React, no URL, trivially testable. */
 export function matchesFilters(
   product: Product,
   filters: ProductFilters,

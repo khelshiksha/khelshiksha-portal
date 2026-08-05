@@ -27,7 +27,7 @@ export interface SeoInput {
  * Applied here rather than relying on the opengraph-image file convention to
  * cascade, because it does not: a metadata image file applies to pages in its
  * own directory, and a nested page that sets openGraph through `metadata`
- * — which every page here does, via this function — wins over an inherited
+ * - which every page here does, via this function - wins over an inherited
  * one. The result was a site-wide default that silently attached to nothing.
  * Naming the path explicitly is duller and actually works.
  *
@@ -51,7 +51,7 @@ export function buildMetadata({
     title,
     description,
     /* Self-referential absolute canonical on every page. Faceted product URLs
-       canonical back to /products — the single most important technical SEO
+       canonical back to /products - the single most important technical SEO
        decision here, because 8 facets combinatorially generate thousands of
        near-duplicate URLs that would otherwise eat the crawl budget. */
     alternates: { canonical: url },
@@ -109,7 +109,7 @@ export function organizationJsonLd() {
     areaServed: { "@type": "State", name: "Gujarat" },
     /* sameAs is how a search engine ties these profiles to this organisation,
        so a URL that does not resolve is an active claim about the wrong
-       entity. Confirmed accounts only — see constants.ts. */
+       entity. Confirmed accounts only - see constants.ts. */
     sameAs: [SITE.social.instagram, SITE.social.linkedin, SITE.social.youtube],
   };
 }

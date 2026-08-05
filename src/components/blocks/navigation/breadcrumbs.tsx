@@ -11,7 +11,7 @@ export interface Crumb {
 
 /**
  * Present on every page below depth 1, and always paired with BreadcrumbList
- * structured data — the visual trail and the machine-readable one should never
+ * structured data - the visual trail and the machine-readable one should never
  * be able to drift apart, so they are emitted from the same array.
  */
 export function Breadcrumbs({ trail }: { trail: Crumb[] }) {

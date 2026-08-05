@@ -8,7 +8,7 @@ import { formatCount } from "@/lib/utils";
  *
  * The final value is rendered in the SSR HTML, so "12,000+" is simply there
  * with JavaScript disabled, before hydration, and under reduced motion. The
- * animation is an enhancement over correct content — never a replacement.
+ * animation is an enhancement over correct content - never a replacement.
  *
  * Uses a bare IntersectionObserver + rAF rather than an animation library:
  * counting from 0 to N is not worth 50KB of dependency.
@@ -29,7 +29,7 @@ export function Counter({
     const node = ref.current;
     if (!node) return;
 
-    /* Small numbers read as broken when animated — 1 counting to 1 is a
+    /* Small numbers read as broken when animated - 1 counting to 1 is a
        flicker, not an animation. */
     if (to <= 5) return;
 

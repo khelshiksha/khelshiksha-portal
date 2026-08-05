@@ -4,7 +4,7 @@ import { Box, Post, Pyramid, Tile, Tree } from "./solids";
 /**
  * One landmark per zone.
  *
- * Each is a silhouette a person can name at a glance from across the page —
+ * Each is a silhouette a person can name at a glance from across the page -
  * a schoolhouse, a rocket, a windmill, a running track, a stage. Legibility at
  * small size is the whole design constraint here: on a laptop each of these is
  * about 90px tall, so a landmark that needs detail to be understood is a
@@ -13,7 +13,7 @@ import { Box, Post, Pyramid, Tile, Tree } from "./solids";
  * Nothing here is a character. See the note in solids.tsx.
  */
 
-/** Foundational Learning — a schoolhouse with a bell tower and number blocks. */
+/** Foundational Learning - a schoolhouse with a bell tower and number blocks. */
 export function Schoolhouse({
   gx,
   gy,
@@ -25,7 +25,7 @@ export function Schoolhouse({
 }) {
   return (
     <g>
-      {/* Tower first — it stands BEHIND the hall, so it must be painted
+      {/* Tower first - it stands BEHIND the hall, so it must be painted
           first. Drawing it after put its roof over the hall's roof and the
           two read as one collapsed shape. */}
       <Box
@@ -69,7 +69,7 @@ export function Schoolhouse({
         material="roof"
       />
 
-      {/* Counting blocks in the yard — the one nod to what is taught here. */}
+      {/* Counting blocks in the yard - the one nod to what is taught here. */}
       <Box
         gx={gx + 0.32}
         gy={gy + 2.14}
@@ -101,7 +101,7 @@ export function Schoolhouse({
   );
 }
 
-/** Climate Education — a windmill, trees and a pond. */
+/** Climate Education - a windmill, trees and a pond. */
 export function ClimateGrove({
   gx,
   gy,
@@ -137,7 +137,7 @@ export function ClimateGrove({
       <Tree gx={gx + 1.02} gy={gy + 0.42} gz={gz} scale={0.78} tiers={2} />
       <Tree gx={gx + 1.5} gy={gy + 1.94} gz={gz} scale={0.9} />
 
-      {/* Windmill. The blades spin — the one continuously moving mechanism in
+      {/* Windmill. The blades spin - the one continuously moving mechanism in
           the world, so the eye always has somewhere to rest. */}
       <Box
         gx={gx + 1.78}
@@ -170,7 +170,7 @@ export function ClimateGrove({
   );
 }
 
-/** Future Readiness — a launch pad and a small observatory dome. */
+/** Future Readiness - a launch pad and a small observatory dome. */
 export function ScienceYard({
   gx,
   gy,
@@ -244,7 +244,7 @@ export function ScienceYard({
         material="coralwood"
       />
 
-      {/* Exhaust — a soft plume, drifting on its own loop. */}
+      {/* Exhaust - a soft plume, drifting on its own loop. */}
       <g className="kv-plume">
         <ellipse
           cx={iso(gx + 0.89, gy + 0.89, gz + 0.1).x}
@@ -282,7 +282,7 @@ export function ScienceYard({
   );
 }
 
-/** Health & Nutrition — a running track, a flag, and a yoga deck. */
+/** Health & Nutrition - a running track, a flag, and a yoga deck. */
 export function SportsGround({
   gx,
   gy,
@@ -343,7 +343,7 @@ export function SportsGround({
   );
 }
 
-/** Life Skills — an open stage with a canopy, and a shelf of books. */
+/** Life Skills - an open stage with a canopy, and a shelf of books. */
 export function StageYard({
   gx,
   gy,
@@ -365,7 +365,7 @@ export function StageYard({
         material="wood"
       />
 
-      {/* Four posts and a canopy — an open pavilion, so the zone does not read
+      {/* Four posts and a canopy - an open pavilion, so the zone does not read
           as another closed building like the schoolhouse. */}
       <Post gx={gx + 0.36} gy={gy + 0.46} gz={gz + 0.24} h={0.72} />
       <Post gx={gx + 1.66} gy={gy + 0.46} gz={gz + 0.24} h={0.72} />
@@ -414,7 +414,7 @@ export function StageYard({
 }
 
 /**
- * Scattered ground cover — small trees and rocks filling the island between
+ * Scattered ground cover - small trees and rocks filling the island between
  * zones. Positions come from the seeded generator, so the scatter is identical
  * on the server and the client and cannot cause a hydration mismatch, while
  * still looking unplanned.

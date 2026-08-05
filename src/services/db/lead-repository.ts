@@ -21,7 +21,7 @@ export interface LeadRepository {
 
 /**
  * Thrown when there is nowhere durable to put a lead. The action turns this
- * into a message offering the phone number rather than a false success —
+ * into a message offering the phone number rather than a false success -
  * losing an enquiry silently is the worst possible failure on this site.
  */
 export class LeadStorageUnavailableError extends Error {
@@ -139,7 +139,7 @@ class FileLeadRepository implements LeadRepository {
     await appendFile(this.file, `${JSON.stringify(lead)}\n`, "utf8");
 
     console.info(
-      `[lead] ${lead.type} from ${lead.name} (${lead.phone}) — written to .data/leads.jsonl`,
+      `[lead] ${lead.type} from ${lead.name} (${lead.phone}), written to .data/leads.jsonl`,
     );
 
     return {
@@ -160,7 +160,7 @@ export function getLeadRepository(): LeadRepository {
     return new PostgresLeadRepository();
   }
 
-  /* Explicit opt-in to the file store — needed so E2E can exercise the real
+  /* Explicit opt-in to the file store - needed so E2E can exercise the real
      success path against a production build, and so a staging box can run
      without a database.
 

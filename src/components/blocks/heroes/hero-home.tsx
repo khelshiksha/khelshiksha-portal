@@ -7,7 +7,7 @@ import { World } from "./khelverse/world";
 import { RotatingWord, type HeroWords } from "./rotating-word";
 
 /**
- * The homepage hero — the gate into KhelVerse.
+ * The homepage hero - the gate into KhelVerse.
  *
  * Stays a Server Component, and so does the world inside it. The LCP element
  * is the HEADLINE TEXT, so nothing about the illustration may delay the
@@ -25,13 +25,13 @@ import { RotatingWord, type HeroWords } from "./rotating-word";
  * WHY THERE IS NO SCROLL-DRIVEN CAMERA. Also asked for, also deliberately not
  * built. Turning statistics into signboards and testimonials into notice
  * boards inside a scrolling world makes the page unscannable, unindexable and
- * unreachable by keyboard — on a site whose entire job is to get a school to
+ * unreachable by keyboard - on a site whose entire job is to get a school to
  * book a demo. The world is the opening; below it the page stays fast and
  * scannable.
  */
 
-/* The rotating word is the vision line from the brochure — "vibrant hubs of
-   discovery" — opened out into the things a classroom actually becomes. Every
+/* The rotating word is the vision line from the brochure - "vibrant hubs of
+   discovery" - opened out into the things a classroom actually becomes. Every
    word is a claim the rest of the page then backs up.
 
    These are also the five zones of the world: the die lands on a zone and the
@@ -76,7 +76,7 @@ export function HeroHome() {
             like a sales call.
 
             What replaces them is a sentence. The hero's job at this point is
-            to make someone want the next screen, not to close them — the
+            to make someone want the next screen, not to close them - the
             header CTA is two inches away the whole time, and it is now
             visible on phones too, which it was not while this button existed.
 
@@ -112,9 +112,9 @@ export function HeroHome() {
 
       <Container className="relative z-10 mt-2 flex flex-col gap-4 pb-4 sm:gap-5 lg:mt-7 lg:max-w-[62rem] lg:gap-6">
         <p className="measure text-body sm:text-body-lg text-ink-muted">
-          Gamified experiential learning kits, a Game Corner for the classroom,
-          and teacher training — built for Vidyalayas and aligned to NEP 2020
-          and NCF 2023.
+          Gamified experiential learning kits, a Game Corner for the classroom
+          and teacher training. Built for Vidyalayas and aligned to NEP 2020 and
+          NCF 2023.
         </p>
       </Container>
     </section>

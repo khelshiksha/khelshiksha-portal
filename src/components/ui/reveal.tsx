@@ -26,7 +26,7 @@ const DIRECTION_CLASS: Record<Direction, string> = {
  *      the content simply renders visible. A reveal must never be able to
  *      hide content permanently.
  *   2. The observer toggles a class through a ref rather than setting React
- *      state — syncing React to the DOM is what an effect is for, and it
+ *      state - syncing React to the DOM is what an effect is for, and it
  *      avoids a re-render per revealed element.
  */
 export function Reveal({

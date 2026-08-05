@@ -33,7 +33,7 @@ export function StatBand({
         {/* A <dl> may contain <div> wrappers, but only ONE level of them, and
             a <p> is not allowed inside at all. The previous markup nested
             Reveal's div inside another div and put the detail in a <p>, which
-            broke the dt/dd association — invisible on screen, but it made the
+            broke the dt/dd association - invisible on screen, but it made the
             figures unreadable as a definition list. Reveal now IS the wrapper.
 
             DOM order is dt → dd (label, then value) so a screen reader says

@@ -2,7 +2,7 @@
  * Runtime switches for the two features that depend on an external provider.
  *
  * Both are on. Set one to `false` and redeploy to take that feature out of
- * service — for a provider outage, a model deprecation, an incident, or any
+ * service - for a provider outage, a model deprecation, an incident, or any
  * other reason it needs to stop responding for a while.
  *
  * ## Why a constant and not an environment variable
@@ -17,12 +17,12 @@
  * key in place: a credential that has been deleted is one nobody can find
  * again when the feature is wanted back.
  *
- * ## What each switch actually controls — the difference matters
+ * ## What each switch actually controls - the difference matters
  *
  * `assistant` removes the feature completely. The panel is not rendered, its
  * JavaScript is never sent to the browser, and `POST /api/assistant` responds
  * 503. Nobody is shown a chat box that cannot answer, which is the failure
- * mode worth avoiding — a visibly broken widget damages trust more than an
+ * mode worth avoiding - a visibly broken widget damages trust more than an
  * absent one.
  *
  * Note that the panel's presence is decided at BUILD time, because the home
@@ -43,7 +43,7 @@
  *
  * This flag decides only whether the email provider is called. Whether the
  * message arrives depends on `LEAD_NOTIFY_FROM` being a sender address the
- * provider will accept — which normally means an address on a domain that has
+ * provider will accept - which normally means an address on a domain that has
  * been verified with them.
  *
  * The send path logs failures rather than throwing, deliberately, so that a

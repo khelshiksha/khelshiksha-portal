@@ -8,7 +8,7 @@ import { localeHref, localeUrl, stripLocale } from "@/lib/i18n/routing";
  * switcher shipped with a real bug the first time: on English pages the
  * middleware rewrites /schools to /en/schools, usePathname reports the
  * REWRITTEN path, and a stripLocale that only handled non-default prefixes
- * left it alone — so the switcher built "/gu/en/schools". Every case below
+ * left it alone - so the switcher built "/gu/en/schools". Every case below
  * that mentions "/en/" exists because of that bug.
  */
 describe("localeHref", () => {
@@ -38,7 +38,7 @@ describe("localeHref", () => {
     for (const href of [
       "https://example.com/x",
       "mailto:admin@khelshiksha.com",
-      "tel:+919779873333",
+      "tel:+919979873333",
       "#main",
     ]) {
       expect(localeHref("gu", href)).toBe(href);

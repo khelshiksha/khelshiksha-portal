@@ -4,7 +4,7 @@ import { iso, points, type Point } from "./iso";
  * The solid vocabulary of KhelVerse.
  *
  * Everything in the world is built from these five shapes. That constraint is
- * deliberate — a world assembled from one consistent set of forms reads as a
+ * deliberate - a world assembled from one consistent set of forms reads as a
  * designed place, while a world where each object is drawn ad hoc reads as
  * clip-art. It is also what makes the light direction believable: the top face
  * is always lit, the left face always mid, the right face always dark, on
@@ -66,7 +66,7 @@ export type MaterialName = keyof typeof MATERIALS;
 
 /**
  * A rectangular box: w × d on the ground, h tall, its near-bottom corner at
- * (gx, gy, gz). The workhorse — platforms, walls, buildings, steps and plinths
+ * (gx, gy, gz). The workhorse - platforms, walls, buildings, steps and plinths
  * are all boxes at different proportions.
  */
 export function Box({
@@ -119,7 +119,7 @@ export function Box({
 }
 
 /**
- * A square pyramid — roofs, and the canopy tiers of a tree. Two faces visible,
+ * A square pyramid - roofs, and the canopy tiers of a tree. Two faces visible,
  * shaded left and right like every other solid.
  */
 export function Pyramid({
@@ -157,7 +157,7 @@ export function Pyramid({
 }
 
 /**
- * A flat quad laid on the ground — paths, plazas, water, painted markings.
+ * A flat quad laid on the ground - paths, plazas, water, painted markings.
  * Zero height, so it never needs side faces.
  */
 export function Tile({
@@ -201,7 +201,7 @@ export function Tile({
  * A low-poly tree: a trunk with two or three canopy tiers.
  *
  * Tiers rather than a sphere because a stack of pyramids keeps the flat-shaded
- * language of everything else — a smoothly shaded ball would be the one object
+ * language of everything else - a smoothly shaded ball would be the one object
  * in the world lit by a different renderer.
  */
 export function Tree({
@@ -254,7 +254,7 @@ export function Tree({
 }
 
 /**
- * A vertical post with an optional coloured topper — flagpoles, lamps, signs.
+ * A vertical post with an optional coloured topper - flagpoles, lamps, signs.
  * Thin boxes read poorly at this scale, so the post is drawn as a single lit
  * quad with one shaded edge rather than a full solid.
  */

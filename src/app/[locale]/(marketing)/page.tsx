@@ -28,22 +28,22 @@ export const revalidate = 3600;
 
 /**
  * The home page was the one route that never called buildMetadata, so it
- * inherited the root layout's metadata — which carries no canonical. The most
+ * inherited the root layout's metadata - which carries no canonical. The most
  * linked-to page on the site was the only one without one.
  *
  * `title.absolute` opts out of the layout's "%s | Khel Shiksha" template,
- * which would otherwise render "Khel Shiksha — Learning Through Play | Khel
- * Shiksha". Not `title: null` — that removes the <title> element altogether,
+ * which would otherwise render "Khel Shiksha - Learning Through Play | Khel
+ * Shiksha". Not `title: null` - that removes the <title> element altogether,
  * which is a serious WCAG failure and exactly what the axe suite caught.
  */
 export const metadata: Metadata = {
   ...buildMetadata({
-    title: `${SITE.name} — ${SITE.secondary}`,
+    title: `${SITE.name} | ${SITE.secondary}`,
     description:
       "Gamified experiential learning kits, teacher training and classroom ecosystems for schools across India. Aligned to NEP 2020 and NCF 2023.",
     path: "/",
   }),
-  title: { absolute: `${SITE.name} — ${SITE.secondary}` },
+  title: { absolute: `${SITE.name} | ${SITE.secondary}` },
 };
 
 export default async function HomePage() {
@@ -91,7 +91,7 @@ export default async function HomePage() {
       <CTABand
         title="Let's transform"
         accent="Vidyalayas"
-        lede="A model for future-ready education — starting with one classroom in your school."
+        lede="A model for future-ready education, starting with one classroom in your school."
         primary={{ label: "Book a Demo", href: "/contact?type=school-demo" }}
         secondary={{ label: "Explore the kits", href: "/products" }}
       />

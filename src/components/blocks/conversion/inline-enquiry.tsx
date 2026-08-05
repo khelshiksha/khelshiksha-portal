@@ -8,7 +8,7 @@ import type { LeadType } from "@/features/leads/schema";
  * The form lives ON the page, not behind a modal or a link to /contact.
  *
  * A principal who has just read the rollout timeline should never have to
- * navigate to convert — that navigation is worth several points of conversion
+ * navigate to convert - that navigation is worth several points of conversion
  * on its own.
  */
 export function InlineEnquiry({

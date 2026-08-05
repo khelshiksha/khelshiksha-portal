@@ -1,7 +1,7 @@
 import type { ImpactStat, Partner, Testimonial } from "@/services/cms/types";
 
 /**
- * IMPORTANT — every figure here is traceable to the company profile brochure
+ * IMPORTANT - every figure here is traceable to the company profile brochure
  * (see docs/brand-context.md). Nothing on this page is estimated, rounded up,
  * or inferred.
  *
@@ -45,7 +45,7 @@ export const impactStats: ImpactStat[] = [
  *
  * An organisation's name set in type states a factual association. A
  * reproduction of its logo is a use of its trade mark, and most institutions
- * — government bodies and international agencies especially — publish brand
+ * - government bodies and international agencies especially - publish brand
  * guidelines restricting third-party use, particularly where it could be read
  * as an endorsement.
  *
@@ -116,7 +116,7 @@ export const partners: Partner[] = [
  * Testimonials attributed to named principals and teachers are records about
  * real people. Writing plausible-sounding quotes and presenting them as
  * genuine would be fabrication, regardless of how clearly they were labelled
- * in the code — the rendered page would read as real endorsement.
+ * in the code - the rendered page would read as real endorsement.
  *
  * The component handles the empty case by omitting the section entirely, so
  * the page is complete without them. Collecting three real quotes (one

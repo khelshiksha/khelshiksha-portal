@@ -65,7 +65,7 @@ export default async function AboutPage() {
       <CTABand
         title="Let's transform"
         accent="Vidyalayas."
-        lede="A model for future-ready education — starting with one classroom in your school."
+        lede="A model for future-ready education, starting with one classroom in your school."
         primary={{ label: "Book a Demo", href: "/contact?type=school-demo" }}
         secondary={{ label: "See our approach", href: "/approach" }}
       />

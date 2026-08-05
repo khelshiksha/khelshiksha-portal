@@ -1,7 +1,7 @@
 import type { AudienceHub } from "@/services/cms/types";
 
 /**
- * The four audience hubs. Each drives exactly ONE primary action — the
+ * The four audience hubs. Each drives exactly ONE primary action - the
  * difference between a site that converts and a site with eleven buttons.
  * Spec: docs/architecture/01-information-architecture.md#conversion-architecture
  */
@@ -12,7 +12,7 @@ export const audiences: AudienceHub[] = [
     eyebrow: "For Schools",
     title: "A complete learning ecosystem for your",
     titleAccent: "Vidyalaya.",
-    lede: "Kits, a Game Corner, and a day of teacher training — installed and running inside one term, without adding to your staff's planning load.",
+    lede: "Kits, a Game Corner and a day of teacher training: installed and running inside one term, without adding to your staff's planning load.",
     tint: "sky",
     primaryCta: { label: "Book a Demo", href: "/contact?type=school-demo" },
     secondaryCta: { label: "See the learning kits", href: "/products" },
@@ -28,7 +28,7 @@ export const audiences: AudienceHub[] = [
     outcome: {
       heading: "What changes with Khel Shiksha",
       items: [
-        "Concepts are handled, not just heard — and retention follows.",
+        "Concepts are handled, not just heard, and retention follows.",
         "Every child has a turn, because the format requires it.",
         "Teachers get ready-made, curriculum-mapped activities with facilitation guides.",
         "Each kit states observable outcomes a teacher can actually watch for.",
@@ -97,7 +97,7 @@ export const audiences: AudienceHub[] = [
     eyebrow: "For Teachers",
     title: "Activities you can run",
     titleAccent: "tomorrow morning.",
-    lede: "Curriculum-mapped games with facilitation guides, difficulty variations, and outcomes you can actually observe. Built by people who have stood in front of a Grade 4 class.",
+    lede: "Curriculum-mapped games with facilitation guides, difficulty variations and outcomes you can actually observe. Built by people who have stood in front of a Grade 4 class.",
     tint: "mint",
     primaryCta: { label: "Browse the kits", href: "/products" },
     secondaryCta: { label: "Ask us a question", href: "/contact?type=teacher" },
@@ -116,7 +116,7 @@ export const audiences: AudienceHub[] = [
         "Kits that fit inside one period, with setup measured in minutes.",
         "A facilitation guide with three difficulty levels per kit.",
         "Formats built for groups of three to six, where every child has a turn.",
-        "Observable outcomes — specific things to watch a child do, during the session.",
+        "Observable outcomes: specific things to watch a child do, during the session.",
       ],
     },
   },
@@ -126,7 +126,7 @@ export const audiences: AudienceHub[] = [
     eyebrow: "For Parents",
     title: "Learning that feels like",
     titleAccent: "playing.",
-    lede: "Screen-free games your child will actually ask to play again — built around the things they are learning at school, without feeling like more school.",
+    lede: "Screen-free games your child will actually ask to play again, built around the things they are learning at school, without feeling like more school.",
     tint: "peach",
     primaryCta: { label: "Find the right kit", href: "/products" },
     secondaryCta: { label: "Talk to us", href: "/contact?type=parent" },
@@ -135,14 +135,14 @@ export const audiences: AudienceHub[] = [
       items: [
         "They can do the homework but cannot explain the idea behind it.",
         "Everything engaging seems to involve a screen.",
-        "Educational games arrive, get played twice, and go into a cupboard.",
+        "Educational games arrive, get played twice and go into a cupboard.",
         "It is hard to tell what is genuinely useful and what is packaging.",
       ],
     },
     outcome: {
       heading: "What our kits do differently",
       items: [
-        "Built for repeat play — the difficulty grows with the child.",
+        "Built for repeat play: the difficulty grows with the child.",
         "Entirely physical. No screen, no app, no subscription.",
         "Designed for two to six players, so it works with siblings or friends.",
         "Each kit tells you plainly what your child will be able to do afterwards.",

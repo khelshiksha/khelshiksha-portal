@@ -4,7 +4,7 @@ import { gu } from "./dictionaries/gu";
 
 /**
  * Dictionary access. The fallback to English is gone: `gu` is a real
- * dictionary now, and the Dictionary type forces it to stay complete — add a
+ * dictionary now, and the Dictionary type forces it to stay complete - add a
  * key to en.ts and the build fails until Gujarati has it too (decision D8).
  */
 const DICTIONARIES: Record<Locale, Dictionary> = {

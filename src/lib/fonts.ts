@@ -1,7 +1,7 @@
 import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 
 /**
- * Self-hosted via next/font — zero third-party requests, and an auto-generated
+ * Self-hosted via next/font - zero third-party requests, and an auto-generated
  * size-adjusted fallback so the swap costs ~0 CLS.
  * Spec: docs/architecture/03-design-system.md#typography
  */
@@ -15,7 +15,7 @@ export const jakarta = Plus_Jakarta_Sans({
 });
 
 /**
- * Display accent ONLY — the italic phrase inside a heading
+ * Display accent ONLY - the italic phrase inside a heading
  * ("Learning by Doing."). Italic is the only style we load; roman weights are
  * never requested because they are never used.
  */

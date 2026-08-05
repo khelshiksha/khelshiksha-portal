@@ -4,17 +4,17 @@ import { leadSchema, schoolDemoSchema } from "@/features/leads/schema";
 const valid = {
   type: "school-demo",
   name: "Meera Shah",
-  phone: "9779873333",
+  phone: "9979873333",
   organisation: "Shree Vidyalaya",
 };
 
-describe("leadSchema — phone", () => {
+describe("leadSchema, phone", () => {
   it.each([
-    ["9779873333", "9779873333"],
-    ["+91 97798 73333", "9779873333"],
-    ["+919779873333", "9779873333"],
-    ["97798-73333", "9779873333"],
-    ["(97798) 73333", "9779873333"],
+    ["9979873333", "9979873333"],
+    ["+91 99798 73333", "9979873333"],
+    ["+919979873333", "9979873333"],
+    ["99798-73333", "9979873333"],
+    ["(99798) 73333", "9979873333"],
   ])("normalises %s", (input, expected) => {
     const result = leadSchema.safeParse({ ...valid, phone: input });
     expect(result.success).toBe(true);
@@ -25,7 +25,7 @@ describe("leadSchema — phone", () => {
     ["123", "too short"],
     ["1234567890", "does not start 6-9"],
     ["5779873333", "starts with 5"],
-    ["97798733331", "eleven digits"],
+    ["99798733331", "eleven digits"],
     ["", "empty"],
   ])("rejects %s (%s)", (input) => {
     expect(leadSchema.safeParse({ ...valid, phone: input }).success).toBe(
@@ -44,7 +44,7 @@ describe("leadSchema — phone", () => {
   });
 });
 
-describe("leadSchema — consent", () => {
+describe("leadSchema, consent", () => {
   it("defaults to false when the box is not ticked", () => {
     const result = leadSchema.safeParse(valid);
     expect(result.success).toBe(true);
@@ -58,7 +58,7 @@ describe("leadSchema — consent", () => {
   });
 });
 
-describe("leadSchema — optional fields", () => {
+describe("leadSchema, optional fields", () => {
   it("accepts a lead with only name, phone and type", () => {
     expect(
       leadSchema.safeParse({

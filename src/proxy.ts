@@ -6,10 +6,10 @@ import { ACTIVE_LOCALES, DEFAULT_LOCALE } from "@/lib/i18n/config";
  *
  * Named proxy.ts, not middleware.ts: Next 16.2 deprecated the middleware file
  * convention and warns about it on every dev boot. Same behaviour, same
- * matcher — only the file name and the exported function name change.
+ * matcher, only the file name and the exported function name change.
  *
  * Every page lives under app/[locale], so the router needs a locale in the
- * path. But English must stay unprefixed — see the note in lib/i18n/routing —
+ * path. But English must stay unprefixed (see the note in lib/i18n/routing),
  * which leaves three cases:
  *
  *   /gu/schools  → pass through, the segment is already there
@@ -17,7 +17,7 @@ import { ACTIVE_LOCALES, DEFAULT_LOCALE } from "@/lib/i18n/config";
  *   /schools     → rewrite to /en/schools, invisibly
  *
  * The redirect matters. Without it the same English page would answer on two
- * addresses, and Google would have to guess which is canonical — the classic
+ * addresses, and Google would have to guess which is canonical, the classic
  * way a site quietly competes with itself in search results.
  *
  * Deliberately NOT doing locale negotiation from Accept-Language. Guessing a

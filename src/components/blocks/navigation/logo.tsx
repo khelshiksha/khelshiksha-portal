@@ -11,8 +11,8 @@ import fullLogo from "../../../../public/brand/logo.png";
  *
  * Two crops of one source file. The supplied logo carries "Build · Play ·
  * Learn" beneath the wordmark, which is unreadable at the ~34px the header
- * gives it, so the header uses a wordmark-only crop and the footer — where
- * there is room — uses the full lockup. Splitting the artwork is better than
+ * gives it, so the header uses a wordmark-only crop and the footer - where
+ * there is room - uses the full lockup. Splitting the artwork is better than
  * scaling type below its legibility floor and calling it branding.
  *
  * The mark stays #5080c0 in both themes rather than being re-tinted per
@@ -21,7 +21,7 @@ import fullLogo from "../../../../public/brand/logo.png";
  * contrast minimums in any case.
  *
  * Imported as a static asset rather than referenced by string path so Next
- * supplies intrinsic dimensions — the layout box is reserved before the image
+ * supplies intrinsic dimensions - the layout box is reserved before the image
  * arrives, which is what keeps CLS at 0.
  */
 export function Logo({
@@ -39,7 +39,7 @@ export function Logo({
     <Link
       href="/"
       className={cn("group inline-flex", className)}
-      aria-label={`${SITE.name} — home`}
+      aria-label={`${SITE.name}, home`}
     >
       <Image
         src={src}

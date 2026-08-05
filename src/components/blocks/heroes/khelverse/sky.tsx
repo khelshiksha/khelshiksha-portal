@@ -9,9 +9,9 @@ import { randRange } from "./iso";
  *
  *   1. THE BUG. The world used to be pulled up BEHIND the copy on desktop, so
  *      a cloud would drift across the middle of the paragraph and read as a
- *      rendering artifact next to the words "NCF 2023". That layout is gone —
+ *      rendering artifact next to the words "NCF 2023". That layout is gone -
  *      the campus now sits in its own band between the trust signals and the
- *      prose — so nothing in this file can pass under text. If the hero is
+ *      prose - so nothing in this file can pass under text. If the hero is
  *      ever re-stacked so the world overlaps copy again, this goes first.
  *
  *   2. THE NOISE. A balloon, birds, clouds, swaying trees, a turning windmill
@@ -21,14 +21,14 @@ import { randRange } from "./iso";
  *      about twice a minute. It should register as weather, not as animation.
  *
  * WHERE THINGS MAY SIT. The camera crop is 1096x444 starting at (96, 104),
- * and the island's highest point is y≈188 — so the usable sky is the band
+ * and the island's highest point is y≈188 - so the usable sky is the band
  * between y 110 and y 180. Below lg the frame crops to the middle 620 units
  * of that, i.e. viewBox x 334 to 954. ANYTHING OUTSIDE THAT RANGE IS INVISIBLE
  * ON A PHONE, where most of the traffic is, so the two clouds that matter and
  * the flock's path all live inside it; the outer two clouds are a desktop
  * bonus that widens the sky rather than content anyone can miss.
  *
- * Motion is transform and opacity only — no layout, no paint — and every
+ * Motion is transform and opacity only - no layout, no paint - and every
  * duration comes from the seeded generator in iso.ts rather than being shared,
  * because a single duration across four clouds is exactly what makes an
  * animated illustration read as a screensaver. Reduced motion stops all of it
@@ -36,7 +36,7 @@ import { randRange } from "./iso";
  */
 
 type CloudSpec = {
-  /** viewBox coordinates, not grid units — the sky has no ground position. */
+  /** viewBox coordinates, not grid units - the sky has no ground position. */
   x: number;
   y: number;
   scale: number;
@@ -135,7 +135,7 @@ function Flock() {
       style={{ animationDuration: "42s" } as React.CSSProperties}
     >
       {/* Scale 1.6 and up, not 1. At true size a bird was eighteen user units
-          across — about twelve screen pixels on a laptop — which is a grey
+          across - about twelve screen pixels on a laptop - which is a grey
           squiggle, not a bird. Big enough to be a silhouette, small enough to
           stay behind the die and the buildings in the eye's ranking. */}
       <Bird x={300} y={172} scale={1.7} seed={11} />

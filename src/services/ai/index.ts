@@ -6,10 +6,10 @@ import { FEATURES } from "@/lib/features";
 import { formatAgeRange, formatDuration, formatGroupSize } from "@/lib/utils";
 
 /**
- * The AI port — architecture decision D4.
+ * The AI port - architecture decision D4.
  *
  * THIS IS THE ONLY FILE IN THE CODEBASE THAT IMPORTS A MODEL SDK. Everything
- * else — the route handler, the UI, the grounding, the rate limiting — calls
+ * else - the route handler, the UI, the grounding, the rate limiting - calls
  * `answerQuestion` and knows nothing about the provider. Preserve that. It is
  * why swapping the underlying model provider changed this file and no other,
  * and it is what makes the next swap cheap.
@@ -19,7 +19,7 @@ import { formatAgeRange, formatDuration, formatGroupSize } from "@/lib/utils";
  *  - REQUESTS ARE RATE LIMITED BY THE PROVIDER, not only by this application.
  *    When the provider's limit is reached the API errors, the route streams
  *    its fallback, and the visitor is given the phone number instead.
- *    Degraded rather than broken, by design — but it means "the assistant is
+ *    Degraded rather than broken, by design - but it means "the assistant is
  *    quiet today" has an external cause worth checking before debugging code.
  *
  *  - PROMPTS AND RESPONSES MAY LEAVE THE SYSTEM. Anything sent to the model
@@ -35,17 +35,17 @@ import { formatAgeRange, formatDuration, formatGroupSize } from "@/lib/utils";
  *
  * A single hardcoded name broke the assistant in production the day it
  * shipped: `gemini-2.5-flash` returned 404 "no longer available to new
- * users". Google retires and closes off model IDs on their own schedule —
- * 2.0 Flash is already shut down — and this code has no way to know when.
+ * users". Google retires and closes off model IDs on their own schedule -
+ * 2.0 Flash is already shut down - and this code has no way to know when.
  *
  * So: try each in order, and step to the next ONLY on the specific "this
- * model does not exist for you" error. Every other failure — a bad key, a
- * rate limit, a safety block — propagates immediately, because retrying a
+ * model does not exist for you" error. Every other failure - a bad key, a
+ * rate limit, a safety block - propagates immediately, because retrying a
  * different model would neither fix it nor tell us anything, and would turn
  * one failed request into three.
  *
- * Flash rather than Flash-Lite deliberately. The rules in the system prompt —
- * never state a price, never repeat a named child — are instructions to the
+ * Flash rather than Flash-Lite deliberately. The rules in the system prompt -
+ * never state a price, never repeat a named child - are instructions to the
  * model rather than code, and reliable instruction-following is exactly what
  * the smaller variant trades away. The cheaper model would be a false economy
  * here: the constraints it would start ignoring are the safety ones.
@@ -74,13 +74,13 @@ function isModelUnavailable(error: unknown): boolean {
 
 /**
  * 700 was too tight and answers were being cut off mid-sentence in
- * production — "...particularly to" and "4. **" both landed on screen.
+ * production - "...particularly to" and "4. **" both landed on screen.
  *
  * Two things eat this budget. The obvious one is the answer. The other is
  * that Gemini 3 models think before answering and those tokens count against
  * the same ceiling, so a 700 limit could leave only a few hundred for the
  * visible reply. The ceiling is a safety net against a runaway generation,
- * not a length target — the system prompt is what keeps answers to two or
+ * not a length target - the system prompt is what keeps answers to two or
  * three paragraphs, and it does that far more reliably than truncation, which
  * produces a broken sentence rather than a shorter answer.
  */
@@ -88,7 +88,7 @@ const MAX_TOKENS = 2000;
 
 /**
  * The single gate. Both the UI and the route handler ask this and nothing
- * else, so the feature can never be half-present — a rendered panel backed by
+ * else, so the feature can never be half-present - a rendered panel backed by
  * a refusing endpoint would be worse than either.
  *
  * FEATURES.assistant is checked FIRST, and that order is deliberate: it is a
@@ -134,7 +134,7 @@ async function buildSystemPrompt(): Promise<string> {
   const catalogue = products
     .map(
       (p) =>
-        `- ${p.title} (/products/${p.slug}) — ${p.tagline} ` +
+        `- ${p.title} (/products/${p.slug}), ${p.tagline} ` +
         `FOR AGES ${p.ageMin}-${p.ageMax} ONLY; do not recommend it for a ` +
         `child under ${p.ageMin} or over ${p.ageMax}. ` +
         `${formatAgeRange(p.ageMin, p.ageMax)}, ${formatDuration(p.durationMinutes)}, ` +
@@ -159,7 +159,7 @@ shelf for classrooms, and teacher training for schools (Vidyalayas) across India
 mainly Gujarat. Tagline: "${SITE.tagline}". Aligned to NEP 2020 and NCF 2023.
 
 Your job is to answer a visitor's question about the kits, the pillars, teacher
-training, curriculum alignment, or how a rollout works — and then point them to
+training, curriculum alignment, or how a rollout works: and then point them to
 the right page or to booking a demo.
 
 ## The complete kit catalogue
@@ -175,15 +175,15 @@ ${faqList}
 Phone: ${SITE.phones.join(", ")}. Email: ${SITE.email}.
 Demo booking: /contact?type=school-demo
 
-## Rules — these are not style preferences
+## Rules, these are not style preferences
 
 1. ONLY describe kits that appear in the catalogue above. There is no other
    kit. If asked about one not listed, say it is not in the current published
    range and offer to pass the question to the team.
 2. RESPECT THE AGE BANDS. When a visitor names an age or a class, recommend
    only kits whose band actually covers it. Check the number before you
-   suggest anything. If nothing in the range fits — a six-year-old wanting
-   maths, for instance, when the only maths kit starts at eight — say so
+   suggest anything. If nothing in the range fits: a six-year-old wanting
+   maths, for instance, when the only maths kit starts at eight, say so
    plainly, name the nearest kits that DO fit their age whatever the subject,
    and mention the one they will grow into. A parent acting on a
    recommendation for the wrong age discovers the mistake when the box is
@@ -192,7 +192,7 @@ Demo booking: /contact?type=school-demo
    Kits are supplied as part of a school programme and pricing depends on
    grades, school size and whether training is included. Always route pricing
    questions to /contact.
-4. NEVER ask for, invite, or repeat any detail about an individual child —
+4. NEVER ask for, invite, or repeat any detail about an individual child:
    no name, school, age, photo, or performance. If a visitor volunteers such
    a detail, do not repeat it back. Ask for the class or grade band instead.
 5. Do not invent statistics. The verifiable ones are: over 12,000 kits
@@ -204,7 +204,7 @@ Demo booking: /contact?type=school-demo
 7. Answer in the language the visitor writes in. If they write in Gujarati,
    answer entirely in Gujarati.
 
-## Format — the panel renders your reply as PLAIN TEXT
+## Format, the panel renders your reply as PLAIN TEXT
 
 It does not render Markdown. Asterisks, hashes and backticks appear on screen
 exactly as you type them, so a bolded kit name arrives as **Aryabhata** and
@@ -224,7 +224,7 @@ reads as a mistake.
 ## Style
 Two or three short paragraphs at most. Plain sentences, no marketing
 adjectives, no emoji. Address the visitor directly as "you". Finish your last
-sentence — a complete short answer is better than a longer one that stops
+sentence: a complete short answer is better than a longer one that stops
 mid-thought.`;
 }
 
@@ -244,7 +244,7 @@ export async function* answerQuestion(
 
   const client = new GoogleGenAI({ apiKey });
 
-  /* Built once, outside the loop — it reads the whole catalogue and would be
+  /* Built once, outside the loop - it reads the whole catalogue and would be
      wasteful to rebuild per model attempt. */
   const systemInstruction = await buildSystemPrompt();
 

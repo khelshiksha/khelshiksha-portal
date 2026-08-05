@@ -33,14 +33,14 @@ export function Card({
 /**
  * A card that is entirely a link.
  *
- * The whole card is the anchor rather than a "Read more" link inside it —
+ * The whole card is the anchor rather than a "Read more" link inside it -
  * one tap target, one accessible name, and no nested interactive elements to
  * confuse a screen reader. Hover lift is on `transform` only, so it can never
  * cause layout shift.
  *
  * The lift is `.lift-on-hover`, NOT Tailwind's `hover:-translate-y-1`. See
  * globals.css: `hover:` compiles to a bare :hover, which a touch browser
- * latches on tap — so on a phone every card visibly rose before navigating.
+ * latches on tap - so on a phone every card visibly rose before navigating.
  */
 export function LinkCard({
   href,

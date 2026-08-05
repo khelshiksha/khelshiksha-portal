@@ -46,7 +46,7 @@ export default async function ImpactPage() {
             eyebrow="Proven impact"
             title="Delivered at scale,"
             accent="already."
-            lede="Every figure below is traceable to work we have actually done. Nothing here is estimated or rounded up — the people who read this page check."
+            lede="Every figure below is traceable to work we have actually done. Nothing here is estimated or rounded up: the people who read this page check."
           />
         </Container>
       </Section>

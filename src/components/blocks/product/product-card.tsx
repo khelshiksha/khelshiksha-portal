@@ -32,7 +32,7 @@ export function ProductCard({
   return (
     <LinkCard
       href={`/products/${product.slug}`}
-      /* h-full, and the <li> around it must stretch too — see the grid in
+      /* h-full, and the <li> around it must stretch too - see the grid in
          featured-kits.tsx. Without it the card is as tall as its own content,
          so the four kits in a row ended at four different heights: SURAKSHA's
          chips fit one line, Aryabhata's wrapped to two, and each tagline is a
@@ -41,9 +41,9 @@ export function ProductCard({
          uniform and `flex-1` on the tagline absorbs the difference, so the
          duration line sits on the same baseline in all four. */
       className="flex h-full flex-col overflow-hidden"
-      /* One accessible name for the whole card — the inner heading and the
+      /* One accessible name for the whole card - the inner heading and the
          "learn more" affordance are not separate tab stops. */
-      ariaLabel={`${product.title} — ${product.tagline}`}
+      ariaLabel={`${product.title}, ${product.tagline}`}
     >
       <MediaFrame
         image={product.heroImage}
@@ -59,17 +59,17 @@ export function ProductCard({
         {/* ONE chip, not two. The pillar chip and an age chip together are
             wider than a quarter-width card, so "Foundational Learning" +
             "8–12 years" wrapped to a second row on exactly one of the four
-            featured kits — and that card's title, tagline and meta line all
+            featured kits - and that card's title, tagline and meta line all
             sat 30px lower than its neighbours'. One chip cannot wrap, so
             every card in a row starts its title at the same height.
 
             The age did not disappear: it moved to the meta line below, which
             is where the other two numbers a teacher needs already live. It is
-            arguably a better home — time, group size and age band are one
+            arguably a better home - time, group size and age band are one
             thought ("can I run this, with these children, in this period?"),
             and they now read as one.
 
-            Chips still carry a text label as well as a tint — colour is never
+            Chips still carry a text label as well as a tint - colour is never
             the only signal. */}
         {pillar ? (
           <div className="flex">
@@ -83,7 +83,7 @@ export function ProductCard({
 
         {/* Absorbs the difference between a short tagline and a long one, so
             the meta line lands on the same baseline across the row. Only
-            works because the card is h-full — see above. */}
+            works because the card is h-full - see above. */}
         <p className="text-body-sm text-ink-muted flex-1">{product.tagline}</p>
 
         {/* The arrow is a SIBLING of the meta line, not the last item in it.

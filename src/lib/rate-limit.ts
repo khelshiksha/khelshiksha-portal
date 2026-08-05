@@ -2,7 +2,7 @@ import "server-only";
 import { createHash } from "node:crypto";
 
 /**
- * IP addresses are never stored raw — only SHA-256(ip + salt), which is
+ * IP addresses are never stored raw - only SHA-256(ip + salt), which is
  * enough for rate limiting and deduplication without holding PII.
  */
 export function hashIp(forwardedFor: string | null): string | null {

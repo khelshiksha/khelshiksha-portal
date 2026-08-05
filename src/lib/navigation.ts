@@ -13,7 +13,7 @@ export interface NavGroup {
 }
 
 /**
- * Navigation leads with WHO you are, not WHAT we sell — a principal and a
+ * Navigation leads with WHO you are, not WHAT we sell - a principal and a
  * parent need completely different proof and different next actions.
  *
  * Products are deliberately NOT top-level. They live under "What We Do" as
@@ -21,8 +21,8 @@ export interface NavGroup {
  * into a grid of boxes.
  *
  * These are FUNCTIONS OF THE DICTIONARY, not constants. They used to be
- * exported arrays with English labels baked in, which meant the navigation —
- * the one component on every page — could never be translated no matter how
+ * exported arrays with English labels baked in, which meant the navigation -
+ * the one component on every page - could never be translated no matter how
  * complete the dictionary was.
  *
  * Hrefs stay unprefixed. Locale prefixing happens at the point of rendering,

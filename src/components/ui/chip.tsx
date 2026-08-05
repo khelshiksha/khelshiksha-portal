@@ -5,7 +5,7 @@ type ChipVariant = "meta" | "pillar" | "solid";
 
 /**
  * Small label. Pillar chips carry a text label as well as a tint, because
- * colour is never the only signal — a11y checklist §1.
+ * colour is never the only signal - a11y checklist §1.
  */
 export function Chip({
   children,

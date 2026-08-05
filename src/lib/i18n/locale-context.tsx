@@ -14,7 +14,7 @@ import { localeHref } from "./routing";
  * they are nested three levels below, so they read it here instead.
  *
  * Set once in the root layout from the URL segment. It is never inferred from
- * a cookie or from Accept-Language — see the note in middleware.ts.
+ * a cookie or from Accept-Language - see the note in middleware.ts.
  */
 const LocaleContext = createContext<Locale>(DEFAULT_LOCALE);
 

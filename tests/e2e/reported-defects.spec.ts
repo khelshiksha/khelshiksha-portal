@@ -4,7 +4,7 @@ import { settlePage } from "./support/settle";
 /**
  * Regressions for defects observed on real devices.
  *
- * None of these are speculative — each one corresponds to a symptom that was
+ * None of these are speculative - each one corresponds to a symptom that was
  * actually reproduced on hardware, and several were invisible in an emulator.
  *
  * THE RULE FOR THIS FILE: assert the OBSERVABLE BEHAVIOUR, never the CSS or
@@ -15,7 +15,7 @@ import { settlePage } from "./support/settle";
  * the only version worth having.
  *
  * These live in tests/e2e rather than in the local .audit harness because
- * .audit is gitignored — a regression test nobody else can run is a note to
+ * .audit is gitignored - a regression test nobody else can run is a note to
  * self rather than a guarantee.
  */
 
@@ -23,9 +23,9 @@ test.describe("mobile navigation", () => {
   /* SYMPTOM: the mobile menu offered fewer destinations than the desktop bar.
 
      The panel listed the audience hubs and the What We Do groups and stopped,
-     so /impact — the page carrying the institutional logos, the press
+     so /impact - the page carrying the institutional logos, the press
      cuttings and the numbers, i.e. the whole answer to "are these people
-     real?" — was reachable on a laptop and nowhere on a phone.
+     real?" - was reachable on a laptop and nowhere on a phone.
 
      Compares the two menus against each other instead of against a hard-coded
      list, so a destination added to one and forgotten in the other fails
@@ -37,7 +37,7 @@ test.describe("mobile navigation", () => {
     await page.goto("/");
     await settlePage(page);
 
-    /* The desktop bar is `hidden lg:flex` — in the DOM at every width, so it
+    /* The desktop bar is `hidden lg:flex` - in the DOM at every width, so it
        can be read from a phone viewport. Panel links are excluded or the
        comparison would be against itself. */
     const desktop = await page.evaluate(() =>
@@ -129,7 +129,7 @@ test.describe("kit cards", () => {
 
       const rows = await page.evaluate(() => {
         const byTop = new Map<number, number[]>();
-        /* main only — the header's What We Do menu links to /products/* too,
+        /* main only - the header's What We Do menu links to /products/* too,
            and on a phone those are in the DOM at every scroll position. */
         for (const a of document.querySelectorAll(
           "main a[href^='/products/']",
@@ -137,7 +137,7 @@ test.describe("kit cards", () => {
           const r = a.getBoundingClientRect();
           if (r.height === 0) continue;
           const top = Math.round(r.top);
-          /* Grouped with a 2px tolerance to absorb sub-pixel layout — not
+          /* Grouped with a 2px tolerance to absorb sub-pixel layout - not
              enough slack to hide a real misalignment. */
           const key =
             [...byTop.keys()].find((k) => Math.abs(k - top) <= 2) ?? top;
@@ -150,7 +150,7 @@ test.describe("kit cards", () => {
       for (const heights of rows) {
         expect(
           new Set(heights).size,
-          `${route}: a row of kit cards has mixed heights — ${heights.join(", ")}`,
+          `${route}: a row of kit cards has mixed heights, ${heights.join(", ")}`,
         ).toBe(1);
       }
     }
@@ -192,7 +192,7 @@ test.describe("hero", () => {
 
      The zone caption is the only thing that names the five pillars on a
      phone. Pinned to the bottom edge of the campus it landed below the fold
-     on an iPhone 13 — present, and useless. */
+     on an iPhone 13 - present, and useless. */
   test("the campus caption is above the fold on a phone", async ({
     page,
   }, info) => {
@@ -247,7 +247,7 @@ test.describe("outbound links", () => {
   /* The Instagram handle in the footer was a guess and was wrong, and
      Facebook and X were guesses too. These are also emitted as schema.org
      sameAs, where a wrong URL tells a search engine the wrong entity is us.
-     This does not check that the accounts exist — it checks that nobody has
+     This does not check that the accounts exist - it checks that nobody has
      quietly added a placeholder back. */
   test("every social link is one of the confirmed accounts", async ({
     page,

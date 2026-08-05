@@ -19,7 +19,7 @@ import type {
 export interface ImageRef {
   /** Path under /public today; a Sanity asset ref later. */
   src: string;
-  /** Required unless `decorative` — enforced in the CMS schema too. */
+  /** Required unless `decorative` - enforced in the CMS schema too. */
   alt: string;
   decorative?: boolean;
   caption?: string;
@@ -60,7 +60,7 @@ export interface Product {
   tagline: string;
 
   /**
-   * Two voices for the same kit — journey rule 2. The audience hub picks one;
+   * Two voices for the same kit - journey rule 2. The audience hub picks one;
    * a principal and a parent do not read the same sentence.
    */
   descriptionInstitutional: string;
@@ -110,7 +110,7 @@ export interface Partner {
    *
    * A partner renders as a typographic wordmark unless a logo is supplied.
    * Supply one only when a licensed vector asset exists and permission for
-   * this use is on file — reproducing an organisation's mark is a trade mark
+   * this use is on file - reproducing an organisation's mark is a trade mark
    * use, whereas setting its name in type is a statement of fact. See
    * content/impact.ts.
    */
@@ -180,8 +180,8 @@ export interface CredentialItem {
    *
    * Every logo used to be declared as 150x56 and rendered `h-12 w-auto
    * object-contain`, so each one was letterboxed inside a box of the wrong
-   * shape — a tall crest got wide empty margins, a wide wordmark got squeezed
-   * — and next/image logged an aspect-ratio warning for all fifteen. With the
+   * shape - a tall crest got wide empty margins, a wide wordmark got squeezed
+   * - and next/image logged an aspect-ratio warning for all fifteen. With the
    * real numbers each mark keeps its own shape and the row reads as a set of
    * logos rather than a row of boxes.
    *
@@ -208,7 +208,7 @@ export interface PressCutting {
   /** File under public/press. */
   file: string;
   alt: string;
-  /** Null until verified — see the note in content/press.ts. */
+  /** Null until verified - see the note in content/press.ts. */
   publication: string | null;
   date: string | null;
 }

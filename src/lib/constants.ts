@@ -9,10 +9,10 @@ export const SITE = {
   secondary: "Learning Through Play",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://khelshiksha.com",
   locale: "en_IN",
-  phones: ["+91 97798 73333", "+91 91731 48292"],
+  phones: ["+91 99798 73333", "+91 91731 48292"],
   email: "adminkhelshiksha@gmail.com",
   /* EVERY URL HERE IS ONE THE COMPANY CONFIRMED. The Instagram handle used to
-     be `khelshiksha`, which was a guess and was wrong — the real one is
+     be `khelshiksha`, which was a guess and was wrong - the real one is
      `khelshikshagames`. Facebook and X were guesses too and have been removed
      rather than corrected, because nobody has confirmed those accounts exist.
      A social icon that 404s costs more trust than an absent one, and these
@@ -94,7 +94,7 @@ export const AUDIENCE_KEYS = [
 export type AudienceKey = (typeof AUDIENCE_KEYS)[number];
 
 /* --- Product facets ----------------------------------------------------- */
-/* NOTE: 8 facets, not 9. `budget` is deliberately absent — decision D7 makes
+/* NOTE: 8 facets, not 9. `budget` is deliberately absent - decision D7 makes
    products a portfolio with no public pricing. */
 
 export const SUBJECTS = [

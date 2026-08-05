@@ -36,7 +36,7 @@ export function SiteHeader() {
     };
   }, []);
 
-  /* Any navigation closes both menus — otherwise the panel survives the route
+  /* Any navigation closes both menus - otherwise the panel survives the route
      change and hangs over the new page.
      Adjusted during render rather than in an effect: this is React's
      documented pattern for resetting state when a prop changes, and it avoids
@@ -98,7 +98,7 @@ export function SiteHeader() {
         scrolled
           ? /* Opaque on phones, frosted only from lg up.
                The blur used to apply at every width, and it was the ONLY
-               thing that changed when the page scrolled — which matches the
+               thing that changed when the page scrolled - which matches the
                reported bug exactly: the menu opened at the top of the page
                and stopped opening once scrolled. iOS Safari has long-standing
                compositing bugs where a backdrop-filter layer swallows touches
@@ -182,8 +182,8 @@ export function SiteHeader() {
           {/* Visible at EVERY width now, phones included.
               It used to be `hidden sm:inline-flex`, which was survivable only
               while the hero carried its own pair of buttons. With those gone,
-              hiding this one would have left a phone visitor — most of the
-              traffic — with no way to act that was not behind the hamburger.
+              hiding this one would have left a phone visitor - most of the
+              traffic - with no way to act that was not behind the hamburger.
               A primary action must never require a menu.
               Compact label below sm so the header still fits at 320px: the
               full "Book a Demo" plus the logo and the menu button overflows a
@@ -194,8 +194,8 @@ export function SiteHeader() {
           </ButtonLink>
           {/* A <details> rather than a button + React state.
               With JavaScript disabled an onClick handler does nothing, which
-              left mobile visitors — the majority of our teacher and parent
-              traffic — unable to navigate from the header at all. <details>
+              left mobile visitors - the majority of our teacher and parent
+              traffic - unable to navigate from the header at all. <details>
               opens natively with no JS, and brings correct keyboard and
               screen-reader semantics with it. */}
           <details
@@ -218,7 +218,7 @@ export function SiteHeader() {
         </div>
       </Container>
 
-      {/* Mega-menu — opens on click, never on hover alone. */}
+      {/* Mega-menu - opens on click, never on hover alone. */}
       {menuOpen ? (
         <div
           ref={menuRef}
@@ -267,7 +267,7 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
     <div
       id="mobile-nav"
       /* z-40, below the header's z-50. Both used to be z-50, and the panel
-         comes later in the DOM, so it painted OVER the header — meaning any
+         comes later in the DOM, so it painted OVER the header - meaning any
          mispositioning (iOS resizes the viewport as its toolbars collapse)
          would put a full-screen opaque panel on top of the button that closes
          it. The header must always win. */
@@ -276,9 +276,9 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
       <Container className="flex flex-col gap-8 py-8">
         {/* IMPACT BELONGS HERE TOO.
             The desktop bar is audiences + What We Do + Impact; this panel was
-            audiences + What We Do and nothing else, so Impact — the page that
+            audiences + What We Do and nothing else, so Impact - the page that
             holds the logos, the newspaper coverage and the numbers, i.e. the
-            answer to "are these people real?" — was reachable on a laptop and
+            answer to "are these people real?" - was reachable on a laptop and
             not on a phone. Two navigations claiming to be the same navigation
             is the kind of gap nobody notices until a principal cannot find the
             proof. Appended to the same list rather than given its own block so

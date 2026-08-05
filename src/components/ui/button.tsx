@@ -27,7 +27,7 @@ const BASE =
   "transition-[background-color,color,box-shadow,transform,border-color] duration-150 " +
   "ease-[var(--ease-out-quint)] hover:scale-[1.02] active:scale-[0.98] " +
   "disabled:pointer-events-none disabled:opacity-45 " +
-  /* 44px minimum touch target even at size sm — a11y checklist §2 */
+  /* 44px minimum touch target even at size sm - a11y checklist §2 */
   "min-h-11";
 
 interface CommonProps {

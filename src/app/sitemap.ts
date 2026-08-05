@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE, ROUTES } from "@/lib/constants";
 import { getPillarSlugs, getProductSlugs } from "@/services/cms";
 
-/** Generated from the content layer — a new kit appears without a code change. */
+/** Generated from the content layer - a new kit appears without a code change. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [productSlugs, pillarSlugs] = await Promise.all([
     getProductSlugs(),
@@ -34,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   /* No lastModified. It used to be `new Date()` on every entry, which meant
-     all 26 URLs claimed to have changed at the moment of the last deploy —
+     all 26 URLs claimed to have changed at the moment of the last deploy - 
      including the privacy policy. Google treats an unreliable lastmod as a
      reason to stop trusting the field, so an absent one is strictly better
      than a wrong one. It comes back when the content layer carries real

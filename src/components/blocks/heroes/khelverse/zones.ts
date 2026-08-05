@@ -9,7 +9,7 @@
  *
  * Order is the walking order around the island, which is also the order the
  * die hops in and therefore the order the headline words appear in. Five
- * zones, five words — see hero-artwork's HeroWords tuple.
+ * zones, five words - see hero-artwork's HeroWords tuple.
  */
 export type Zone = {
   slug: string;
@@ -72,7 +72,7 @@ export function zoneCentre(zone: Zone) {
   return { gx: zone.gx + PLATFORM / 2, gy: zone.gy + PLATFORM / 2 };
 }
 
-/** Discovery Square — the plaza the paths radiate from. */
+/** Discovery Square - the plaza the paths radiate from. */
 export const PLAZA = { gx: 4.4, gy: 4.4, size: 2.6, h: 0.2 };
 export const PLAZA_CENTRE = {
   gx: PLAZA.gx + PLAZA.size / 2,

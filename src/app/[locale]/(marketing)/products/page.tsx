@@ -41,7 +41,7 @@ export default async function ProductsPage({
             eyebrow="Learning kits"
             title="Games built around what children"
             accent="actually keep."
-            lede="Every kit states the outcomes a teacher can watch for. Kits are supplied as part of a school programme rather than sold individually — tell us about your school and we'll share options."
+            lede="Every kit states the outcomes a teacher can watch for. Kits are supplied as part of a school programme rather than sold individually. Tell us about your school and we'll share options."
           />
         </Container>
       </Section>

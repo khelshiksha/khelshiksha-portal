@@ -1,8 +1,8 @@
 /**
  * Isometric projection for the KhelVerse hero world.
  *
- * The world is authored in grid units — (gx, gy) across the ground plane and
- * gz upward — and projected to screen here. Authoring in grid units is the
+ * The world is authored in grid units - (gx, gy) across the ground plane and
+ * gz upward - and projected to screen here. Authoring in grid units is the
  * whole point: placing a tree "two tiles left of the schoolhouse" is a thing a
  * person can reason about, while placing it at screen (417, 288) is not, and
  * every adjustment to the camera would otherwise mean re-deriving every
@@ -13,7 +13,7 @@
  * edges stay crisp instead of shimmering.
  *
  * SORTING. In an isometric scene, what is in front is determined by depth, not
- * by source order, and SVG has no z-index — it paints in document order. So
+ * by source order, and SVG has no z-index - it paints in document order. So
  * everything drawn into the world carries a depth key and is sorted before
  * render. Getting this wrong is the classic isometric bug: a tree drawn behind
  * a building overlaps it anyway and the whole illusion of solidity dies.
@@ -36,7 +36,7 @@ export const ORIGIN_Y = 160;
  * clouds were removed: the band they occupied was then just empty space, and
  * empty space at the top of the frame is what made the hero too tall.
  *
- * Every consumer — both SVGs and the HTML pins layered over them — derives its
+ * Every consumer - both SVGs and the HTML pins layered over them - derives its
  * geometry from this one constant, so the crop can be retuned in a single
  * place without the labels drifting off the rooftops.
  */

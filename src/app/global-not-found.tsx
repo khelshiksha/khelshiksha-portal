@@ -11,20 +11,20 @@ import "./globals.css";
  *
  * Needed because every page now lives under app/[locale], which leaves no
  * root layout above it. For a path that matches nothing, Next has no layout
- * to render and falls back to a bare built-in document — and that document
+ * to render and falls back to a bare built-in document - and that document
  * has no lang attribute, which axe flags as a serious failure on every 404.
  * That is a regression the [locale] restructure introduced and this file is
  * the fix; app/[locale]/not-found.tsx still handles the in-app case, where a
  * locale IS known.
  *
  * So this component owns the whole document: html, head and body. It is
- * deliberately plain — no header, no footer, no world. A 404 should load
+ * deliberately plain - no header, no footer, no world. A 404 should load
  * instantly and offer one obvious way back, and pulling the navigation in
  * would mean pulling client JavaScript into a page whose entire job is to
  * apologise and get out of the way.
  *
  * The language is the default locale. There is no locale in the URL to read
- * — that is what makes this the GLOBAL not-found — so claiming anything else
+ * - that is what makes this the GLOBAL not-found - so claiming anything else
  * in the lang attribute would be a lie to a screen reader.
  */
 export const metadata: Metadata = {

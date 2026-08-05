@@ -6,12 +6,12 @@ import type { CredentialGroup } from "@/services/cms/types";
  * This separation is the whole point of the file and must not be collapsed
  * into one "Our Partners" strip:
  *
- *   ALIGNMENT — national frameworks and missions the programme is built
+ *   ALIGNMENT - national frameworks and missions the programme is built
  *   against. Showing these claims nothing about the organisation behind them.
  *   It is the same claim the brochure makes under "Strategic Alignment with
  *   National Missions", and it is verifiable by reading the kits.
  *
- *   WORKED WITH — organisations Khel Shiksha has actually delivered something
+ *   WORKED WITH - organisations Khel Shiksha has actually delivered something
  *   for. This claims a working relationship, so every entry needs to be one
  *   the company can evidence if a government officer asks.
  *
@@ -19,8 +19,8 @@ import type { CredentialGroup } from "@/services/cms/types";
  * endorsement, which is the one failure mode that matters here.
  *
  * BEFORE ADDING ANY MARK, check two things. That the organisation's brand
- * guidelines permit the use — international agencies and government bodies
- * commonly restrict third-party display that could imply endorsement — and
+ * guidelines permit the use - international agencies and government bodies
+ * commonly restrict third-party display that could imply endorsement - and
  * that permission for this specific use is on file.
  *
  * Where a mark is permitted but the relationship could be over-read, give it
@@ -40,7 +40,7 @@ export const credentialGroups: CredentialGroup[] = [
     heading: "Built against national frameworks",
     /* Says what the logos mean, so the row cannot be read as endorsement. */
     note: "Our kits and teacher training are designed to these published frameworks and missions.",
-    /* w/h are the files' real pixel dimensions — see CredentialItem. */
+    /* w/h are the files' real pixel dimensions - see CredentialItem. */
     items: [
       { name: "NCF 2023", file: "ncf-2023.png", w: 313, h: 200 },
       /* Supplied named .svg but actually a WebP payload, so the browser tried

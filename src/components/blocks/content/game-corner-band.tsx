@@ -5,7 +5,7 @@ import { SHELF_LABEL, SHELF_KEYS } from "@/lib/constants";
 /**
  * The physical Experiential Learning Zone.
  *
- * An inset dark panel — it deliberately breaks the cream rhythm, because this
+ * An inset dark panel - it deliberately breaks the cream rhythm, because this
  * is the one section describing something physical that arrives in the
  * school. The visual interruption does the same job as the paragraph.
  */
@@ -26,8 +26,8 @@ export function GameCornerBand() {
         </h2>
         <p className="measure text-body-lg text-on-band-dark/80">
           A branded shelf unit that gives the kits a home in your classroom,
-          organised by theme so a teacher can find the right one in seconds —
-          not a cupboard they have to dig through.
+          organised by theme so a teacher can find the right one in seconds, not
+          a cupboard they have to dig through.
         </p>
         <div>
           <ButtonLink

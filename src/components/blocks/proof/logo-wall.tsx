@@ -5,7 +5,7 @@ import type { CredentialGroup } from "@/services/cms/types";
 /**
  * Institutional marks, grouped by what they actually claim.
  *
- * The heading and the note above each row are not decoration — they are the
+ * The heading and the note above each row are not decoration - they are the
  * difference between a factual statement and an implied endorsement. A single
  * undifferentiated "Our Partners" wall would say that UNICEF and the Ministry
  * of Education endorse a commercial product, which is not what happened and
@@ -16,7 +16,7 @@ import type { CredentialGroup } from "@/services/cms/types";
  * developed for the 1st World Yogasana Sports Championship" is a much better
  * story than an unexplained logo, and it is one that survives being checked.
  *
- * Marks are greyed back at rest and come to full colour on hover — and are
+ * Marks are greyed back at rest and come to full colour on hover - and are
  * INVERTED rather than merely greyed in dark mode, because these files are
  * dark ink drawn for white paper. See .logo-mark in globals.css; the rule is
  * shared with the home page rail so the two can never drift apart.
@@ -49,7 +49,7 @@ export function LogoWall({
                   className="flex flex-col items-center gap-2 text-center"
                 >
                   {/* The row is a fixed 4rem tall and each mark keeps its own
-                      ratio inside it — declared per file rather than as one
+                      ratio inside it - declared per file rather than as one
                       shared 160x64, which letterboxed every logo into a box
                       of the wrong shape. */}
                   <div className="flex h-16 items-center justify-center">

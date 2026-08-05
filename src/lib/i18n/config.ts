@@ -1,5 +1,5 @@
 /**
- * i18n scaffolding — decision D8.
+ * i18n scaffolding - decision D8.
  *
  * Gujarati is in scope but not launched. The structure exists from the first
  * commit because the expensive part of adding a locale later is not the
@@ -24,8 +24,8 @@ export const DEFAULT_LOCALE: Locale = "en";
  * missing is the 288 strings of body copy in src/content.
  *
  * Shipping /gu with Gujarati navigation wrapped around English paragraphs
- * would look broken to precisely the reader it exists for — a Gujarati-
- * speaking principal — and would do more damage to credibility than having no
+ * would look broken to precisely the reader it exists for - a Gujarati-
+ * speaking principal - and would do more damage to credibility than having no
  * Gujarati at all. So the machinery ships dark and this array is the switch.
  *
  * BEFORE ADDING "gu" HERE, two things must be done, in this order:
@@ -42,7 +42,7 @@ export const DEFAULT_LOCALE: Locale = "en";
  *       components/blocks/heroes/hero-home.tsx
  *       components/blocks/product/featured-kits.tsx
  *
- *     Client components no longer have this problem — they read the locale
+ *     Client components no longer have this problem - they read the locale
  *     from LocaleProvider via useDictionary(). Server components cannot,
  *     because React context does not cross the server boundary, so the
  *     locale has to be handed down as a prop from the page.
@@ -71,8 +71,8 @@ export function isLocale(value: string): value is Locale {
 /**
  * Narrow a route segment to a Locale, or fail loudly.
  *
- * Next generates route props with `params: { locale: string }` — it cannot
- * know the segment is one of two values — so every layout and page that wants
+ * Next generates route props with `params: { locale: string }` - it cannot
+ * know the segment is one of two values - so every layout and page that wants
  * a typed Locale has to narrow here. Throwing rather than defaulting to
  * English is deliberate: a route reached with an unknown locale is a routing
  * bug, and silently serving English would hide it behind a page that looks

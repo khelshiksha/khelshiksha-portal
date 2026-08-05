@@ -28,7 +28,7 @@ import type { Pillar, Product } from "@/services/cms/types";
 
 /**
  * The whole catalogue is ~10 kits, so it ships to the client once and filters
- * in the browser — no round trip per filter change. Above roughly 60 items
+ * in the browser - no round trip per filter change. Above roughly 60 items
  * this would flip to a server-filtered strategy.
  */
 export function ProductBrowser({
@@ -55,7 +55,7 @@ export function ProductBrowser({
    * Mirror the filter state into the address bar.
    *
    * The page already reads these params on the server, so deep links worked
-   * inbound — but nothing ever wrote them, which made a filtered view
+   * inbound - but nothing ever wrote them, which made a filtered view
    * impossible to share or bookmark. filtersToParams() existed and was unit
    * tested; it was simply never called from the app.
    *
@@ -65,7 +65,7 @@ export function ProductBrowser({
    * and shareable; Back still leaves the page.
    *
    * Native history rather than router.replace() because the filtering is
-   * entirely client-side over a catalogue already in memory — a router call
+   * entirely client-side over a catalogue already in memory - a router call
    * would fetch an RSC payload to render a list we can already render.
    */
   const applyFilters = (next: ProductFilters) => {
@@ -232,7 +232,7 @@ export function ProductBrowser({
             >
               {t.filters.clearAll}
             </Button>
-            {/* Never a bare zero — always show a route forward. */}
+            {/* Never a bare zero - always show a route forward. */}
             <ul className="mt-10 grid gap-4 text-left sm:grid-cols-3">
               {products.slice(0, 3).map((product) => (
                 <li key={product._id} className="h-full">
@@ -252,7 +252,7 @@ export function ProductBrowser({
                 key={product._id}
                 /* A CSS fade rather than a FLIP layout animation. Framer
                    Motion cost ~50KB gzipped for card reshuffling across a
-                   catalogue of six kits — not a trade worth making. Revisit
+                   catalogue of six kits - not a trade worth making. Revisit
                    if the catalogue grows enough that reshuffling becomes
                    disorienting. */
                 className="h-full motion-safe:animate-[fade-in_240ms_var(--ease-out-quint)]"

@@ -50,7 +50,7 @@ export const en = {
     howToPlay: "How to play",
     inTheBox: "What's in the box",
     related: "Kits that pair well with this",
-    /* Portfolio, not catalogue — decision D7. No price, no cart, anywhere. */
+    /* Portfolio, not catalogue - decision D7. No price, no cart, anywhere. */
     noPricingNote:
       "Kits are supplied as part of a school programme. Tell us about your school and we'll share options and pricing.",
   },
@@ -60,7 +60,7 @@ export const en = {
     apply: "Show results",
     resultCount: (n: number) => (n === 1 ? "1 kit matches" : `${n} kits match`),
     emptyTitle: "No kits match those filters",
-    emptyBody: "Try removing a filter — here are some close alternatives.",
+    emptyBody: "Try removing a filter. Here are some close alternatives.",
     age: "Age",
     subject: "Subject",
     skill: "Skill",
@@ -84,10 +84,10 @@ export const en = {
     required: "required",
     submit: "Send enquiry",
     submitting: "Sending…",
-    successTitle: "Thank you — we've got it.",
+    successTitle: "Thank you, we've got it.",
     successBody: "Someone from our team will call you within two working days.",
     errorGeneric: "Something went wrong on our side. Please try again.",
-    /* Errors say how to fix, never just "invalid" — a11y checklist §3 */
+    /* Errors say how to fix, never just "invalid" - a11y checklist §3 */
     errorName: "Please enter your name",
     errorEmail: "Enter an email address like name@school.edu.in",
     errorPhone: "Enter a 10-digit mobile number",
@@ -141,7 +141,7 @@ export const en = {
        current language still has to be able to find the way out. */
     switchTo: "ગુજરાતીમાં જુઓ",
   },
-  /* Trust signals sit directly under the hero CTAs. Claims only — alignment
+  /* Trust signals sit directly under the hero CTAs. Claims only - alignment
      with a published framework, and what is included in the programme. No
      counts of schools or children until those numbers can be sourced. */
   trust: {
@@ -162,14 +162,14 @@ export const en = {
  *
  * `en` is `as const`, which is what stops a stray reassignment and keeps the
  * object readable as data. But it also means `typeof en` types every value as
- * the exact English string — `skipToContent: "Skip to main content"` — so no
+ * the exact English string - `skipToContent: "Skip to main content"` - so no
  * other language can satisfy it. Deriving Dictionary straight from `typeof en`
  * made the type a description of English rather than of a dictionary, and the
  * Gujarati file failed to compile on its first line.
  *
  * This maps every leaf to `string` while preserving the shape and the one
  * function signature, so `gu` must supply exactly the same keys with exactly
- * the same kinds of value — which is the guarantee actually wanted.
+ * the same kinds of value - which is the guarantee actually wanted.
  */
 type Widen<T> = T extends string
   ? string

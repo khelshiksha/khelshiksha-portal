@@ -9,7 +9,7 @@ export const metadata: Metadata = buildMetadata({
 });
 
 /**
- * DRAFT — accurate to what this site does, but NOT legally reviewed. Have a
+ * DRAFT - accurate to what this site does, but NOT legally reviewed. Have a
  * lawyer check this before launch.
  */
 export default function TermsPage() {
@@ -43,8 +43,8 @@ export default function TermsPage() {
       <h2>Your enquiries</h2>
       <p>
         Please send us accurate contact details, and do not submit information
-        about other people — particularly children — without their consent. We
-        may decline or remove submissions that are abusive or automated.
+        about other people, particularly children, without their consent. We may
+        decline or remove submissions that are abusive or automated.
       </p>
 
       <h2>Intellectual property</h2>

@@ -4,8 +4,8 @@ import type { Page } from "@playwright/test";
  * Bring the page to its settled visual state before auditing it.
  *
  * Scroll-revealed sections start at `opacity: 0` and transition in. If axe
- * samples while a transition is running it reads a BLENDED colour — e.g.
- * brand blue at 30% over cream — and reports a contrast failure that no user
+ * samples while a transition is running it reads a BLENDED colour - e.g.
+ * brand blue at 30% over cream - and reports a contrast failure that no user
  * ever sees. Those are harness artefacts, not defects, and treating them as
  * real would mean "fixing" colours that are already correct.
  *

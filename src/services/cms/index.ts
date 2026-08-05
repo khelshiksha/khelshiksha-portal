@@ -26,7 +26,7 @@ import type {
  * typed local files under src/content; when a Sanity project exists these
  * functions become GROQ queries and NOTHING ELSE IN THE CODEBASE CHANGES.
  *
- * That is the whole point of the indirection — see decision D1. Pages and
+ * That is the whole point of the indirection - see decision D1. Pages and
  * components must never import from src/content directly.
  *
  * The functions are async even though the local implementation is
@@ -106,7 +106,7 @@ export async function getPartners(): Promise<Partner[]> {
     .sort((a, b) => a.order - b.order);
 }
 
-/** Currently empty by design — see the note in src/content/impact.ts. */
+/** Currently empty by design - see the note in src/content/impact.ts. */
 export async function getTestimonials(
   audience?: AudienceKey,
 ): Promise<Testimonial[]> {

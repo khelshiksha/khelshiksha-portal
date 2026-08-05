@@ -45,7 +45,7 @@
     border-radius: var(--radius-sm);
   }
 
-  /* On a brand-filled surface the blue ring would vanish — switch to ink. */
+  /* On a brand-filled surface the blue ring would vanish - switch to ink. */
   .on-brand :where(a, button, [tabindex]):focus-visible {
     outline-color: var(--on-brand);
   }
@@ -62,7 +62,7 @@
     text-wrap: pretty;
   }
 
-  /* Headings never carry their own margin — layout owns spacing (gap/flow),
+  /* Headings never carry their own margin - layout owns spacing (gap/flow),
      so sibling margins can never collapse or double unexpectedly. */
   h1,
   h2,
@@ -87,7 +87,7 @@
   }
 
   /* Safety net only. Each JS-driven effect ALSO handles reduced motion
-     explicitly — see docs/architecture/10-animation-plan.md. */
+     explicitly - see docs/architecture/10-animation-plan.md. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -108,7 +108,7 @@
   /* --- Scroll reveal -----------------------------------------------------
      Gated on [data-js], which an inline <head> script sets. Without
      JavaScript the hidden state is never applied at all, so every revealed
-     section renders visible — content is never gated on an animation.
+     section renders visible - content is never gated on an animation.
      Only transform and opacity animate, so a reveal cannot cause layout
      shift. */
   [data-js] .reveal {
@@ -137,7 +137,7 @@
   }
 
   /* Reduced motion: final state immediately, no transition. Content appears
-     instantly — it does not disappear. */
+     instantly - it does not disappear. */
   @media (prefers-reduced-motion: reduce) {
     [data-js] .reveal {
       opacity: 1;
@@ -148,8 +148,8 @@
 
   /* --- Hover affordances, for pointers that REALLY hover -------------------
      A touch browser latches :hover on tap and keeps it until you touch
-     something else. So on a phone, pressing a kit card ran its hover state —
-     the card rose 4px and its photo scaled to 105% — and THEN navigated. The
+     something else. So on a phone, pressing a kit card ran its hover state - 
+     the card rose 4px and its photo scaled to 105% - and THEN navigated. The
      symptom is that tapping a card feels like the page moving upward before
      it navigates. It is: the card is.
 
@@ -165,12 +165,12 @@
      The rules themselves are in the UTILITIES layer, at the foot of this
      file. The card also carries Tailwind's `shadow-[var(--shadow-sm)]`, and a
      utility beats a component rule by cascade LAYER regardless of specificity
-     — so declared here the lift would have moved the card without ever
+ - so declared here the lift would have moved the card without ever
      changing its shadow. */
 
   /* --- Institutional marks ------------------------------------------------
      FULL COLOUR. The obvious argument against is that fifteen brand
-     palettes fight each other and the page — true in the abstract, and
+     palettes fight each other and the page - true in the abstract, and
      outweighed here. The Ministry of Education emblem, the UNICEF blue and
      the Eat Right India mark are recognised BY their colour by exactly the
      audience this row exists for, and a desaturated government crest reads
@@ -183,7 +183,7 @@
      rectangles on the cream. That fixed the light theme and left the dark one
      with dark marks on a dark ground.
 
-     Greying-and-inverting used to solve it. Colour cannot be inverted — an
+     Greying-and-inverting used to solve it. Colour cannot be inverted - an
      inverted logo arrives in a hallucinated complementary palette, which is
      worse than illegible, it is wrong. So dark mode gives each mark back the
      light card it was designed on: a small cream tile, sized by padding so it
@@ -196,7 +196,7 @@
   }
 
   :root[data-theme="dark"] .logo-mark {
-    /* --paper's fixed value. Not var(--paper), which is dark in this theme —
+    /* --paper's fixed value. Not var(--paper), which is dark in this theme - 
        the tile has to stay light regardless of the theme, exactly like the
        contrast bands in theme.css. */
     background: #fdfbf6;
@@ -221,7 +221,7 @@
      "confidence." would jog the line on every tick and wreck CLS on the LCP
      element.
 
-     Inactive words use visibility:hidden rather than opacity:0 — hidden
+     Inactive words use visibility:hidden rather than opacity:0 - hidden
      removes them from the accessibility tree, so a screen reader reads the
      heading once, with whichever word is current, instead of reciting all
      five. */
@@ -257,8 +257,8 @@
     transform: none;
   }
 
-  /* Reduced motion: the word still changes — that is content, not decoration
-     — but it cuts rather than slides. */
+  /* Reduced motion: the word still changes - that is content, not decoration
+ - but it cuts rather than slides. */
   @media (prefers-reduced-motion: reduce) {
     .word-rotator > * {
       transition: none;
@@ -266,8 +266,8 @@
     }
   }
 
-  /* The two earlier heroes — a child kicking a ball, then a die climbing a
-     board — left their CSS behind when KhelVerse replaced them: .hero-ball,
+  /* The two earlier heroes - a child kicking a ball, then a die climbing a
+     board - left their CSS behind when KhelVerse replaced them: .hero-ball,
      .hero-leg, .hero-burst, .hero-square*, .hero-die-face. Unused CSS is not
      tree-shaken the way unused JS is, so it was still being downloaded and
      parsed by every visitor. Removed along with hero-artwork.tsx, which was
@@ -287,7 +287,7 @@
 
   /* --- KhelVerse ---------------------------------------------------------
      The hero world. Everything here is transform or opacity only, so no
-     animation in the scene can trigger layout or paint — that is what holds
+     animation in the scene can trigger layout or paint - that is what holds
      60fps on a mid-range Android while fifty-odd elements are moving.
 
      Durations and delays are NOT set here. They are written inline per
@@ -310,8 +310,8 @@
   /* --- Sky ---------------------------------------------------------------
      Clouds drift a short distance and come back, rather than crossing the
      frame. A full traverse means a cloud is absent from most of the sky most
-     of the time, and on a phone — where only the middle 620 units are visible
-     — it would mean a sky that is often empty. A slow lean, alternating, is
+     of the time, and on a phone - where only the middle 620 units are visible
+ - it would mean a sky that is often empty. A slow lean, alternating, is
      both cheaper and always composed.
 
      Amplitude is per-cloud (--kv-drift, written inline) so the small distant
@@ -432,7 +432,7 @@
      Real links sitting above the rooftops.
 
      ONE AT A TIME. Five permanent labels was the single least "simple" thing
-     on the page — a ring of chips competing with each other and with the
+     on the page - a ring of chips competing with each other and with the
      headline. Now only the zone the die is standing on is named, so the world
      introduces its own pillars in turn and the eye is led round all five
      without anyone doing anything.
@@ -473,7 +473,7 @@
 
   /* Reveal-the-whole-map on hover is for pointers that REALLY hover.
      A touch browser latches :hover on tap, and on a phone all five cards are
-     stacked in one place — so this rule made every one of them visible and
+     stacked in one place - so this rule made every one of them visible and
      tappable at once, and the last in DOM order swallowed the tap. Whatever
      the card said, the finger went to Life Skills. */
   @media (hover: hover) and (pointer: fine) {
@@ -484,7 +484,7 @@
   }
 
   /* No JavaScript means no die and no is-current, so the labels would never
-     appear at all. Show them permanently instead — the map is the fallback. */
+     appear at all. Show them permanently instead - the map is the fallback. */
   html:not([data-js]) .kv-pin {
     opacity: 1;
   }
@@ -514,7 +514,7 @@
 
      Shown on the current pin as well as on hover, not hover-only. The whole
      point of the campus cycling through its zones is that a visitor who never
-     touches anything still learns what the five pillars are — a title alone
+     touches anything still learns what the five pillars are - a title alone
      does not teach that, and hover does not exist on a phone, where most of
      the traffic is. */
   .kv-pin-blurb {
@@ -547,7 +547,7 @@
   /* Pins are reachable on EVERY screen, phones included.
      They used to be display:none below lg, on the theory that five labels
      would overlap at that size. That stopped being true when only one shows
-     at a time — and it meant that on phones, where most of the traffic is,
+     at a time - and it meant that on phones, where most of the traffic is,
      the campus was decoration you could not touch. Five pillars, no way in.
 
      pointer-events is the load-bearing half of this. An opacity:0 link is
@@ -578,14 +578,14 @@
      the right edge with its title cut off. A tooltip you cannot read is worse
      than no tooltip.
 
-     So on a phone it stops being a pin and becomes a caption — one card,
+     So on a phone it stops being a pin and becomes a caption - one card,
      centred, always fully visible, always tappable. It loses the tail,
      because it is no longer pointing at anything.
 
      IT SITS AT THE TOP OF THE FRAME, NOT THE BOTTOM. Measured on an iPhone 13:
      the campus occupies 441–720px and the viewport ends at 664, so a caption
      pinned to the bottom edge landed BELOW THE FOLD. The card is the only
-     thing that names the five pillars on a phone — having it off-screen on
+     thing that names the five pillars on a phone - having it off-screen on
      first paint defeats the entire point of the campus cycling through them.
      The top of the frame is the sky band, which is empty by construction, so
      the card covers nothing and is visible the moment the page loads.
@@ -616,7 +616,7 @@
      The campus is sized by HEIGHT on laptops and by WIDTH on phones, because
      the failure mode is opposite at each end.
 
-     On a 1366x768 laptop the hero ran to 1156px — 1.51 viewports — so the
+     On a 1366x768 laptop the hero ran to 1156px - 1.51 viewports - so the
      illustration pushed the proposition off the screen entirely. Capping the
      height and letting the width follow the aspect ratio keeps the whole hero
      inside one screen.
@@ -635,14 +635,14 @@
        be about 140px tall, which reads as a thumbnail. Shown big it has to be
        cropped. The previous attempt cropped by simply scaling the whole thing
        up until it overflowed the screen, and the screen edge then fell
-       wherever it liked — straight through the Life Skills pavilion on one
+       wherever it liked - straight through the Life Skills pavilion on one
        side and the Future Readiness lab on the other. Buildings sliced in
        half is what made it look broken.
 
        So the frame's aspect ratio IS the crop. 620x444 of the campus is the
        region that contains all five zones whole, and the stage inside is
        scaled so exactly that region fills the frame. Trees at the far edges
-       are lost, which is fine — a tree cut off reads as a world continuing,
+       are lost, which is fine - a tree cut off reads as a world continuing,
        a building cut off reads as a mistake. */
     aspect-ratio: 620 / 444;
   }
@@ -667,7 +667,7 @@
   }
 
   /* Laptops and up show the whole campus, sized by HEIGHT so the entire hero
-     fits one screen — at 1366x768 it used to run to 1.51 viewports. */
+     fits one screen - at 1366x768 it used to run to 1.51 viewports. */
   @media (min-width: 1024px) {
     .kv-frame {
       aspect-ratio: var(--kv-ratio);
@@ -684,7 +684,7 @@
     }
   }
 
-  /* Reduced motion: the world stops. Every ambient loop here is decorative —
+  /* Reduced motion: the world stops. Every ambient loop here is decorative - 
      a still isometric landscape says exactly the same thing. The die is
      handled in the component (it lands without travelling) and the headline
      word still changes, because that is content. */
@@ -699,7 +699,7 @@
     }
 
     /* The flock's opacity is written by its keyframes, so switching the
-       animation off would leave it at the 0% frame — invisible. Put it back
+       animation off would leave it at the 0% frame - invisible. Put it back
        where the animation would have had it mid-run. */
     .kv-flock {
       opacity: 0.85;
@@ -760,7 +760,7 @@
     }
   }
 
-  /* Pausing on hover is not a nicety — WCAG 2.2.2 requires a way to stop
+  /* Pausing on hover is not a nicety - WCAG 2.2.2 requires a way to stop
      motion that starts automatically and runs longer than five seconds. */
   .logo-rail:hover .logo-rail-inner,
   .logo-rail:focus-within .logo-rail-inner {
@@ -768,7 +768,7 @@
   }
 
   /* Continuous horizontal motion is a common migraine and vestibular trigger,
-     so reduced motion does not merely slow it — it stops it and lets the rail
+     so reduced motion does not merely slow it - it stops it and lets the rail
      wrap onto as many lines as it needs, becoming a plain grid of marks. */
   @media (prefers-reduced-motion: reduce) {
     .logo-rail {
@@ -792,7 +792,7 @@
   }
 
   /* A scroll container with no visible scrollbar.
-     Scrolling itself is untouched — wheel, trackpad, touch, and keyboard all
+     Scrolling itself is untouched - wheel, trackpad, touch, and keyboard all
      still work, and the element keeps its overflow so it remains focusable
      and reachable without a pointer. Only the painted bar is hidden. */
   .scrollbar-none {
@@ -845,7 +845,7 @@
     }
 
     /* The marks are already in full colour at rest, so there is no colour
-       left to reveal. A small lift is all that is wanted — enough to say the
+       left to reveal. A small lift is all that is wanted - enough to say the
        row responds, not enough to look clickable, because these are names
        rather than links. */
     .logo-mark-interactive:hover {

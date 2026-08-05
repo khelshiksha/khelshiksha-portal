@@ -7,7 +7,7 @@ import type { TimelineStep } from "@/services/cms/types";
 /**
  * How a rollout actually works.
  *
- * Shown as a sequence because it IS one — the numbering and the connecting
+ * Shown as a sequence because it IS one - the numbering and the connecting
  * rule encode real order, not decoration. This directly answers the question
  * a principal arrives with ("how much of my staff's time will this cost me")
  * and is the reason /schools converts.
@@ -37,7 +37,7 @@ export function TimelineSteps({
           {steps.map((step, i) => (
             <Reveal as="li" key={step._id} delay={staggerDelay(i)}>
               <div className="relative flex h-full flex-col gap-3">
-                {/* Connecting rule — decorative, and hidden on the last item
+                {/* Connecting rule - decorative, and hidden on the last item
                     so it never trails off the end of the row. */}
                 {i < steps.length - 1 ? (
                   <span

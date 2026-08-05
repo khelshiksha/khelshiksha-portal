@@ -126,7 +126,7 @@ describe("URL round-trip", () => {
 });
 
 describe("no budget facet exists", () => {
-  it("decision D7 makes products a portfolio — there is no budget filter", () => {
+  it("decision D7 makes products a portfolio, there is no budget filter", () => {
     expect(Object.keys(EMPTY_FILTERS)).not.toContain("budget");
   });
 });

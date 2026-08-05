@@ -2,21 +2,21 @@
  * One clock for the hero.
  *
  * The headline word changes because a die lands on a tile. That only reads as
- * cause and effect if the hop and the word are the same event — a die on its
+ * cause and effect if the hop and the word are the same event - a die on its
  * own timer landing near a word on its own timer drifts apart within seconds
  * and the whole idea collapses into two unrelated animations.
  *
  * So neither component owns the timing. Both subscribe here:
  *
  *   launch  the die leaves the tile it is on
- *   impact  the die lands — the word changes, the tile lights, the ring pulses
+ *   impact  the die lands - the word changes, the tile lights, the ring pulses
  *
  * The clock is shared, lazily started on the first subscriber and stopped on
  * the last, so a page without the hero pays nothing. It also stops while the
  * tab is hidden; there is no reason to run a loop for nobody, and coming back
  * to a background tab mid-flight would show the die teleporting.
  *
- * Reduced motion still emits `impact`. The word is content, not decoration —
+ * Reduced motion still emits `impact`. The word is content, not decoration -
  * suppressing it would freeze the headline on whichever word happened to be
  * showing. Only the tumble is suppressed, inside the artwork.
  */
@@ -83,7 +83,7 @@ export function subscribeToBeat(listener: Listener): () => void {
   };
 }
 
-/** Pause and resume without unsubscribing — used when the hero is hovered. */
+/** Pause and resume without unsubscribing - used when the hero is hovered. */
 export function setBeatPaused(paused: boolean) {
   if (paused) stop();
   else if (listeners.size > 0 && !document.hidden) start();

@@ -12,7 +12,7 @@ type Theme = "light" | "dark";
  * effect. That avoids the cascading render an effect-plus-setState causes.
  *
  * The OS preference is deliberately NOT consulted. Light is the default for
- * everyone and dark is opt-in — see the note at the top of theme.css. This
+ * everyone and dark is opt-in - see the note at the top of theme.css. This
  * component and the CSS have to agree on that, or the icon would show a sun
  * on a light page.
  *
@@ -50,7 +50,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     try {
       localStorage.setItem("ks-theme", next);
     } catch {
-      /* Private browsing — the toggle still works for this session. */
+      /* Private browsing - the toggle still works for this session. */
     }
     /* `storage` does not fire in the tab that wrote it, so nudge subscribers. */
     window.dispatchEvent(new Event("storage"));
