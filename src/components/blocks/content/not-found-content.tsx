@@ -14,7 +14,7 @@ import { ROUTES } from "@/lib/constants";
  * The second one exists because Next resolves a not-found boundary by walking
  * UP from the segment that called notFound(), and a boundary sitting outside
  * the route group is not found on that walk. Without it, an unknown kit slug
- * rendered Next's raw error document — no lang attribute, no navigation, no
+ * rendered Next's raw error document - no lang attribute, no navigation, no
  * way back. See the note in (marketing)/not-found.tsx.
  *
  * A 404 on this site is most often a stale link from a printed brochure or a

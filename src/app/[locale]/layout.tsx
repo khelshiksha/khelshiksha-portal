@@ -12,7 +12,7 @@ import "../globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} — ${SITE.secondary}`,
+    default: `${SITE.name} | ${SITE.secondary}`,
     template: `%s | ${SITE.name}`,
   },
   description:
@@ -62,7 +62,7 @@ export const viewport: Viewport = {
  *    light because light is the default, so only a stored dark choice needs
  *    to touch it.
  *
- * It reads localStorage and nothing else — the OS preference is deliberately
+ * It reads localStorage and nothing else - the OS preference is deliberately
  * ignored, matching theme.css. Wrapped in try/catch because localStorage
  * throws outright in some private-browsing modes, and a theme preference is
  * not worth breaking the page over.
@@ -71,7 +71,7 @@ const BOOT_SCRIPT = `(function(){var d=document.documentElement;d.dataset.js='1'
 
 /**
  * Both locales are generated at build time, so a Gujarati page is as static
- * and as fast as an English one. Nothing here reads headers() or cookies() —
+ * and as fast as an English one. Nothing here reads headers() or cookies() -
  * doing so to detect the language would make every page dynamic and give up
  * the static generation that holds LCP under a second on 4G.
  */
@@ -99,7 +99,7 @@ export default async function RootLayout({
       lang={LOCALE_TAG[locale]}
       className={`${fontVariables} h-full`}
       /* BOOT_SCRIPT writes data-js and data-theme onto this element before
-         React hydrates, which is the entire point of running it in <head> —
+         React hydrates, which is the entire point of running it in <head> - 
          so by the time React compares trees, the live <html> has attributes
          the server never sent and it logs a hydration mismatch. The mismatch
          is correct and intended; it was filling the dev overlay with a real

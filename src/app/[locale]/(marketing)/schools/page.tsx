@@ -7,7 +7,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = buildMetadata({
   title: "For Schools",
   description:
-    "A complete learning ecosystem for your Vidyalaya — kits, a Game Corner and teacher training, installed and running inside one term.",
+    "A complete learning ecosystem for your Vidyalaya: kits, a Game Corner and teacher training, installed and running inside one term.",
   path: "/schools",
 });
 

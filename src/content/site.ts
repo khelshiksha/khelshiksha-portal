@@ -10,7 +10,7 @@ export const mission = [
   "Bridging the gap between conceptual knowledge and real-world application.",
 ];
 
-/** "Shifting from rote memorization to Learning by Doing." — the 5 benefits. */
+/** "Shifting from rote memorization to Learning by Doing." - the 5 benefits. */
 export const benefits: Benefit[] = [
   {
     _id: "benefit-1",
@@ -49,7 +49,7 @@ export const benefits: Benefit[] = [
   },
 ];
 
-/** National missions the programme is built against — from "Why Choose Us". */
+/** National missions the programme is built against - from "Why Choose Us". */
 export const alignments = [
   {
     framework: "NEP 2020",
@@ -88,7 +88,7 @@ export const faqs: FaqItem[] = [
     _id: "faq-time",
     question: "How much of my teachers' time does this take?",
     answer:
-      "Training is a single day, delivered at your school by our team. After that, kits are designed to fit inside an existing period — most run 20 to 30 minutes — and each comes with a facilitation guide, so no lesson planning is added to a teacher's week.",
+      "Training is a single day, delivered at your school by our team. After that, kits are designed to fit inside an existing period. Most run 20 to 30 minutes, and each comes with a facilitation guide, so no lesson planning is added to a teacher's week.",
     audience: "schools",
     order: 1,
   },
@@ -112,7 +112,7 @@ export const faqs: FaqItem[] = [
     _id: "faq-curriculum",
     question: "Does this replace curriculum time or add to it?",
     answer:
-      "It uses it. Every kit maps to specific curricular goals under NCF 2023, so an Aryabhata session is a maths period taught differently — not an extra-curricular activity competing for space in the timetable.",
+      "It uses it. Every kit maps to specific curricular goals under NCF 2023, so an Aryabhata session is a maths period taught differently, not an extra-curricular activity competing for space in the timetable.",
     audience: "schools",
     order: 4,
   },
@@ -120,7 +120,7 @@ export const faqs: FaqItem[] = [
     _id: "faq-measure",
     question: "How do we know it is working?",
     answer:
-      "Each kit lists observable outcomes — things a teacher can watch a child do. We review these with your staff at the end of the first term and share what we see across the school.",
+      "Each kit lists observable outcomes, things a teacher can watch a child do. We review these with your staff at the end of the first term and share what we see across the school.",
     audience: "schools",
     order: 5,
   },
@@ -144,7 +144,7 @@ export const faqs: FaqItem[] = [
     _id: "faq-parent-screen",
     question: "Is there any screen time involved?",
     answer:
-      "None. Every kit is physical — cards, boards, tiles and movement. The only exception is Naturebola, which uses a simple sound playback card rather than a device.",
+      "None. Every kit is physical: cards, boards, tiles and movement. The only exception is Naturebola, which uses a simple sound playback card rather than a device.",
     audience: "parents",
     order: 2,
   },

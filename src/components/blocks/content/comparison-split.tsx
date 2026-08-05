@@ -7,7 +7,7 @@ import type { AudienceHub } from "@/services/cms/types";
  * "Today" versus "With Khel Shiksha".
  *
  * Each side uses a distinct ICON as well as a distinct colour, because colour
- * is never the only signal — this reads correctly in greyscale and in Windows
+ * is never the only signal - this reads correctly in greyscale and in Windows
  * High Contrast Mode.
  */
 export function ComparisonSplit({

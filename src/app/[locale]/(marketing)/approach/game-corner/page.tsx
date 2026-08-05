@@ -47,7 +47,7 @@ export default function GameCornerPage() {
             eyebrow="Experiential Learning Zone"
             title="Joyful, experiential and"
             accent="future-ready education."
-            lede="The Game Corner is the physical home for the kits inside your school — a shelf unit organised by theme, so choosing an activity takes seconds rather than a planning period."
+            lede="The Game Corner is the physical home for the kits inside your school: a shelf unit organised by theme, so choosing an activity takes seconds rather than a planning period."
           />
 
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

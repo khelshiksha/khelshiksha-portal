@@ -17,14 +17,14 @@ import type { CredentialGroup } from "@/services/cms/types";
  * rail is a fact, stated once and then dropped.
  *
  * IT IS ONE LIST, RENDERED TWICE. The second copy is aria-hidden and exists
- * only so the animation can loop seamlessly — translating by exactly -50%
+ * only so the animation can loop seamlessly - translating by exactly -50%
  * puts copy two where copy one started. Without hiding the duplicate a screen
  * reader would read all fifteen organisations twice, which is the usual way
  * marquees fail accessibility.
  *
  * The rail is not a carousel: nothing is hidden behind a control, there is no
  * autoplaying content anyone has to catch, and the same names are listed in
- * full on /impact. Under prefers-reduced-motion it simply stops and wraps —
+ * full on /impact. Under prefers-reduced-motion it simply stops and wraps -
  * see .logo-rail in globals.css. That matters more than usual here, because
  * continuous horizontal motion is a common migraine and vestibular trigger.
  */
@@ -46,7 +46,7 @@ export function LogoMarquee({
         <li key={`${hidden ? "b" : "a"}-${item.name}`} className="shrink-0">
           {/* The mark's OWN dimensions, not a shared 150x56 box. A crest and a
               wordmark are not the same shape, and forcing both into one ratio
-              letterboxed each of them differently — which is what made the
+              letterboxed each of them differently - which is what made the
               rail look like a row of boxes rather than a row of logos. No
               object-contain needed once the ratio is right. */}
           <Image
@@ -68,7 +68,7 @@ export function LogoMarquee({
   return (
     <Section className="py-8 lg:py-10">
       <Container>
-        {/* THE SAME PANEL AS THE 12,000+ KITS BAR — identical radius, border,
+        {/* THE SAME PANEL AS THE 12,000+ KITS BAR - identical radius, border,
             ground and padding, deliberately. The two blocks make the same
             kind of claim ("here is the proof") and sit within one screen of
             each other, so reading as a matched pair is the point rather than

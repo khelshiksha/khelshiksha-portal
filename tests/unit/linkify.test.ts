@@ -3,7 +3,7 @@ import { linkifyPaths } from "@/features/assistant/lib/linkify";
 
 /**
  * The input here is model output, so these cases are about what happens when
- * the text is not the shape we asked for — not just the happy path.
+ * the text is not the shape we asked for - not just the happy path.
  */
 function hrefs(nodes: React.ReactNode[]): string[] {
   return nodes

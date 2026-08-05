@@ -13,8 +13,8 @@ import type { PressCutting } from "@/services/cms/types";
  * fetched at full width on a phone, which is most of a megabyte of a
  * three-column Gujarati article rendered 380px wide.
  *
- * The cuttings are in Gujarati. A visitor who does not read Gujarati — and a
- * screen reader user of any language — gets nothing from the image itself, so
+ * The cuttings are in Gujarati. A visitor who does not read Gujarati - and a
+ * screen reader user of any language - gets nothing from the image itself, so
  * the alt text carries what the article is about. That is also the only reason
  * these count as evidence rather than decoration.
  *

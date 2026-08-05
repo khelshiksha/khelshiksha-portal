@@ -19,13 +19,13 @@ export const revalidate = 3600;
 
 /**
  * Every kit is generated from the content layer at build time, so a slug that
- * was not generated is not a page that failed — it is not a route at all.
+ * was not generated is not a page that failed - it is not a route at all.
  * dynamicParams = false says exactly that, and it is also the only way this
  * route can produce a correct 404 document.
  *
  * WHY IT MATTERS: with every route under app/[locale] there is no app/layout
  * above it, so a notFound() thrown INSIDE the locale tree has no root layout
- * to render into. Next falls back to its own bare shell — <html> with no lang
+ * to render into. Next falls back to its own bare shell - <html> with no lang
  * attribute, no navigation, 35KB of nothing. That is a serious WCAG failure,
  * and it is what an unknown kit URL used to return: exactly what a stale
  * brochure link or a renamed kit produces.
@@ -34,7 +34,7 @@ export const revalidate = 3600;
  * app/global-not-found.tsx instead, which owns a complete document.
  *
  * The cost is that a new kit needs a rebuild before its page exists. That was
- * already true — the content lives in the repo — so nothing is lost.
+ * already true - the content lives in the repo - so nothing is lost.
  */
 export const dynamicParams = false;
 
@@ -123,7 +123,7 @@ export default async function PillarPage({
               ))}
             </ul>
           ) : (
-            /* Honest empty state rather than a hidden section — a pillar with
+            /* Honest empty state rather than a hidden section - a pillar with
                no kits yet is information, not an error. */
             <p className="border-rule bg-sunken text-body text-ink-muted rounded-[var(--radius-lg)] border p-8">
               Kits for this pillar are in development. Tell us what you need and

@@ -5,7 +5,7 @@ import { FEATURES } from "@/lib/features";
 import type { LeadInput } from "@/features/leads/schema";
 
 /**
- * Lead notification — tells the team that an enquiry has arrived.
+ * Lead notification - tells the team that an enquiry has arrived.
  *
  * FIRE-AND-FORGET BY DESIGN, and this is the most important thing to preserve
  * about the file. The enquiry is already written to the store by the time
@@ -15,8 +15,8 @@ import type { LeadInput } from "@/features/leads/schema";
  *
  * The consequence to understand is that a FAILED send is indistinguishable
  * from a successful one anywhere outside these logs. That is the correct
- * trade — losing a notification is recoverable, telling a school their
- * enquiry failed when it did not is not — but it means the logs are the only
+ * trade - losing a notification is recoverable, telling a school their
+ * enquiry failed when it did not is not - but it means the logs are the only
  * place the truth appears, and it means the delivery path must be verified by
  * sending a real enquiry rather than by reading code.
  *
@@ -44,7 +44,7 @@ const LEAD_LABEL: Record<LeadInput["type"], string> = {
  *
  * Turning it off cannot lose an enquiry: the lead is stored before this
  * function is ever called and no path here throws. It can only stop anyone
- * being TOLD about one — which is the whole risk, and an operational one
+ * being TOLD about one - which is the whole risk, and an operational one
  * rather than a technical one.
  */
 export function isEmailConfigured(): boolean {
@@ -57,14 +57,14 @@ export async function sendLeadNotification(
   leadId: string,
 ): Promise<void> {
   const label = LEAD_LABEL[lead.type];
-  const subject = `${label} — ${lead.name}${lead.organisation ? ` (${lead.organisation})` : ""}`;
+  const subject = `${label}, ${lead.name}${lead.organisation ? ` (${lead.organisation})` : ""}`;
 
   if (!isEmailConfigured()) {
     /* Two different situations, two different log levels, because they need
        different responses.
 
        A deliberate switch is a warning: a real person has enquired, the
-       record is safe, and nobody has been told — so someone has to go and
+       record is safe, and nobody has been told - so someone has to go and
        read the store. Saying where the enquiry IS is the useful half of the
        message.
 
@@ -73,12 +73,12 @@ export async function sendLeadNotification(
        ignore the line. */
     if (!FEATURES.leadEmail) {
       console.warn(
-        `[email] DISABLED (FEATURES.leadEmail=false) — lead ${leadId} IS STORED ` +
+        `[email] DISABLED (FEATURES.leadEmail=false), lead ${leadId} IS STORED ` +
           `and nobody has been notified. Subject would have been: "${subject}"`,
       );
     } else {
       console.info(
-        `[email] not configured — would have sent "${subject}" for lead ${leadId}`,
+        `[email] not configured, would have sent "${subject}" for lead ${leadId}`,
       );
     }
     return;

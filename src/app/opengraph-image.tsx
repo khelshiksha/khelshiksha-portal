@@ -17,7 +17,7 @@ import { SITE } from "@/lib/constants";
  * build for a decorative gain. The card carries the brand through colour and
  * composition instead.
  */
-export const alt = `${SITE.name} — ${SITE.secondary}`;
+export const alt = `${SITE.name}, ${SITE.secondary}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -123,7 +123,7 @@ export default async function OpengraphImage() {
             maxWidth: 760,
           }}
         >
-          Gamified experiential learning kits, a Game Corner for the classroom,
+          Gamified experiential learning kits, a Game Corner for the classroom
           and teacher training for Vidyalayas across India.
         </div>
       </div>

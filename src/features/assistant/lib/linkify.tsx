@@ -37,7 +37,7 @@ const ROUTE_PREFIXES =
 const PATH = `(?<![\\w:/.?=&#-])\\/(?:${ROUTE_PREFIXES})(?:\\/[a-z0-9-]+)*(?:\\?[a-z0-9=&-]+)?`;
 
 /**
- * "Aryabhata (/products/aryabhata)" — the parenthetical form.
+ * "Aryabhata (/products/aryabhata)" - the parenthetical form.
  *
  * Only the parenthetical is matched, not the words before it. Capturing the
  * label with a regex looked obvious and was wrong: even lazily quantified, the
@@ -85,14 +85,14 @@ export function linkifyPaths(
     const before = text.slice(lastIndex, index);
 
     /* If the sentence already ends with the page's name, link THAT and drop
-       the parenthetical — "read more about Aryabhata (/products/aryabhata)"
+       the parenthetical - "read more about Aryabhata (/products/aryabhata)"
        becomes "read more about Aryabhata" with the name linked. */
     if (known && before.toLowerCase().trimEnd().endsWith(known.toLowerCase())) {
       const cut = before.trimEnd().length - known.length;
       collapsed.push(before.slice(0, cut));
       collapsed.push({ href, label: before.trimEnd().slice(cut) });
     } else {
-      /* The model referred to the page in its own words — "reach out on our
+      /* The model referred to the page in its own words - "reach out on our
          contact page (/contact)". Appending the canonical label produced
          "our contact page contact us", which is how this read in production.
          Link the trailing phrase it actually wrote instead.
@@ -106,7 +106,7 @@ export function linkifyPaths(
         collapsed.push(before.slice(0, cut));
         collapsed.push({ href, label: phrase });
       } else {
-        /* Nothing sensible to attach it to — put the link where the
+        /* Nothing sensible to attach it to - put the link where the
            parenthetical was so the destination is never silently dropped. */
         collapsed.push(before);
         collapsed.push({ href, label: known ?? href });
@@ -131,7 +131,7 @@ export function linkifyPaths(
       const href = trailing ? raw.slice(0, -trailing.length) : raw;
 
       if (index > cursor) nodes.push(piece.slice(cursor, index));
-      /* Falls back to the path when we have no name for it — a visible URL is
+      /* Falls back to the path when we have no name for it - a visible URL is
          worse than a word, but far better than losing the destination. */
       nodes.push(anchor(href, labels[href] ?? href, key++));
       if (trailing) nodes.push(trailing);

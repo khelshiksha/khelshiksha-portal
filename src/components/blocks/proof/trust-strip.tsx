@@ -1,7 +1,7 @@
 import { Check } from "lucide-react";
 
 /**
- * A row of short, checkable claims — the reassurance a principal needs before
+ * A row of short, checkable claims - the reassurance a principal needs before
  * they will spend attention on anything else.
  *
  * Sits directly under the hero's call to action, because that is the moment
@@ -10,7 +10,7 @@ import { Check } from "lucide-react";
  * is still asking.
  *
  * CLAIMS, NOT COUNTS. Every item here is something that is either true of the
- * programme or not — alignment with a published framework, what is included.
+ * programme or not - alignment with a published framework, what is included.
  * No "12,000 schools", no "50,000 children", until those numbers can be
  * sourced and attributed. An unverifiable number in a trust component does
  * the opposite of its job the first time someone checks it.

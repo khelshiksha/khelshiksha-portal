@@ -25,7 +25,7 @@ export function FeaturedKits({
             eyebrow="Learning kits"
             title="Games built around"
             accent="what children keep."
-            lede="Every kit states the outcomes a teacher can watch for — not the features in the box."
+            lede="Every kit states the outcomes a teacher can watch for, not the features in the box."
           />
           <ButtonLink href="/products" variant="secondary">
             {t.cta.seeAllKits}
@@ -33,7 +33,7 @@ export function FeaturedKits({
         </div>
 
         {/* The <li> is the grid item and it stretches by default, but the
-            card inside it did not fill it — so the four kits ended at four
+            card inside it did not fill it - so the four kits ended at four
             different heights. `h-full` on both is what makes the row uniform;
             removing either one brings the ragged bottoms back. */}
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

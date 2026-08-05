@@ -14,7 +14,7 @@ const RATIO: Record<Ratio, string> = {
 
 type Radius = "md" | "lg" | "xl" | "2xl";
 
-/* Static map — Tailwind extracts class names at build time, so an
+/* Static map - Tailwind extracts class names at build time, so an
    interpolated `rounded-[var(--radius-${radius})]` would silently produce
    no CSS at all. */
 const RADIUS: Record<Radius, string> = {
@@ -26,7 +26,7 @@ const RADIUS: Record<Radius, string> = {
 
 /**
  * Every image on the site goes through this component. It owns the radius,
- * object-fit, and — critically — the `sizes` attribute.
+ * object-fit, and - critically - the `sizes` attribute.
  *
  * A wrong `sizes` is the most common cause of a phone downloading a 2000px
  * image for a 375px slot. It is invisible in dev on a fast connection and
@@ -46,7 +46,7 @@ export function MediaFrame({
   ratio?: Ratio;
   /** Required. e.g. "(min-width: 1024px) 33vw, 100vw" */
   sizes: string;
-  /** Set on exactly one image per page — the LCP candidate. */
+  /** Set on exactly one image per page - the LCP candidate. */
   priority?: boolean;
   zoomOnHover?: boolean;
   radius?: Radius;
@@ -70,7 +70,7 @@ export function MediaFrame({
         priority={priority}
         className={cn(
           "object-cover",
-          /* .zoom-on-hover, not group-hover:scale-105 — the Tailwind variant
+          /* .zoom-on-hover, not group-hover:scale-105 - the Tailwind variant
              is a bare :hover and a touch browser latches it on tap. See
              globals.css. */
           zoomOnHover &&

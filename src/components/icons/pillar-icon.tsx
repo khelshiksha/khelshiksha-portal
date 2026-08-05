@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
  *
  * These are Lucide stand-ins. Lucide has no honest glyph for "Foundational
  * Literacy & Numeracy" or "Future Readiness", so five bespoke line icons in
- * the same stroke language are a small illustration commission — tracked in
+ * the same stroke language are a small illustration commission - tracked in
  * the design system doc. Swapping them is a change to this map only.
  */
 const ICONS: Record<string, LucideIcon> = {

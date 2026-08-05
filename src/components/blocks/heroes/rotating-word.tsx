@@ -20,7 +20,7 @@ export type HeroWords = [string, string, string, string, string];
  * Three properties worth preserving if this is ever changed:
  *
  *  1. Every word is server-rendered inside the <h1>. The headline is the LCP
- *     element and the page's most important text — it must not wait for
+ *     element and the page's most important text - it must not wait for
  *     hydration, and it must be in the HTML for a crawler that does not run
  *     scripts.
  *
@@ -31,7 +31,7 @@ export type HeroWords = [string, string, string, string, string];
  *
  *  3. The change is driven by lib/play-beat, NOT by a timer of its own. The
  *     hero artwork hops a die along a board on the same beat, and the word
- *     changes where it lands — that only reads as cause and effect if both are
+ *     changes where it lands - that only reads as cause and effect if both are
  *     the same event. Two independent timers drift apart within seconds.
  *
  *     The word list and the board's tiles are the same sequence: tile n

@@ -1,5 +1,5 @@
 /* =============================================================================
-   Khel Shiksha — design tokens
+   Khel Shiksha - design tokens
    Spec: docs/architecture/03-design-system.md
 
    Every contrast ratio below was computed against the WCAG 2.1 relative
@@ -16,25 +16,25 @@
 
   --ink: #161a2b; /* 16.69:1 on paper */
   --ink-muted: #565d75; /* 6.31:1  on paper */
-  --ink-subtle: #5e657e; /* 4.89:1 worst case — see note below */
+  --ink-subtle: #5e657e; /* 4.89:1 worst case - see note below */
 
   --rule: #e2ddd1; /* decorative dividers only */
-  --rule-strong: #8a8674; /* 3.54:1 — input borders, non-text UI */
+  --rule-strong: #8a8674; /* 3.54:1 - input borders, non-text UI */
 
   --brand: #1f5fd1; /* 5.62:1 on paper · white on it 5.81:1 */
   --brand-deep: #17489f; /* 8.24:1 on paper · white on it 8.52:1 */
   --brand-tint: #e7f0fd;
   --on-brand: #ffffff;
 
-  --accent: #f5c518; /* ink on it 10.59:1 — NEVER carries text < 18px */
+  --accent: #f5c518; /* ink on it 10.59:1 - NEVER carries text < 18px */
   --on-accent: #161a2b;
 
   --success: #177552; /* white on it 5.67:1 */
-  --energy: #c24f0b; /* white on it 4.75:1 — fills only */
-  --energy-text: #a8430a; /* 5.85:1 on paper — orange used AS text */
+  --energy: #c24f0b; /* white on it 4.75:1 - fills only */
+  --energy-text: #a8430a; /* 5.85:1 on paper - orange used AS text */
   --magenta: #a81d57; /* white on it 7.05:1 */
 
-  /* Contrast bands — FIXED across both themes on purpose.
+  /* Contrast bands - FIXED across both themes on purpose.
      `bg-ink`/`text-paper` inverts in dark mode, which turned the Game Corner
      band into a light band and dropped its yellow accent to 1.41:1. A band
      whose whole job is to interrupt the page rhythm must not flip with the
@@ -46,25 +46,25 @@
      Blue already carries the header, every link, every primary button and the
      stat band, so the page's last word arrived in the same colour as
      everything before it and read as one more section rather than as a
-     closing. Green is the one hue the site already owns without spending —
-     it is the ground the hero island is made of — so the page opens on green
+     closing. Green is the one hue the site already owns without spending - 
+     it is the ground the hero island is made of - so the page opens on green
      fields and closes on green, and the yellow accent, which was fighting
      blue at 4.24:1, now sits on its natural complement.
      Measured, not chosen by eye: white on it 8.20:1, accent 4.99:1. */
   --band-brand: #0f5a4c;
   --on-band-brand: #ffffff;
 
-  /* Pillar tints — backgrounds only. Ink on each clears 14.6:1.
+  /* Pillar tints - backgrounds only. Ink on each clears 14.6:1.
      NOTE: --ink-subtle must clear 4.5:1 against EVERY tint here, not just
      against paper. The original #666D87 passed on paper (4.95) and failed on
-     mint and sky (4.34/4.45) — caught by the axe sweep, not by inspection. */
+     mint and sky (4.34/4.45) - caught by the axe sweep, not by inspection. */
   --tint-sky: #e7f0fd;
   --tint-blush: #fdecef;
   --tint-mint: #e2f3eb;
   --tint-peach: #fdeee2;
   --tint-lavender: #eeeafb;
 
-  /* Each accent must clear 4.5:1 against ITS OWN TINT — that is where it is
+  /* Each accent must clear 4.5:1 against ITS OWN TINT - that is where it is
      actually used (an accent chip sits on the tinted card, not on paper).
      Verified: sky 5.06 · blush 6.19 · mint 4.93 · peach 5.16 · lavender 5.48. */
   --pillar-sky: #1f5fd1;
@@ -75,15 +75,15 @@
 
   /* 0.92, not 0.72. The sticky header is translucent, so when it scrolls over
      the dark Game Corner / assistant panels or the blue CTA band, the nav
-     links were composited against THAT and fell to 3.44:1 — below the 4.5:1
+     links were composited against THAT and fell to 3.44:1 - below the 4.5:1
      AA floor. Measured, not guessed: 0.92 gives 5.39:1 over the dark panels
      and 5.60:1 over the brand band, and the blur is still clearly visible.
      Anything that darkens a full-bleed background must be re-checked here. */
   --glass: rgb(253 251 246 / 0.92);
 
   /* --- KhelVerse: the hero world -----------------------------------------
-     An isometric solid needs three tones per material — a lit top face and
-     two shaded sides — or it reads flat and the illusion of depth collapses.
+     An isometric solid needs three tones per material - a lit top face and
+     two shaded sides - or it reads flat and the illusion of depth collapses.
      Every material below is therefore a triple, and the step between the
      three is kept consistent across materials so one light source governs
      the whole world.
@@ -102,7 +102,7 @@
   --w-grass-left: #a1cb95;
   --w-grass-right: #86b47c;
 
-  /* The island's underside — soil and rock below the turf. */
+  /* The island's underside - soil and rock below the turf. */
   --w-earth-left: #dcc9ab;
   --w-earth-right: #c3ac8a;
 
@@ -133,7 +133,7 @@
   --w-sky-blue: #7fb2ea;
   /* NOT WHITE, which is what it was and why the first pass of clouds could
      not be seen at all. The clouds sit low in the hero, where the sky
-     gradient has already reached --paper (#fdfbf6) — so a white cloud on
+     gradient has already reached --paper (#fdfbf6) - so a white cloud on
      near-white paper is a 1% contrast shape. A cloud reads by being COOLER
      than the ground it floats over, not by being lighter than it. */
   --w-cloud: #e4edf9;
@@ -157,7 +157,7 @@
    brochure it has to sit beside are light. The palette below is the site;
    `:root[data-theme="dark"]` is the opt-in.
 
-   The dark token set is unchanged and complete — it moved, it was not
+   The dark token set is unchanged and complete - it moved, it was not
    dropped. Anything added to :root that differs in dark must be added there
    too, or it will silently inherit the light value. */
 
@@ -195,7 +195,7 @@
   --glass: rgb(18 19 26 / 0.92);
 
   /* KhelVerse after sunset. Hues are held, value and saturation drop, and the
-     sky goes indigo — so it reads as the same place at a different hour
+     sky goes indigo - so it reads as the same place at a different hour
      rather than as an inverted picture. Lit windows and the water keep some
      brightness; that is what stops a dusk scene going dead. */
   --w-sky-high: #171a2e;
@@ -275,7 +275,7 @@
   --pillar-lavender: #5b4bc4;
   /* 0.92, not 0.72. The sticky header is translucent, so when it scrolls over
      the dark Game Corner / assistant panels or the blue CTA band, the nav
-     links were composited against THAT and fell to 3.44:1 — below the 4.5:1
+     links were composited against THAT and fell to 3.44:1 - below the 4.5:1
      AA floor. Measured, not guessed: 0.92 gives 5.39:1 over the dark panels
      and 5.60:1 over the brand band, and the blur is still clearly visible.
      Anything that darkens a full-bleed background must be re-checked here. */
@@ -329,7 +329,7 @@
   --color-pillar-peach: var(--pillar-peach);
   --color-pillar-lavender: var(--pillar-lavender);
 
-  /* Type — Plus Jakarta Sans for everything, Fraunces italic for accents */
+  /* Type - Plus Jakarta Sans for everything, Fraunces italic for accents */
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -337,7 +337,7 @@
   /* Fluid scale, 320 → 1440px */
   /* Capped at 4.6rem, not 5.5rem. At 88px the headline ran to three lines of
      260px on a 1366x768 laptop and pushed the call to action and the trust
-     signals off the screen — the two things a principal most needs to see.
+     signals off the screen - the two things a principal most needs to see.
      Restraint reads as more expensive than scale, and this token is used by
      the hero and nothing else, so the change is contained. */
   --text-display-1: clamp(2.6rem, 1.5rem + 4.4vw, 4.6rem);

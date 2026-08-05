@@ -29,13 +29,13 @@ import { PLATFORM_H, ZONES, zoneCentre } from "./zones";
  * measuring anything at runtime.
  *
  * THE DIE. It hops zone to zone on the shared beat from lib/play-beat, and the
- * headline word changes when it lands — the same causality as before, now at
+ * headline word changes when it lands - the same causality as before, now at
  * the scale of the world. The zone it lands on lights up, so the eye is led
  * around all five pillars in turn without anyone having to hover.
  *
  * Reduced motion: no hop, no drift, no sway. The die simply appears on the
  * next zone and the zone lights. The word still changes, because the word is
- * content — see lib/play-beat.
+ * content - see lib/play-beat.
  */
 
 const CUBE = 0.92;
@@ -176,7 +176,7 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
     };
 
     /* Light the platform AND name it. The label follows the die so the world
-       introduces its own pillars one at a time — see .kv-pin in globals.css
+       introduces its own pillars one at a time - see .kv-pin in globals.css
        for why five permanent labels were the least simple thing here. */
     const lightOnly = (slug: string) => {
       for (const [key, el] of zoneEls)
@@ -256,7 +256,7 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
        On a phone the label is a single card that cycles through the five
        pillars, so it is a MOVING TARGET: a thumb aimed at "Climate Education"
        could land after the beat had advanced and navigate to Life Skills
-       instead — the site doing something the visitor never asked for, which
+       instead - the site doing something the visitor never asked for, which
        is the worst class of interface bug. Touch does not reliably fire
        pointerenter before the tap, so the freeze has to hang off the press
        itself. Verified by tapping and asserting the URL matches the card that
@@ -265,7 +265,7 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
     root.addEventListener("touchstart", pause, { passive: true });
 
     /* The ambient loops are CSS animations, which keep running in a background
-       tab — unlike rAF, which the browser throttles for us. Fifty animated
+       tab - unlike rAF, which the browser throttles for us. Fifty animated
        elements burning battery for a tab nobody is looking at is exactly the
        kind of thing that gets a site closed, so they are parked explicitly. */
     const onVisibility = () => {
@@ -289,7 +289,7 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
 
   return (
     <div ref={rootRef} className="kv-root relative w-full">
-      {/* .kv-frame owns the aspect ratio and the responsive sizing — see the
+      {/* .kv-frame owns the aspect ratio and the responsive sizing - see the
           note in globals.css. Pins are positioned as a percentage of THIS box,
           so its ratio must match the camera crop exactly or every label drifts
           off its rooftop. It already happened once. */}
@@ -335,7 +335,7 @@ export function KhelVerse({ children }: { children: React.ReactNode }) {
                 left: `${((anchor.x - VIEW.x) / VIEW.w) * 100}%`,
                 /* Clamped so the card cannot climb out of the frame. The card
                    is anchored by its BOTTOM edge, so a zone near the back of
-                   the island put it above the campus entirely — on a laptop it
+                   the island put it above the campus entirely - on a laptop it
                    landed on top of the trust signals. The tail keeps it
                    pointing at the right platform either way. */
                 top: `${Math.max(26, ((anchor.y - VIEW.y) / VIEW.h) * 100)}%`,

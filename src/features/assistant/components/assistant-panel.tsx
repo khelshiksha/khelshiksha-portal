@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { CornerDownLeft, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SITE } from "@/lib/constants";
 import { linkifyPaths } from "../lib/linkify";
 
 /**
@@ -40,7 +41,7 @@ interface Turn {
  *
  * The route caps a conversation at 12 turns and 24,000 characters. Letting
  * the transcript grow until the server refuses it would turn a long, working
- * conversation into a wall — the visitor's next question fails for a reason
+ * conversation into a wall - the visitor's next question fails for a reason
  * they cannot see and did nothing to cause. Trimming here keeps the request
  * inside those limits by construction; the server checks stay as the actual
  * guarantee, because a client-side limit is not one.
@@ -66,7 +67,7 @@ export function AssistantPanel({
    * Follow the answer down only while the visitor is already at the bottom.
    *
    * Scrolling to the bottom on every chunk fought anyone who scrolled up to
-   * re-read something — the next token dragged them straight back down — and
+   * re-read something - the next token dragged them straight back down - and
    * slammed the container to the end the moment an answer finished. Reading
    * an answer while it is still being written is a completely normal thing to
    * do and the panel should not punish it.
@@ -109,7 +110,7 @@ export function AssistantPanel({
     let answer = "";
     try {
       /* Trim from the front, then drop a leading assistant turn if the slice
-         starts on one — the exchange has to begin and end with the user. */
+         starts on one - the exchange has to begin and end with the user. */
       let sent = next.slice(-MAX_SENT_TURNS);
       if (sent[0]?.role === "assistant") sent = sent.slice(1);
 
@@ -123,7 +124,7 @@ export function AssistantPanel({
         const { error } = await response.json().catch(() => ({ error: null }));
         answer =
           error ??
-          "Sorry — the assistant is unavailable right now. Please book a demo and we'll answer properly.";
+          "Sorry, the assistant is unavailable right now. Please book a demo and we'll answer properly.";
         setStreaming(answer);
       } else {
         const reader = response.body.getReader();
@@ -132,7 +133,7 @@ export function AssistantPanel({
           const { done, value } = await reader.read();
           if (done) break;
           /* Whether to follow the text down is decided BEFORE React paints
-             the new chunk — once the content has grown, "are we at the
+             the new chunk - once the content has grown, "are we at the
              bottom" is already false and the answer is always no. */
           const pinned = isPinnedToBottom();
           answer += decoder.decode(value, { stream: true });
@@ -141,8 +142,13 @@ export function AssistantPanel({
         }
       }
     } catch {
+      /* SITE.phones[0], never a literal. This number was hardcoded here and
+         in the API route, so correcting it in constants.ts left the two
+         fallbacks handing out the old one - the failure path quietly giving
+         wrong contact details, which is the worst place for it. */
       answer =
-        "Sorry — that didn't get through. Please check your connection, or call us on +91 97798 73333.";
+        "Sorry, that didn't get through. Please check your connection, or call us on " +
+        `${SITE.phones[0]}.`;
       setStreaming(answer);
     }
 
@@ -158,7 +164,7 @@ export function AssistantPanel({
   return (
     /* min-w-0 on both columns is load-bearing. A grid item defaults to
        min-width:auto, so it refuses to shrink below its content's min-content
-       width — which pushed this panel 44px past a 320px viewport and made the
+       width - which pushed this panel 44px past a 320px viewport and made the
        whole PAGE scroll sideways. */
     <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:gap-14">
       <div className="flex min-w-0 flex-col gap-6">
@@ -174,7 +180,7 @@ export function AssistantPanel({
 
         <p className="measure text-body text-on-band-dark/80">
           Kits, pillars, teacher training, NEP alignment or how a rollout works
-          in your school — get an answer right away.
+          in your school, get an answer right away.
         </p>
 
         <ul className="flex flex-col gap-2.5">
@@ -211,7 +217,7 @@ export function AssistantPanel({
              the conversation overflows, a keyboard-only visitor has no way to
              reach the text above the fold without a focusable container. Axe
              flags it as `scrollable-region-focusable`, and the flag was right
-             — this was already true before the scrollbar was hidden, it just
+ - this was already true before the scrollbar was hidden, it just
              never fired because the standing suite never fills the chat.
              role=log so assistive tech treats it as an appending transcript.
 

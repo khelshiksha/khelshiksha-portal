@@ -17,11 +17,11 @@ import { cn } from "@/lib/utils";
  *
  * It stays on the SAME PAGE. Someone reading about the Game Corner in English
  * who switches to Gujarati wants the Game Corner in Gujarati, not the home
- * page — being dumped back to the top is the single most common way a
+ * page - being dumped back to the top is the single most common way a
  * language switcher wastes the visitor's time.
  *
- * The label is always written in the language being offered — "ગુજરાતીમાં જુઓ"
- * while you are reading English — because someone who cannot read the current
+ * The label is always written in the language being offered - "ગુજરાતીમાં જુઓ"
+ * while you are reading English - because someone who cannot read the current
  * language still has to find the way out.
  *
  * `hreflang` on the link tells crawlers what is on the other end, and `lang`
@@ -35,12 +35,12 @@ export function LocaleToggle({ className }: { className?: string }) {
 
   /* Nothing to switch to while only one locale is live. Rendering a control
      that navigates to the page you are already on is worse than rendering
-     nothing — it looks like a broken button. */
+     nothing - it looks like a broken button. */
   const other = ACTIVE_LOCALES.find((l) => l !== locale);
   if (other === undefined) return null;
 
   /* Whatever prefix the pathname arrives with comes off before the other
-     locale's goes on — see the note on stripLocale. */
+     locale's goes on - see the note on stripLocale. */
   const bare = stripLocale(pathname);
 
   return (

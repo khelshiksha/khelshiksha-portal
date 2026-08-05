@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { settlePage } from "./support/settle";
 
 /**
- * Journey J1, keyboard only — a principal books a demo without a mouse.
+ * Journey J1, keyboard only - a principal books a demo without a mouse.
  *
  * This is the manual "unplug the mouse and complete a demo booking" check
  * from docs/architecture/13-accessibility-checklist.md, automated. It is the
@@ -19,7 +19,7 @@ test.describe("keyboard-only", () => {
 
     const skip = page.getByRole("link", { name: /skip to main content/i });
     await expect(skip).toBeFocused();
-    /* Visible on focus — a skip link that stays off-screen is useless. */
+    /* Visible on focus - a skip link that stays off-screen is useless. */
     await expect(skip).toBeInViewport();
 
     await page.keyboard.press("Enter");
@@ -52,7 +52,7 @@ test.describe("keyboard-only", () => {
     expect(seen.size).toBeGreaterThan(10);
   });
 
-  test("focus is always visible — no element removes its indicator", async ({
+  test("focus is always visible, no element removes its indicator", async ({
     page,
   }) => {
     await page.goto("/schools");
@@ -97,7 +97,7 @@ test.describe("keyboard-only", () => {
 
     await page.keyboard.press("Escape");
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
-    /* Focus must come BACK to the trigger — otherwise a keyboard user is
+    /* Focus must come BACK to the trigger - otherwise a keyboard user is
        dumped at the top of the document. */
     await expect(trigger).toBeFocused();
   });
@@ -108,7 +108,7 @@ test.describe("keyboard-only", () => {
     await page.goto("/schools");
     await settlePage(page);
 
-    /* The enquiry form is on the page itself — a principal should never have
+    /* The enquiry form is on the page itself - a principal should never have
        to navigate away to convert. */
     const form = page.locator("#enquire");
     await expect(form).toBeVisible();
@@ -119,7 +119,7 @@ test.describe("keyboard-only", () => {
     await page.keyboard.type("Meera Shah");
 
     await page.keyboard.press("Tab");
-    await page.keyboard.type("9779873333");
+    await page.keyboard.type("9979873333");
 
     await page.keyboard.press("Tab");
     await page.keyboard.type("Shree Vidyalaya");
@@ -132,7 +132,7 @@ test.describe("keyboard-only", () => {
     await expect(submit).toBeFocused();
     await page.keyboard.press("Enter");
 
-    /* Success is ANNOUNCED, not merely shown — role="status" makes it reach a
+    /* Success is ANNOUNCED, not merely shown - role="status" makes it reach a
        screen reader without stealing focus. */
     const status = page.getByRole("status");
     await expect(status).toBeVisible({ timeout: 15_000 });
@@ -181,7 +181,7 @@ test.describe("progressive enhancement", () => {
     ).toBeVisible();
 
     /* Navigation is plain links and still works. On mobile the header nav is
-       a <details> so it opens without JS too — open it, then navigate. */
+       a <details> so it opens without JS too - open it, then navigate. */
     const hamburger = page.getByRole("group").first();
     if (await hamburger.isVisible().catch(() => false)) {
       await page.locator("summary").first().click();
@@ -198,7 +198,7 @@ test.describe("progressive enhancement", () => {
     await page.goto("/schools");
 
     await page.getByLabel(/your name/i).fill("Meera Shah");
-    await page.getByLabel(/mobile number/i).fill("9779873333");
+    await page.getByLabel(/mobile number/i).fill("9979873333");
     await page.getByLabel(/school name/i).fill("Shree Vidyalaya");
 
     /* Focus + Enter rather than .click(): the page uses

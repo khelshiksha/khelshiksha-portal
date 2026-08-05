@@ -73,7 +73,7 @@ export function EnquiryForm({
         <input type="hidden" name="sourcePath" value={sourcePath} />
       ) : null}
 
-      {/* Honeypot — visually hidden, off the tab order, and told not to
+      {/* Honeypot - visually hidden, off the tab order, and told not to
           autofill so a password manager never populates it for a real user. */}
       <div
         aria-hidden="true"

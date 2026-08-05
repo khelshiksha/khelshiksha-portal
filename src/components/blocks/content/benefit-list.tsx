@@ -7,7 +7,7 @@ import type { Benefit } from "@/services/cms/types";
 /**
  * "Shifting from rote memorization to Learning by Doing."
  *
- * Numbered because these five ARE an enumerated set from the brochure — the
+ * Numbered because these five ARE an enumerated set from the brochure - the
  * numbers encode something true, they are not decoration. On desktop the
  * heading pins while the list scrolls past it; the pinning is pure CSS
  * `position: sticky`, so there is no scroll library and nothing to load.

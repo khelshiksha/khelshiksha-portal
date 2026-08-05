@@ -24,7 +24,7 @@ import {
 import type { AudienceKey } from "@/lib/constants";
 import type { LeadType } from "@/features/leads/schema";
 
-/** Each hub drives exactly ONE primary action — see the conversion table in the IA. */
+/** Each hub drives exactly ONE primary action - see the conversion table in the IA. */
 const LEAD_TYPE: Record<AudienceKey, LeadType> = {
   schools: "school-demo",
   teachers: "teacher",
@@ -116,7 +116,7 @@ export async function AudiencePage({
       ) : null}
 
       {/* NEP/NCF framing belongs to institutional audiences. It never appears
-          on the parent hub — that is a UX, accessibility and conversion rule
+          on the parent hub - that is a UX, accessibility and conversion rule
           all at once. */}
       {isInstitutional ? <AlignmentStrip alignments={alignments} /> : null}
 

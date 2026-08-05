@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
  * heading with ONE italic Fraunces phrase inside it.
  *
  * `accent` is the phrase to italicise, appended to `title`. At most one per
- * section — overuse turns a signature into a tic.
+ * section - overuse turns a signature into a tic.
  */
 export function SectionTitle({
   eyebrow,

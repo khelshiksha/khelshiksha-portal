@@ -10,7 +10,7 @@ export const metadata: Metadata = buildMetadata({
 });
 
 /**
- * DRAFT — written to reflect what this site actually does technically, so it
+ * DRAFT - written to reflect what this site actually does technically, so it
  * is accurate rather than boilerplate. It has NOT been reviewed by a lawyer
  * and should be before launch, particularly on DPDP Act 2023 obligations.
  */
@@ -33,7 +33,7 @@ export default function PrivacyPage() {
       <h2>What we never collect</h2>
       <p>
         <strong>We do not collect information about children.</strong> Our forms
-        ask about a child&rsquo;s age band and interests only — never a name,
+        ask about a child&rsquo;s age band and interests only, never a name,
         school, photograph or any other identifying detail. This is a deliberate
         product constraint, not only a policy statement.
       </p>
@@ -60,8 +60,8 @@ export default function PrivacyPage() {
         The one exception is the AI assistant on this site. If you type a
         question into it, that question is sent to Google to generate the
         answer, and Google may use it to improve their services. Do not put
-        anything into the assistant that you would not want processed that way —
-        if you would rather talk to us privately, use the enquiry form or call
+        anything into the assistant that you would not want processed that way.
+        If you would rather talk to us privately, use the enquiry form or call
         us.
       </p>
 
@@ -80,7 +80,7 @@ export default function PrivacyPage() {
 
       <h2>Contact</h2>
       <p>
-        {SITE.name} — <a href={`mailto:${SITE.email}`}>{SITE.email}</a>,{" "}
+        {SITE.name}, <a href={`mailto:${SITE.email}`}>{SITE.email}</a>,{" "}
         {SITE.phones[0]}.
       </p>
     </>

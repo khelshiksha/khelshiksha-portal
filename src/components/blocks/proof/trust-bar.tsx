@@ -7,13 +7,13 @@ type Alignment = { framework: string };
  *
  * This sits immediately below the hero, requiring no scroll, because the
  * question a principal or district officer arrives with is "is this
- * legitimate and has the government already approved it" — not "what do you
+ * legitimate and has the government already approved it" - not "what do you
  * sell". It is the most valuable element on the homepage.
  *
  * ## One idea per tier
  *
  * The previous version stacked four short claims, a row of institution chips
- * and a second row of mission chips, and read as a wall of labels — because
+ * and a second row of mission chips, and read as a wall of labels - because
  * it was saying the same thing three times. "PM SHRI schools" sat directly
  * above a PM SHRI chip. "UNICEF learning modules" sat above a UNICEF chip.
  * "NCF 2023 compliant" sat above an NCF 2023 chip. All four were repeated
@@ -26,7 +26,7 @@ type Alignment = { framework: string };
  * ## Why the chips are gone
  *
  * A pill with a border and a hover state looks like a filter or a button.
- * These are neither — they are names, and clicking them does nothing. Set as
+ * These are neither - they are names, and clicking them does nothing. Set as
  * plain wordmarks in a flowing row they read as what they are, and the wildly
  * uneven name lengths (GEDA against "Education Department, Government of
  * Gujarat") stop being ragged boxes and become ordinary text.

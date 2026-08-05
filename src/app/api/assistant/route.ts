@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { z } from "zod";
 import { hashIp, rateLimit } from "@/lib/rate-limit";
 import { answerQuestion, isAssistantConfigured } from "@/services/ai";
+import { SITE } from "@/lib/constants";
 
 /**
  * Streaming endpoint for the site assistant.
@@ -20,7 +21,7 @@ const MAX_QUESTION_CHARS = 600;
 /* Our OWN previous answers come back as conversation history, and they are
    routinely longer than a question. Capping every message at the question
    limit meant the first question worked and every follow-up failed with "too
-   long or malformed" — the model's reply could not survive the round trip
+   long or malformed" - the model's reply could not survive the round trip
    back through validation. Bounded by what we actually generate:
    maxOutputTokens is 700, so ~3000 characters, with headroom. */
 const MAX_ANSWER_CHARS = 8000;
@@ -140,8 +141,8 @@ export async function POST(request: Request) {
         console.error("[assistant] generation failed", error);
         controller.enqueue(
           encoder.encode(
-            "\n\nSorry — something went wrong answering that. " +
-              "Please try again, or call us on +91 97798 73333.",
+            "\n\nSorry, something went wrong answering that. " +
+              `Please try again, or call us on ${SITE.phones[0]}.`,
           ),
         );
       } finally {

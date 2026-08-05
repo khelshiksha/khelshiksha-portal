@@ -20,19 +20,19 @@ import {
 /**
  * The static geometry of KhelVerse.
  *
- * THE SKY IS BACK, thinner than before — four barely-moving clouds and one
+ * THE SKY IS BACK, thinner than before - four barely-moving clouds and one
  * flock. It was removed when the world sat behind the hero copy and clouds
  * drifted through the paragraph; that layout is gone. See sky.tsx for the
  * full history and for the rule that keeps it from happening again.
  *
  * A SERVER component on purpose. This is the largest markup on the site, and
- * none of it is interactive — shipping it as a client component would put
+ * none of it is interactive - shipping it as a client component would put
  * every polygon in the JavaScript bundle of the page whose load time matters
  * most. Only the die and the zone links are client-side; they layer over this
  * in a second SVG with an identical viewBox.
  *
  * Decorative in full, so aria-hidden. Everything the world says is also said
- * in the headline and in the real links above it — a screen reader gets the
+ * in the headline and in the real links above it - a screen reader gets the
  * five pillars as text, not as a description of a picture.
  *
  * PAINT ORDER IS THE WHOLE GAME. SVG has no z-index; it paints in document
@@ -41,7 +41,7 @@ import {
  * building it should sit behind, and the solidity of the scene collapses.
  */
 
-/* The island's outline in grid units. Deliberately irregular — a circle or a
+/* The island's outline in grid units. Deliberately irregular - a circle or a
    rectangle would read as a diagram rather than as a place. */
 const ISLAND: readonly Point[] = [
   { x: 3.2, y: -1.0 },
@@ -136,7 +136,7 @@ function Paths() {
           y: (hub.y + end.y) / 2 - (end.x - hub.x) * 0.04,
         };
         /* ONE soft stroke. A darker stroke under a lighter one gave the path
-           a visible edge, and an edge on a flat surface reads as thickness —
+           a visible edge, and an edge on a flat surface reads as thickness - 
            the paths looked like planks laid across the grass. A single
            low-contrast band reads as ground worn bare. */
         return (
@@ -158,7 +158,7 @@ function Paths() {
  * centre of it.
  *
  * The centre used to be an empty stone slab with a painted ring. It read as
- * important — everything points at it — and meant nothing, which is the worst
+ * important - everything points at it - and meant nothing, which is the worst
  * combination a focal point can have.
  *
  * An open book, because it is the one object that says "learning" in every
@@ -387,7 +387,7 @@ function ZonePlatform({ slug }: { slug: string }) {
         fill={zone.accent}
       />
       {/* Contact shadow. Without one the plateau reads as a decal on the
-          grass rather than a raised bank of earth — the cheapest depth cue
+          grass rather than a raised bank of earth - the cheapest depth cue
           in the scene and the one that does the most work. */}
       <ellipse
         cx={
@@ -403,7 +403,7 @@ function ZonePlatform({ slug }: { slug: string }) {
       />
       <g className="kv-zone-body">
         {/* Turf on an earth bank. Once the side faces were drawn correctly
-            this needed no rim of its own — the two shaded earth faces under
+            this needed no rim of its own - the two shaded earth faces under
             the grass are what make the plateau read as raised. An earlier
             version outlined it in pale stone, which looked like a diagram. */}
         <Box
@@ -416,8 +416,8 @@ function ZonePlatform({ slug }: { slug: string }) {
         />
         {/* Scaled about the platform centre rather than by editing every
             coordinate inside each landmark. At true footprint size the
-            buildings were too small to identify — a schoolhouse you cannot
-            recognise is just a beige lump — and uniform scaling of flat-shaded
+            buildings were too small to identify - a schoolhouse you cannot
+            recognise is just a beige lump - and uniform scaling of flat-shaded
             polygons stays perfectly isometric. */}
         <g transform={landmarkScale(zone.gx, zone.gy)}>
           <Landmark gx={zone.gx} gy={zone.gy} gz={PLATFORM_H} />

@@ -7,7 +7,7 @@ import { SITE } from "@/lib/constants";
  * Per-kit share card.
  *
  * Replaces the previous approach of pointing og:image at the kit's hero
- * illustration, which was an SVG — a format Facebook, WhatsApp, LinkedIn and
+ * illustration, which was an SVG - a format Facebook, WhatsApp, LinkedIn and
  * X all refuse to render, so every kit shared to a staffroom group produced a
  * blank card. This renders a real PNG.
  */
@@ -29,7 +29,7 @@ export async function generateImageMetadata({
       id: "card",
       size,
       contentType,
-      alt: product ? `${product.title} — ${product.tagline}` : SITE.name,
+      alt: product ? `${product.title}, ${product.tagline}` : SITE.name,
     },
   ];
 }

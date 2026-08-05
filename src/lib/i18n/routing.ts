@@ -3,7 +3,7 @@ import { DEFAULT_LOCALE, LOCALES, type Locale } from "./config";
 /**
  * URL shape for locales.
  *
- * English stays UNPREFIXED — /schools, not /en/schools — and Gujarati is
+ * English stays UNPREFIXED - /schools, not /en/schools - and Gujarati is
  * prefixed: /gu/schools. Two reasons, and the second is the one that matters
  * commercially:
  *
@@ -35,7 +35,7 @@ export function localeHref(locale: Locale, href: string): string {
  * Strips ANY active locale, including the default one, and deliberately does
  * not take the current locale as a hint. On English pages the middleware
  * rewrites /schools to /en/schools, and `usePathname` reports the rewritten
- * path — so a version of this that only stripped non-default prefixes left
+ * path - so a version of this that only stripped non-default prefixes left
  * "/en/schools" untouched and the language switcher built "/gu/en/schools".
  * What the caller has is a pathname of unknown shape; the honest thing is to
  * handle every shape it can arrive in.
@@ -49,7 +49,7 @@ export function stripLocale(pathname: string): string {
   return pathname;
 }
 
-/** Absolute URL for a route in a locale — canonicals, hreflang, sitemap. */
+/** Absolute URL for a route in a locale - canonicals, hreflang, sitemap. */
 export function localeUrl(base: string, locale: Locale, href: string): string {
   return new URL(localeHref(locale, href), base).toString();
 }

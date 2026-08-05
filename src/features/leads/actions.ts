@@ -24,7 +24,7 @@ export async function submitLead(
   /* 1. Honeypot. A bot fills every field it can see; a human never sees this
         one. Return success so the bot has no signal to adapt to. */
   if (formData.get("company_website")) {
-    return { ok: true, message: "Thank you — we've got it." };
+    return { ok: true, message: "Thank you, we've got it." };
   }
 
   const raw = Object.fromEntries(formData) as Record<string, unknown>;
@@ -50,7 +50,7 @@ export async function submitLead(
 
   /* 3. Rate limit on the hashed IP.
 
-     When the client cannot be identified (no x-forwarded-for — direct origin
+     When the client cannot be identified (no x-forwarded-for - direct origin
      access, a misconfigured proxy, some corporate egress), an "unknown"
      bucket would put EVERY anonymous visitor on one shared 5/hour limit and
      lock out legitimate enquiries site-wide. Caught by the E2E suite, where
@@ -79,9 +79,9 @@ export async function submitLead(
     leadId = lead.id;
   } catch (error) {
     if (error instanceof LeadStorageUnavailableError) {
-      /* Never report a false success — the enquiry would vanish. Give the
+      /* Never report a false success - the enquiry would vanish. Give the
          person a route that definitely works instead. */
-      console.error("[lead] storage unavailable — enquiry not persisted");
+      console.error("[lead] storage unavailable, enquiry not persisted");
       return {
         ok: false,
         error: `We couldn't submit that just now. Please call us on ${SITE.phones[0]} or email ${SITE.email} and we'll pick it up straight away.`,
@@ -106,6 +106,6 @@ export async function submitLead(
   return {
     ok: true,
     message:
-      "Thank you — someone from our team will call you within two working days.",
+      "Thank you, someone from our team will call you within two working days.",
   };
 }

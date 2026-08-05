@@ -6,7 +6,7 @@ import { settlePage } from "./support/settle";
  * WCAG 2.1 AA sweep across every route type.
  *
  * Automated testing catches roughly 30% of real WCAG issues, so this is the
- * floor, not the ceiling — the manual passes in
+ * floor, not the ceiling - the manual passes in
  * docs/architecture/13-accessibility-checklist.md still have to happen. But
  * zero automated violations is a hard gate, because unlike Lighthouse
  * Performance it is deterministic: there is no reason to score less.
@@ -36,7 +36,7 @@ for (const route of ROUTES) {
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
       .analyze();
 
-    /* Print the actual offending markup — a bare count is useless when a
+    /* Print the actual offending markup - a bare count is useless when a
        test fails weeks from now. */
     if (results.violations.length > 0) {
       console.error(

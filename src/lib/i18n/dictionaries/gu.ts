@@ -5,7 +5,7 @@ import type { Dictionary } from "./en";
  *
  * Typed as `Dictionary`, so this file cannot drift from English: add a key to
  * en.ts and TypeScript fails the build here until it is translated. That is
- * the whole reason the dictionary is a typed object rather than a JSON blob —
+ * the whole reason the dictionary is a typed object rather than a JSON blob -
  * a half-translated interface is worse than an untranslated one, because the
  * gaps land unpredictably in the middle of a form.
  *
@@ -16,8 +16,8 @@ import type { Dictionary } from "./en";
  * default and it is the single most likely thing to make the page feel wrong
  * to a native reader.
  *
- * LOANWORDS. Terms that Gujarati-speaking schools genuinely use in English —
- * ડેમો, કીટ, ઈમેલ, થીમ — are transliterated rather than replaced with Sanskritic
+ * LOANWORDS. Terms that Gujarati-speaking schools genuinely use in English -
+ * ડેમો, કીટ, ઈમેલ, થીમ - are transliterated rather than replaced with Sanskritic
  * coinages nobody says out loud. Translating "kit" to a pure Gujarati
  * compound would be more correct and less understood.
  */
@@ -65,19 +65,19 @@ export const gu: Dictionary = {
     howToPlay: "કેવી રીતે રમવું",
     inTheBox: "બોક્સમાં શું છે",
     related: "આ સાથે સારી રીતે જોડાતી કીટ",
-    /* Portfolio, not catalogue — decision D7. No price, no cart, anywhere. */
+    /* Portfolio, not catalogue - decision D7. No price, no cart, anywhere. */
     noPricingNote:
-      "કીટ શાળા કાર્યક્રમના ભાગરૂપે પૂરી પાડવામાં આવે છે. તમારી શાળા વિશે અમને જણાવો — અમે વિકલ્પો અને કિંમતની વિગત મોકલીશું.",
+      "કીટ શાળા કાર્યક્રમના ભાગરૂપે પૂરી પાડવામાં આવે છે. તમારી શાળા વિશે અમને જણાવો, અમે વિકલ્પો અને કિંમતની વિગત મોકલીશું.",
   },
   filters: {
     heading: "કીટ ફિલ્ટર કરો",
     clearAll: "બધું સાફ કરો",
     apply: "પરિણામો બતાવો",
     /* Gujarati has no separate plural verb form here, so one phrasing covers
-       both counts — but the singular still drops the numeral, as English does. */
+       both counts - but the singular still drops the numeral, as English does. */
     resultCount: (n: number) => (n === 1 ? "1 કીટ મળી" : `${n} કીટ મળી`),
     emptyTitle: "આ ફિલ્ટર સાથે કોઈ કીટ મળી નથી",
-    emptyBody: "એકાદ ફિલ્ટર દૂર કરી જુઓ — અહીં કેટલાક નજીકના વિકલ્પો છે.",
+    emptyBody: "એકાદ ફિલ્ટર દૂર કરી જુઓ. અહીં કેટલાક નજીકના વિકલ્પો છે.",
     age: "ઉંમર",
     subject: "વિષય",
     skill: "કુશળતા",
@@ -101,10 +101,10 @@ export const gu: Dictionary = {
     required: "જરૂરી",
     submit: "પૂછપરછ મોકલો",
     submitting: "મોકલી રહ્યા છીએ…",
-    successTitle: "આભાર — અમને મળી ગયું.",
+    successTitle: "આભાર, અમને મળી ગયું.",
     successBody: "અમારી ટીમમાંથી કોઈ બે કાર્યકારી દિવસમાં તમને ફોન કરશે.",
     errorGeneric: "અમારી બાજુએ કંઈક ખોટું થયું. કૃપા કરીને ફરી પ્રયાસ કરો.",
-    /* Errors say how to fix, never just "invalid" — a11y checklist §3 */
+    /* Errors say how to fix, never just "invalid" - a11y checklist §3 */
     errorName: "કૃપા કરીને તમારું નામ લખો",
     errorEmail: "name@school.edu.in જેવું ઈમેલ સરનામું લખો",
     errorPhone: "10 અંકનો મોબાઈલ નંબર લખો",

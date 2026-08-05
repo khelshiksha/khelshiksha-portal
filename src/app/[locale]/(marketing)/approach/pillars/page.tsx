@@ -12,7 +12,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = buildMetadata({
   title: "The 5 Pillars",
   description:
-    "Foundational learning, health and nutrition, climate education, future readiness and life skills — a complete ecosystem for holistic development.",
+    "Foundational learning, health and nutrition, climate education, future readiness and life skills: a complete ecosystem for holistic development.",
   path: "/approach/pillars",
 });
 
@@ -37,7 +37,7 @@ export default async function PillarsPage() {
             eyebrow="The 5 Pillars"
             title="A complete learning ecosystem for"
             accent="holistic development."
-            lede="Every kit sits under one of five pillars. Together they cover what a child needs beyond the syllabus — and each maps to a national mission a school already reports on."
+            lede="Every kit sits under one of five pillars. Together they cover what a child needs beyond the syllabus, and each maps to a national mission a school already reports on."
           />
         </Container>
       </Section>

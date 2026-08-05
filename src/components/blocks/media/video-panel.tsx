@@ -6,7 +6,7 @@ import { Container, Section } from "@/components/ui/container";
 import { SITE } from "@/lib/constants";
 
 /**
- * The video slot — built to be empty today and correct tomorrow.
+ * The video slot - built to be empty today and correct tomorrow.
  *
  * The channel has no films on it yet, so this renders a card that says so and
  * links to the channel. It deliberately does NOT render an empty player: an
@@ -18,7 +18,7 @@ import { SITE } from "@/lib/constants";
  * pulls roughly half a megabyte of Google JavaScript and sets cookies on every
  * single page view, whether or not anyone presses play. Here nothing is
  * requested from YouTube until the visitor asks for it, so the page costs
- * nothing to the majority who never watch — and no third party gets to
+ * nothing to the majority who never watch - and no third party gets to
  * fingerprint a school principal who merely scrolled past.
  *
  * The poster comes from YouTube's static image host at that point, and the

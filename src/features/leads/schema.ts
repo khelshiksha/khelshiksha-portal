@@ -4,7 +4,7 @@ import { z } from "zod";
  * ONE zod schema, imported by both the client form and the Server Action.
  *
  * Client-side validation is UX; the server-side parse is the actual check.
- * They cannot drift because there is a single definition — this is the whole
+ * They cannot drift because there is a single definition - this is the whole
  * reason the schema lives in its own module rather than inside either one.
  */
 
@@ -62,7 +62,7 @@ export const leadSchema = z.object({
   /** Never pre-checked, never inferred from submission. */
   consentMarketing: z.coerce.boolean().default(false),
 
-  /* Attribution — hidden fields, not user input. */
+  /* Attribution - hidden fields, not user input. */
   sourcePath: z.string().max(300).optional().or(z.literal("")),
 });
 

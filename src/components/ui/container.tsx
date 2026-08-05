@@ -11,7 +11,7 @@ const SIZE: Record<ContainerSize, string> = {
 
 /**
  * The single owner of max-width and page gutters. If a section sets its own
- * horizontal padding, that is a bug — it will drift out of alignment with
+ * horizontal padding, that is a bug - it will drift out of alignment with
  * every other section the first time the gutter changes.
  */
 export function Container({
@@ -39,7 +39,7 @@ export function Container({
 }
 
 const PANEL_TONE = {
-  /* Fixed across themes on purpose — see the contrast-band note in theme.css.
+  /* Fixed across themes on purpose - see the contrast-band note in theme.css.
      These two carry verified ratios (paper on dark 16.69:1, white on brand
      6.91:1); letting them invert in dark mode is what dropped the Game Corner
      accent to 1.41:1 the last time. */
@@ -55,7 +55,7 @@ const PANEL_TONE = {
  *
  * The bands used to bleed. Inset panels group a section's content into an
  * object with a visible boundary, which makes a long page read as a stack of
- * discrete things instead of alternating stripes of colour — and it lets the
+ * discrete things instead of alternating stripes of colour - and it lets the
  * page background stay continuous behind them.
  *
  * The radius is --radius-2xl (40px) and does not scale down on mobile: a
@@ -101,7 +101,7 @@ export function Panel({
 }
 
 /**
- * Vertical section rhythm. Generous by default — whitespace is the primary
+ * Vertical section rhythm. Generous by default - whitespace is the primary
  * layout tool, and crowding is the fastest way to look like a template.
  */
 export function Section({

@@ -1,5 +1,5 @@
 /**
- * Pure motion helpers. Deliberately NOT in reveal.tsx — that file is
+ * Pure motion helpers. Deliberately NOT in reveal.tsx - that file is
  * `"use client"`, so anything exported from it becomes a client reference and
  * cannot be called during server render.
  */

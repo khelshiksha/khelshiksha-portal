@@ -5,7 +5,7 @@ import type { Product } from "@/services/cms/types";
  *
  * INCOMPLETE BY DESIGN. The brochure's Game Corner shelf also shows Santulan,
  * Climato, Vasudhaiv Kutumbkam and one title that could not be read from the
- * print scan. Those are deliberately absent rather than invented — see
+ * print scan. Those are deliberately absent rather than invented - see
  * docs/architecture/14-implementation-roadmap.md, blocker #1. Adding them is a
  * data-entry task once the catalogue arrives.
  *
@@ -23,7 +23,7 @@ export const products: Product[] = [
     descriptionInstitutional:
       "An interactive road safety game that teaches traffic rules, safe road behaviour and responsible decision-making through real-life scenarios. Supports the life-skills and civic-responsibility strands of NCF 2023.",
     descriptionParent:
-      "Your child practises crossing roads, reading signs and making safe choices — as a game, with friends, before they ever have to do it alone.",
+      "Your child practises crossing roads, reading signs and making safe choices as a game, with friends, before they ever have to do it alone.",
     pillars: ["life-skills"],
     ageMin: 7,
     ageMax: 12,
@@ -64,7 +64,7 @@ export const products: Product[] = [
       {
         step: "The group decides together whether the choice was safe",
         detail:
-          "Disagreement is the point — the discussion is where the learning happens.",
+          "Disagreement is the point: the discussion is where the learning happens.",
       },
       {
         step: "Safe choices move a player forward; the group discusses the rest",
@@ -93,7 +93,7 @@ export const products: Product[] = [
     descriptionInstitutional:
       "A mathematics game that strengthens arithmetic fluency, logical reasoning and problem-solving under mild time pressure. Directly supports FLN numeracy goals for the middle primary years.",
     descriptionParent:
-      "A quick, competitive number game that builds your child's confidence with mental maths — the kind of practice that feels like playing rather than like homework.",
+      "A quick, competitive number game that builds your child's confidence with mental maths, the kind of practice that feels like playing rather than like homework.",
     pillars: ["foundational-learning"],
     ageMin: 8,
     ageMax: 12,
@@ -112,7 +112,7 @@ export const products: Product[] = [
       "Sustains attention through a timed round without losing accuracy",
     ],
     curriculumMapping: [
-      { framework: "FLN", reference: "Numeracy — operations and number sense" },
+      { framework: "FLN", reference: "Numeracy: operations and number sense" },
       { framework: "NCF 2023", reference: "Mathematical thinking, Stage 2" },
     ],
     howToPlay: [
@@ -125,7 +125,7 @@ export const products: Product[] = [
       {
         step: "First to call a valid combination explains it",
         detail:
-          "An unexplained answer does not score — the reasoning is the skill.",
+          "An unexplained answer does not score: the reasoning is the skill.",
       },
       { step: "Play continues until a player reaches the agreed score" },
     ],
@@ -152,7 +152,7 @@ export const products: Product[] = [
     descriptionInstitutional:
       "A nutrition card game that helps children understand food groups and healthy choices through play. Aligns with Eat Right India and the health and well-being strand of NCF 2023.",
     descriptionParent:
-      "A card game about food that gets children thinking about what makes a meal balanced — often the first time they take an interest in what's on their plate.",
+      "A card game about food that gets children thinking about what makes a meal balanced, often the first time they take an interest in what's on their plate.",
     pillars: ["health-nutrition"],
     ageMin: 6,
     ageMax: 11,
@@ -207,7 +207,7 @@ export const products: Product[] = [
     _id: "product-yoga-safari",
     slug: "yoga-safari",
     title: "Yoga Safari",
-    tagline: "Movement, breath and focus — disguised as an animal adventure.",
+    tagline: "Movement, breath and focus, disguised as an animal adventure.",
     descriptionInstitutional:
       "A playful yoga game introducing mindfulness, movement, focus and emotional regulation. Supports the Fit India Movement and the physical education strand of NCF 2023.",
     descriptionParent:
@@ -271,7 +271,7 @@ export const products: Product[] = [
     descriptionInstitutional:
       "A word-building game in which children match objects with letters, form words and strengthen early vocabulary. Supports FLN literacy goals for the early primary years.",
     descriptionParent:
-      "Your child matches pictures to letters and builds their first words — the step where reading stops being decoding and starts being recognition.",
+      "Your child matches pictures to letters and builds their first words, the step where reading stops being decoding and starts being recognition.",
     pillars: ["foundational-learning"],
     ageMin: 5,
     ageMax: 9,
@@ -290,7 +290,7 @@ export const products: Product[] = [
       "Offers a new word beginning with a given sound",
     ],
     curriculumMapping: [
-      { framework: "FLN", reference: "Literacy — decoding and vocabulary" },
+      { framework: "FLN", reference: "Literacy: decoding and vocabulary" },
       { framework: "NCF 2023", reference: "Language and literacy, Stage 1" },
     ],
     howToPlay: [
@@ -321,11 +321,11 @@ export const products: Product[] = [
     _id: "product-naturebola",
     slug: "naturebola",
     title: "Naturebola",
-    tagline: "Listen, identify, match — the natural world by ear.",
+    tagline: "Listen, identify, match: the natural world by ear.",
     descriptionInstitutional:
       "A sound-based game in which children listen to, identify and match nature and animal sounds through group play. Supports environmental awareness under Mission LiFE and the EVS strand of NCF 2023.",
     descriptionParent:
-      "Your child listens to birds, weather and animals and learns to tell them apart — a game that makes them notice the world outside the window.",
+      "Your child listens to birds, weather and animals and learns to tell them apart: a game that makes them notice the world outside the window.",
     pillars: ["climate-education", "foundational-learning"],
     ageMin: 5,
     ageMax: 10,
