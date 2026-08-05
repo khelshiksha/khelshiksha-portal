@@ -95,13 +95,32 @@ export async function submitLead(
     };
   }
 
-  /* 5. Notify. Deliberately fire-and-forget: the enquiry is already stored,
-        so an email provider outage must never fail a submission the visitor
-        has completed. sendLeadNotification never throws, but the catch is
-        kept so a future change to it cannot turn a success into an error. */
-  void sendLeadNotification(parsed.data, leadId).catch((error) => {
-    console.error("[lead] notification failed", error);
-  });
+  /* 5. Notify. AWAITED, and it must stay awaited.
+
+        This was `void sendLeadNotification(...)` - fire-and-forget, on the
+        reasoning that the enquiry is already stored so the visitor should not
+        wait for an email. The reasoning was right and the code was wrong, in
+        a way that only appears in production.
+
+        A serverless function is FROZEN the moment it returns its response.
+        Any promise still in flight is killed where it stands. So the request
+        to the email provider was being opened and then torn down mid-connect
+        on every single submission, surfacing as "Unable to fetch data. The
+        request could not be resolved" in the logs - a message that reads like
+        a network fault rather than what it was. On a local machine Node stays
+        alive and the mail sends, so this passed every test and every manual
+        check, and failed for every real enquiry.
+
+        Awaiting cannot turn a success into a failure: sendLeadNotification
+        catches everything and never throws, which is the property that makes
+        this safe and which must not be changed without revisiting this line.
+        The cost is the provider's latency added to the submission, bounded by
+        the timeout in services/email.
+
+        Next's `after()` would let this run post-response and is the tidier
+        answer, but it puts delivery of a school's enquiry back into a
+        background task with no way to observe it failing. Not worth ~300ms. */
+  await sendLeadNotification(parsed.data, leadId);
 
   return {
     ok: true,

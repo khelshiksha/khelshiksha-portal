@@ -25,6 +25,8 @@ import type { LeadInput } from "@/features/leads/schema";
  * silently doing nothing.
  */
 
+const SEND_TIMEOUT_MS = 10_000;
+
 const LEAD_LABEL: Record<LeadInput["type"], string> = {
   "school-demo": "Demo request",
   "school-enquiry": "School enquiry",
@@ -106,7 +108,13 @@ export async function sendLeadNotification(
 
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const { error } = await resend.emails.send({
+    /* Bounded, because this is now awaited by the server action: without a
+       ceiling, a provider that accepts the connection and then stalls would
+       hold a visitor's form open for as long as the platform allows. Ten
+       seconds is far above the normal round trip and far below anything a
+       person would sit through. Losing the notification is recoverable;
+       leaving someone staring at a spinner is not. */
+    const send = resend.emails.send({
       from:
         process.env.LEAD_NOTIFY_FROM ??
         `enquiries@${new URL(SITE.url).hostname}`,
@@ -117,10 +125,33 @@ export async function sendLeadNotification(
       text,
     });
 
-    if (error) {
-      console.error(`[email] send failed for lead ${leadId}:`, error.message);
+    const result = await Promise.race([
+      send,
+      new Promise<null>((resolve) =>
+        setTimeout(() => resolve(null), SEND_TIMEOUT_MS),
+      ),
+    ]);
+
+    if (result === null) {
+      console.error(
+        `[email] TIMED OUT after ${SEND_TIMEOUT_MS}ms for lead ${leadId}. ` +
+          `The lead IS STORED. Nobody has been notified.`,
+      );
+      return;
+    }
+
+    if (result.error) {
+      console.error(
+        `[email] send failed for lead ${leadId}:`,
+        result.error.message,
+        "- the lead IS STORED, nobody has been notified",
+      );
     }
   } catch (error) {
-    console.error(`[email] send threw for lead ${leadId}:`, error);
+    console.error(
+      `[email] send threw for lead ${leadId}:`,
+      error,
+      "- the lead IS STORED, nobody has been notified",
+    );
   }
 }
