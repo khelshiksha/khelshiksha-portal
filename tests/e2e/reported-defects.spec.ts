@@ -275,3 +275,59 @@ test.describe("outbound links", () => {
     ).toEqual([]);
   });
 });
+
+test.describe("link previews", () => {
+  /* SYMPTOM: sharing the site on WhatsApp produced a text-only card with no
+     image.
+
+     og:image pointed at /opengraph-image, which returned a 404 HTML page. The
+     proxy rewrites every extension-less path into the [locale] segment, and
+     Next serves the Open Graph image from src/app/opengraph-image.tsx, which
+     sits outside it - so the card was being rewritten to a route that does
+     not exist.
+
+     Nothing on the site itself was broken, which is why it went unnoticed:
+     the only symptom lived in someone else's chat app. This fetches the URL
+     the crawlers are actually given and checks that an image comes back,
+     because a 200 that serves HTML is exactly the failure being guarded
+     against. */
+  for (const route of ["/", "/products/aryabhata", "/impact"]) {
+    test(`the og:image for ${route} is a real image`, async ({
+      page,
+      request,
+    }) => {
+      await page.goto(route);
+
+      const url = await page.getAttribute(
+        'meta[property="og:image"]',
+        "content",
+      );
+      expect(url, `${route} declares no og:image`).toBeTruthy();
+      expect(
+        url,
+        "og:image must be absolute - crawlers do not resolve relative URLs",
+      ).toMatch(/^https?:\/\//);
+
+      const res = await request.get(url!);
+      expect(
+        res.status(),
+        `og:image for ${route} returned ${res.status()}`,
+      ).toBe(200);
+
+      const type = res.headers()["content-type"] ?? "";
+      expect(
+        type,
+        `og:image for ${route} served "${type}", not an image`,
+      ).toMatch(/^image\//);
+
+      /* WhatsApp skips thumbnails much above this, so a card that technically
+         resolves can still render as text. */
+      const bytes = (await res.body()).length;
+      expect(bytes, "og:image is empty").toBeGreaterThan(1000);
+      expect(
+        bytes,
+        `og:image is ${Math.round(bytes / 1024)}KB; WhatsApp drops large images`,
+      ).toBeLessThan(300_000);
+    });
+  }
+});
