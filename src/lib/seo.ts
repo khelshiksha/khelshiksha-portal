@@ -33,8 +33,19 @@ export interface SeoInput {
  *
  * /products/[slug] still overrides this with a per-kit card, because that
  * file sits in the same directory as the page it belongs to.
+ *
+ * BUMP THE VERSION WHENEVER THE CARD CHANGES. Naming the path by hand also
+ * gives up the content hash Next would otherwise append, and social platforms
+ * cache a preview against its URL for days - WhatsApp and Facebook both do.
+ * Without a new URL, a redesigned card keeps showing the old one to everybody
+ * who has already shared the link, and there is no way to ask them to
+ * re-fetch it. The query string is ignored by the route and exists purely to
+ * be different.
+ *
+ *   v1  original typographic card
+ *   v2  real logo artwork
  */
-const DEFAULT_OG_IMAGE = "/opengraph-image";
+const DEFAULT_OG_IMAGE = "/opengraph-image?v=2";
 
 export function buildMetadata({
   title,

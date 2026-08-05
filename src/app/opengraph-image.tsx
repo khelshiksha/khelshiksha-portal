@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { SITE } from "@/lib/constants";
 
@@ -14,8 +16,17 @@ import { SITE } from "@/lib/constants";
  *
  * Deliberately no webfont. Loading Fraunces here would mean fetching a font
  * file at build time for every card, and a network hiccup would fail the
- * build for a decorative gain. The card carries the brand through colour and
- * composition instead.
+ * build for a decorative gain. The type is set in the system stack; the LOGO
+ * carries the brand.
+ *
+ * The logo is inlined as a data URI, read from disk when this module is first
+ * evaluated. It cannot be an <img src="/brand/..."> - the renderer has no
+ * origin to resolve a relative path against, and pointing it at the public
+ * URL would make generating the card depend on the site being up, which is a
+ * circular dependency waiting to bite during a deploy.
+ *
+ * logo-wordmark, not logo: the full lockup carries "Build - Play - Learn"
+ * underneath, which the strip at the foot of this card already says.
  */
 export const alt = `${SITE.name}, ${SITE.secondary}`;
 export const size = { width: 1200, height: 630 };
@@ -25,6 +36,10 @@ const INK = "#161a2b";
 const PAPER = "#fdfbf6";
 const BRAND = "#4d8bf0";
 const ACCENT = "#f5c518";
+
+const LOGO = `data:image/png;base64,${readFileSync(
+  join(process.cwd(), "public/brand/logo-wordmark.png"),
+).toString("base64")}`;
 
 export default async function OpengraphImage() {
   return new ImageResponse(
@@ -67,37 +82,12 @@ export default async function OpengraphImage() {
         }}
       />
 
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-        <div
-          style={{
-            display: "flex",
-            fontSize: 34,
-            fontWeight: 700,
-            color: BRAND,
-          }}
-        >
-          Khel
-        </div>
-        <div
-          style={{
-            display: "flex",
-            fontSize: 34,
-            fontWeight: 700,
-            color: PAPER,
-          }}
-        >
-          Shiksha
-        </div>
-        <div
-          style={{
-            display: "flex",
-            width: 9,
-            height: 9,
-            borderRadius: 999,
-            background: ACCENT,
-            marginTop: 14,
-          }}
-        />
+      {/* The real mark, not a typographic approximation of it. A share card
+          is often the first time someone sees the brand at all, and a card
+          that spells the name in the system font teaches them the wrong
+          one. 512x281 in the source; 178 wide keeps that ratio exactly. */}
+      <div style={{ display: "flex" }}>
+        <img src={LOGO} width={178} height={98} alt="" />
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 26 }}>
