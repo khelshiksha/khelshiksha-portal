@@ -360,41 +360,81 @@ test.describe("the mascot", () => {
     test(`the ${name} mascot is not served oversized`, async ({
       page,
     }, info) => {
+      /* Counted from the network, not from the DOM. The first version of this
+         test asserted the mascot was ABSENT on mobile and failed: `hidden
+         lg:block` is display:none, so the element is still there. Which is
+         fine - what matters on a phone is bytes, not markup, and an element
+         that is never painted and never fetched costs nothing.
+
+         Verified rather than assumed: display:none plus loading="lazy" means
+         the image never intersects the viewport, so it is never requested -
+         zero requests on Pixel 7 even after scrolling to the bottom of both
+         pages, against exactly one on desktop. */
+      const requests: string[] = [];
+      page.on("request", (r) => {
+        if (r.url().includes("mascot")) requests.push(r.url());
+      });
+
       await page.goto(route);
       await settlePage(page);
+      /* Out of viewport is not the same as never reached. */
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await page.waitForTimeout(1000);
 
       const img = page.locator('img[src*="mascot"]').first();
 
-      /* Both placements are desktop-only by design, so on mobile the correct
-         result is that there is no mascot at all - which is itself worth
-         asserting, since a stray one would be pure weight on the device that
-         can least afford it. */
       if (info.project.name === "mobile") {
-        await expect(img).toHaveCount(0);
+        await expect(img).toBeHidden();
+        expect(
+          requests,
+          "a phone downloaded the mascot for a placement it cannot see",
+        ).toHaveLength(0);
         return;
       }
 
       await expect(img).toBeVisible();
 
-      const src = (await img.getAttribute("src")) ?? "";
-      const requested = Number(new URL(src, page.url()).searchParams.get("w"));
+      /* currentSrc, NOT the src attribute, and the first version of this test
+         got it wrong.
+
+         next/image puts the LARGEST candidate in `src` - it is the fallback
+         for a browser with no srcset support - so reading it here returned
+         w=3840 on a perfectly healthy 256px slot. A test written that way
+         fails on a good page and, worse, would pass on a bad one if the
+         ladder ever changed. currentSrc is the only attribute that says what
+         the browser actually downloaded, and it is only populated after the
+         image has loaded. */
+      await expect
+        .poll(() => img.evaluate((el: HTMLImageElement) => el.currentSrc))
+        .not.toBe("");
+
+      const current = await img.evaluate(
+        (el: HTMLImageElement) => el.currentSrc,
+      );
+      const fetched = Number(
+        new URL(current, page.url()).searchParams.get("w"),
+      );
       expect(
-        requested,
-        `${src} carries no width - is it going through next/image?`,
+        fetched,
+        `${current} carries no width - is it going through next/image?`,
       ).toBeGreaterThan(0);
 
       const box = await img.boundingBox();
       const rendered = box?.width ?? 0;
       expect(rendered).toBeGreaterThan(0);
 
-      /* The next bucket above 2x is the honest ceiling: Next picks from a
-         fixed ladder, so a 256px slot at DPR 2 legitimately resolves to 640.
-         Anything past 2.7x means the `sizes` hint is wrong, not that the
-         ladder is coarse. */
+      const dpr = await page.evaluate(() => window.devicePixelRatio);
+
+      /* Measured against CSS width x DPR, because that is what "the right
+         size" actually means - a 256px slot legitimately wants 512 device px
+         at 2x. Next then rounds up to its fixed ladder, so the real fetches
+         are 256 / 640 / 828 at 1x / 2x / 3x: at most 1.25x the ideal. 1.35
+         leaves room for the ladder without leaving room for a broken hint,
+         which would jump straight to 3840. */
       expect(
-        requested,
-        `requested ${requested}px for a ${Math.round(rendered)}px slot - check the sizes hint in ui/mascot.tsx`,
-      ).toBeLessThanOrEqual(rendered * 2.7);
+        fetched,
+        `fetched ${fetched}px for a ${Math.round(rendered)}px slot at dpr ${dpr} - check the sizes hint in ui/mascot.tsx`,
+      ).toBeLessThanOrEqual(rendered * dpr * 1.35);
     });
 
     test(`the ${name} mascot is never preloaded`, async ({ page }) => {
