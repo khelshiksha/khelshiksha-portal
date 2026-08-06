@@ -331,3 +331,85 @@ test.describe("link previews", () => {
     });
   }
 });
+
+test.describe("the mascot", () => {
+  /* NOT A REGRESSION - a tripwire, written the day the mascot landed.
+
+     The mascot is the first raster on the site large enough to matter and the
+     first placed for decoration rather than for information, which puts it in
+     front of the two failure modes that are invisible in dev on a laptop:
+
+       1. A wrong `sizes` makes a phone fetch a 792px master for a 96px slot.
+          Nothing looks wrong. The page is just quietly heavier, and only on
+          the devices least able to afford it.
+
+       2. Someone adds `priority` to "make it appear faster". That injects a
+          <link rel="preload" as="image"> which competes with the stylesheet
+          and the preloaded sans font for the first round trips - the two
+          resources the home page's TEXT LCP actually depends on. Decoration
+          preloaded ahead of the thing being measured.
+
+     Both assertions read what the browser actually did, per the rule at the
+     top of this file: the resolved request width, and the real <head>. */
+  const PLACEMENTS = [
+    { route: "/not-a-real-page", name: "404" },
+    { route: "/parents", name: "parents hub" },
+  ];
+
+  for (const { route, name } of PLACEMENTS) {
+    test(`the ${name} mascot is not served oversized`, async ({
+      page,
+    }, info) => {
+      await page.goto(route);
+      await settlePage(page);
+
+      const img = page.locator('img[src*="mascot"]').first();
+
+      /* Both placements are desktop-only by design, so on mobile the correct
+         result is that there is no mascot at all - which is itself worth
+         asserting, since a stray one would be pure weight on the device that
+         can least afford it. */
+      if (info.project.name === "mobile") {
+        await expect(img).toHaveCount(0);
+        return;
+      }
+
+      await expect(img).toBeVisible();
+
+      const src = (await img.getAttribute("src")) ?? "";
+      const requested = Number(new URL(src, page.url()).searchParams.get("w"));
+      expect(
+        requested,
+        `${src} carries no width - is it going through next/image?`,
+      ).toBeGreaterThan(0);
+
+      const box = await img.boundingBox();
+      const rendered = box?.width ?? 0;
+      expect(rendered).toBeGreaterThan(0);
+
+      /* The next bucket above 2x is the honest ceiling: Next picks from a
+         fixed ladder, so a 256px slot at DPR 2 legitimately resolves to 640.
+         Anything past 2.7x means the `sizes` hint is wrong, not that the
+         ladder is coarse. */
+      expect(
+        requested,
+        `requested ${requested}px for a ${Math.round(rendered)}px slot - check the sizes hint in ui/mascot.tsx`,
+      ).toBeLessThanOrEqual(rendered * 2.7);
+    });
+
+    test(`the ${name} mascot is never preloaded`, async ({ page }) => {
+      await page.goto(route);
+
+      const preloaded = await page
+        .locator('head link[rel="preload"][as="image"]')
+        .evaluateAll((links) =>
+          links.map((l) => l.getAttribute("href") ?? "").join(" "),
+        );
+
+      expect(
+        preloaded,
+        "the mascot is preloaded - that is `priority`, and it competes with the font the text LCP needs",
+      ).not.toContain("mascot");
+    });
+  }
+});

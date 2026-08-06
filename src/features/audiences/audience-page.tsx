@@ -84,7 +84,21 @@ export async function AudiencePage({
 
   return (
     <>
-      <HeroAudience hub={hub} trail={[{ name: hub.eyebrow, path: hub.slug }]} />
+      {/* PARENTS ONLY. It is the one hub where the buyer and the child are on
+          the same side, and the copy already knows it - the parent enquiry
+          below asks about "your child", and there is a standing rule that NEP
+          and NCF framing never appears on this hub at all. The institutional
+          register is deliberately switched off here, and a friendly face is
+          what belongs in the gap that leaves.
+
+          On /schools and /government it would work against the page: those
+          readers are evaluating a supplier, and the mascot's job there is to
+          stay out of the way. */}
+      <HeroAudience
+        hub={hub}
+        trail={[{ name: hub.eyebrow, path: hub.slug }]}
+        mascot={audienceKey === "parents"}
+      />
 
       <ComparisonSplit problem={hub.problem} outcome={hub.outcome} />
 
