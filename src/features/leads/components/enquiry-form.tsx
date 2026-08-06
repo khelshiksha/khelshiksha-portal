@@ -4,6 +4,7 @@ import { useActionState, useId } from "react";
 import { useFormStatus } from "react-dom";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Mascot } from "@/components/ui/mascot";
 import { useDictionary } from "@/lib/i18n/locale-context";
 import { submitLead } from "../actions";
 import type { ActionResult, LeadType } from "../schema";
@@ -43,19 +44,49 @@ export function EnquiryForm({
   );
   const uid = useId();
 
+  /* THE ONE MOMENT ON THIS SITE WORTH DECORATING.
+
+     Someone has just handed over their name, phone number, school and
+     district, and until now the whole reward was a stock checkmark. Every
+     conversion surface routes here - the contact page, the inline enquiry
+     block, and each of the four audience hubs - so one placement warms the
+     end of four funnels.
+
+     It is also the one placement that cannot cost a submission, because it
+     only ever renders AFTER the lead is captured. That is the entire argument
+     for putting a cartoon here and not on the pages where someone is still
+     deciding whether we look like a real company.
+
+     The bust crop, not the standing figure: at this size the full body would
+     put the die head below the ~96px at which it stops reading as a die. */
   if (state?.ok) {
     return (
       <div
         role="status"
-        className="bg-tint-mint flex flex-col items-start gap-3 rounded-[var(--radius-xl)] border border-transparent p-8"
+        className="bg-tint-mint flex flex-col items-start gap-3 overflow-hidden rounded-[var(--radius-xl)] border border-transparent p-8 sm:flex-row sm:items-end sm:gap-6 sm:pb-0"
       >
-        <CheckCircle2
-          size={26}
-          aria-hidden="true"
-          className="text-pillar-mint"
+        <div className="flex flex-col items-start gap-3 sm:pb-8">
+          <CheckCircle2
+            size={26}
+            aria-hidden="true"
+            className="text-pillar-mint"
+          />
+          <h3 className="text-h3 text-ink font-bold">{t.form.successTitle}</h3>
+          <p className="text-body text-ink-muted">{state.message}</p>
+        </div>
+
+        {/* Sat on the bottom edge of the panel rather than floating inside it.
+            The artwork has no contact shadow - the alpha beneath it is 0, see
+            ui/mascot.tsx - so a cut-out with clear space under it reads as a
+            sticker pasted on. Cropping it against the panel edge instead makes
+            it look like it is leaning in over the message. That is what
+            sm:pb-0 on the parent and -mb-px here are for; the overflow-hidden
+            lets the rounded corner do the clipping. */}
+        <Mascot
+          crop="bust"
+          size="md"
+          className="-mb-px hidden shrink-0 self-end sm:block"
         />
-        <h3 className="text-h3 text-ink font-bold">{t.form.successTitle}</h3>
-        <p className="text-body text-ink-muted">{state.message}</p>
       </div>
     );
   }

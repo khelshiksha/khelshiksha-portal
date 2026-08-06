@@ -331,3 +331,125 @@ test.describe("link previews", () => {
     });
   }
 });
+
+test.describe("the mascot", () => {
+  /* NOT A REGRESSION - a tripwire, written the day the mascot landed.
+
+     The mascot is the first raster on the site large enough to matter and the
+     first placed for decoration rather than for information, which puts it in
+     front of the two failure modes that are invisible in dev on a laptop:
+
+       1. A wrong `sizes` makes a phone fetch a 792px master for a 96px slot.
+          Nothing looks wrong. The page is just quietly heavier, and only on
+          the devices least able to afford it.
+
+       2. Someone adds `priority` to "make it appear faster". That injects a
+          <link rel="preload" as="image"> which competes with the stylesheet
+          and the preloaded sans font for the first round trips - the two
+          resources the home page's TEXT LCP actually depends on. Decoration
+          preloaded ahead of the thing being measured.
+
+     Both assertions read what the browser actually did, per the rule at the
+     top of this file: the resolved request width, and the real <head>. */
+  const PLACEMENTS = [
+    { route: "/not-a-real-page", name: "404" },
+    { route: "/parents", name: "parents hub" },
+  ];
+
+  for (const { route, name } of PLACEMENTS) {
+    test(`the ${name} mascot is not served oversized`, async ({
+      page,
+    }, info) => {
+      /* Counted from the network, not from the DOM. The first version of this
+         test asserted the mascot was ABSENT on mobile and failed: `hidden
+         lg:block` is display:none, so the element is still there. Which is
+         fine - what matters on a phone is bytes, not markup, and an element
+         that is never painted and never fetched costs nothing.
+
+         Verified rather than assumed: display:none plus loading="lazy" means
+         the image never intersects the viewport, so it is never requested -
+         zero requests on Pixel 7 even after scrolling to the bottom of both
+         pages, against exactly one on desktop. */
+      const requests: string[] = [];
+      page.on("request", (r) => {
+        if (r.url().includes("mascot")) requests.push(r.url());
+      });
+
+      await page.goto(route);
+      await settlePage(page);
+      /* Out of viewport is not the same as never reached. */
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await page.waitForTimeout(1000);
+
+      const img = page.locator('img[src*="mascot"]').first();
+
+      if (info.project.name === "mobile") {
+        await expect(img).toBeHidden();
+        expect(
+          requests,
+          "a phone downloaded the mascot for a placement it cannot see",
+        ).toHaveLength(0);
+        return;
+      }
+
+      await expect(img).toBeVisible();
+
+      /* currentSrc, NOT the src attribute, and the first version of this test
+         got it wrong.
+
+         next/image puts the LARGEST candidate in `src` - it is the fallback
+         for a browser with no srcset support - so reading it here returned
+         w=3840 on a perfectly healthy 256px slot. A test written that way
+         fails on a good page and, worse, would pass on a bad one if the
+         ladder ever changed. currentSrc is the only attribute that says what
+         the browser actually downloaded, and it is only populated after the
+         image has loaded. */
+      await expect
+        .poll(() => img.evaluate((el: HTMLImageElement) => el.currentSrc))
+        .not.toBe("");
+
+      const current = await img.evaluate(
+        (el: HTMLImageElement) => el.currentSrc,
+      );
+      const fetched = Number(
+        new URL(current, page.url()).searchParams.get("w"),
+      );
+      expect(
+        fetched,
+        `${current} carries no width - is it going through next/image?`,
+      ).toBeGreaterThan(0);
+
+      const box = await img.boundingBox();
+      const rendered = box?.width ?? 0;
+      expect(rendered).toBeGreaterThan(0);
+
+      const dpr = await page.evaluate(() => window.devicePixelRatio);
+
+      /* Measured against CSS width x DPR, because that is what "the right
+         size" actually means - a 256px slot legitimately wants 512 device px
+         at 2x. Next then rounds up to its fixed ladder, so the real fetches
+         are 256 / 640 / 828 at 1x / 2x / 3x: at most 1.25x the ideal. 1.35
+         leaves room for the ladder without leaving room for a broken hint,
+         which would jump straight to 3840. */
+      expect(
+        fetched,
+        `fetched ${fetched}px for a ${Math.round(rendered)}px slot at dpr ${dpr} - check the sizes hint in ui/mascot.tsx`,
+      ).toBeLessThanOrEqual(rendered * dpr * 1.35);
+    });
+
+    test(`the ${name} mascot is never preloaded`, async ({ page }) => {
+      await page.goto(route);
+
+      const preloaded = await page
+        .locator('head link[rel="preload"][as="image"]')
+        .evaluateAll((links) =>
+          links.map((l) => l.getAttribute("href") ?? "").join(" "),
+        );
+
+      expect(
+        preloaded,
+        "the mascot is preloaded - that is `priority`, and it competes with the font the text LCP needs",
+      ).not.toContain("mascot");
+    });
+  }
+});
