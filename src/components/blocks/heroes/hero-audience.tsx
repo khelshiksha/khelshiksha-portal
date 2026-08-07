@@ -82,8 +82,18 @@ export function HeroAudience({
           {mascot ? (
             <Mascot
               crop="standing"
-              size="lg"
-              className="-mb-20 hidden shrink-0 lg:-mb-24 lg:block"
+              size="sm"
+              sizeLg="lg"
+              /* self-end puts it at the right on a phone, where the column is
+                 stacked, and does nothing at lg where the row already handles
+                 alignment.
+
+                 The negative margin is the distance from here to the section
+                 edge, and it differs by breakpoint because both paddings do:
+                 pb-8 + Container py-8 is 64px on a phone, pb-12 + py-12 is
+                 96px from lg. Get it wrong and the figure floats above the
+                 boundary or hangs into the next section. */
+              className="-mb-16 shrink-0 self-end lg:-mb-24"
             />
           ) : null}
         </div>

@@ -110,22 +110,33 @@ export function CTABand({
         ) : null}
       </div>
 
-      {/* Desktop only, and out of the flow on purpose: the centred headline,
-          lede and buttons are the composition, and they keep their exact
-          geometry whether or not the figure is there. The lg:pr-64 above is
-          what stops the two ever meeting - without it the second button would
-          run under the shoes at around 1100px.
+      {/* From lg this is out of the flow, so the centred headline, lede and
+          buttons keep their exact geometry whether or not the figure is
+          there, and lg:pr-48 above is what stops the two ever meeting.
 
-          Sits at the RIGHT edge because the eye leaves a centred block to the
-          right, so the figure is the last thing seen on the last section of
-          the page rather than something to read past on the way in. */}
+          It sits at the RIGHT at every width, because the eye leaves a
+          centred block to the right - so the figure is the last thing seen on
+          the last section of the page rather than something to read past on
+          the way in. */}
       {mascot ? (
         <Mascot
           crop="standing"
-          /* md (160x330), not lg (256x528). See the height note above - lg
-             does not fit this band and gets its head clipped. */
-          size="md"
-          className="absolute right-4 bottom-0 hidden lg:block xl:right-10"
+          /* md (160x330) from lg, not lg (256x528). See the height note above
+             - the big one does not fit this band and gets its head clipped. */
+          size="sm"
+          sizeLg="md"
+          /* IN THE FLOW ON A PHONE, absolute from lg, and the switch is the
+             point. Absolute positioning is right on a wide band, where there
+             is empty space to the side of centred copy and nothing to push
+             around. On a phone the copy is full width and the buttons are
+             too, so an absolutely positioned figure would sit on top of them.
+             In the flow it simply follows the buttons, right-aligned.
+
+             -mb-14/-mb-16 is the panel's own py at each breakpoint, so the
+             feet land on its bottom edge and overflow-hidden takes the corner
+             off. lg:mb-0 is not decoration: a negative margin on a
+             bottom-0 absolute element would push it that far past the edge. */
+          className="-mb-14 self-end sm:-mb-16 lg:absolute lg:right-4 lg:bottom-0 lg:mb-0 xl:right-10"
         />
       ) : null}
     </Panel>

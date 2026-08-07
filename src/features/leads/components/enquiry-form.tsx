@@ -84,8 +84,11 @@ export function EnquiryForm({
             lets the rounded corner do the clipping. */}
         <Mascot
           crop="bust"
-          size="md"
-          className="-mb-px hidden shrink-0 self-end sm:block"
+          size="sm"
+          sizeLg="md"
+          /* -mb-8 on a phone is the panel's p-8; from sm the parent drops its
+             own bottom padding instead, so a hairline is all that is left. */
+          className="-mb-8 shrink-0 self-end sm:-mb-px"
         />
       </div>
     );
