@@ -72,13 +72,16 @@ export function NotFoundContent() {
         </ul>
       </div>
 
-      {/* Desktop only. On a phone the 404 is already a full screen of text and
-          buttons with nothing spare, and a figure below the fold of an error
-          page is weight nobody asked for. The dead air this fills only exists
-          once there are two columns to have air between. */}
-      <div className="hidden shrink-0 lg:block">
-        <Mascot crop="standing" size="lg" />
-      </div>
+      {/* On a phone it follows the links, right-aligned, standing on the
+          bottom edge of the section - -mb-24 is the Container's own py-24. At
+          lg the row's items-end already aligns it against the text block, so
+          the margin is cleared. */}
+      <Mascot
+        crop="standing"
+        size="sm"
+        sizeLg="lg"
+        className="-mb-24 shrink-0 self-end lg:mb-0"
+      />
     </Container>
   );
 }

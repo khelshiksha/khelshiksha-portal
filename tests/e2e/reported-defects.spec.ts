@@ -339,9 +339,12 @@ test.describe("the mascot", () => {
      first placed for decoration rather than for information, which puts it in
      front of the two failure modes that are invisible in dev on a laptop:
 
-       1. A wrong `sizes` makes a phone fetch a 792px master for a 96px slot.
-          Nothing looks wrong. The page is just quietly heavier, and only on
-          the devices least able to afford it.
+       1. A wrong `sizes` makes a phone fetch a 640px candidate for a 112px
+          slot. Nothing looks wrong. The page is just quietly heavier, and
+          only on the devices least able to afford it. The figure now renders
+          at two widths - `size` below lg, `sizeLg` above - and the hint is
+          derived from the same tokens, so a call site that sets width with a
+          className instead would break exactly this and nothing else.
 
        2. Someone adds `priority` to "make it appear faster". That injects a
           <link rel="preload" as="image"> which competes with the stylesheet
@@ -360,21 +363,16 @@ test.describe("the mascot", () => {
     test(`the ${name} mascot is not served oversized`, async ({
       page,
     }, info) => {
-      /* Counted from the network, not from the DOM. The first version of this
-         test asserted the mascot was ABSENT on mobile and failed: `hidden
-         lg:block` is display:none, so the element is still there. Which is
-         fine - what matters on a phone is bytes, not markup, and an element
-         that is never painted and never fetched costs nothing.
+      /* THE MASCOT IS NOW SHOWN ON PHONES TOO, at a smaller width, and that
+         is what makes this test worth more than it was.
 
-         Verified rather than assumed: display:none plus loading="lazy" means
-         the image never intersects the viewport, so it is never requested -
-         zero requests on Pixel 7 even after scrolling to the bottom of both
-         pages, against exactly one on desktop. */
-      const requests: string[] = [];
-      page.on("request", (r) => {
-        if (r.url().includes("mascot")) requests.push(r.url());
-      });
-
+         It used to be `hidden lg:block`, and this test asserted the phone
+         downloaded nothing - true, because display:none plus loading="lazy"
+         means the image never intersects the viewport. Now it is visible at
+         every width, so the phone DOES pay for it, and the only thing
+         standing between a 112px slot and a 640px download is the `sizes`
+         hint. That is exactly the failure this measures, and it now measures
+         it on the device that cannot afford to get it wrong. */
       await page.goto(route);
       await settlePage(page);
       /* Out of viewport is not the same as never reached. */
@@ -382,16 +380,6 @@ test.describe("the mascot", () => {
       await page.waitForTimeout(1000);
 
       const img = page.locator('img[src*="mascot"]').first();
-
-      if (info.project.name === "mobile") {
-        await expect(img).toBeHidden();
-        expect(
-          requests,
-          "a phone downloaded the mascot for a placement it cannot see",
-        ).toHaveLength(0);
-        return;
-      }
-
       await expect(img).toBeVisible();
 
       /* currentSrc, NOT the src attribute, and the first version of this test

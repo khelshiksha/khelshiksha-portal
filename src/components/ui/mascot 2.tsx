@@ -81,35 +81,19 @@ const CROP = {
    deviceSizes[0] = 640, so `sizes="100vw"` floors every candidate at 640 and
    fetches ~38KB for a 96px slot. */
 const SIZE = {
-  /* 112, not 96. This is the phone size, and at 96 wide the die head is about
-     80px, which is under the width at which the pips stop resolving and the
-     head reads as a plain block. 112 keeps it a die. */
-  sm: { className: "w-28", lg: "lg:w-28", px: 112 },
-  md: { className: "w-40", lg: "lg:w-40", px: 160 },
-  lg: { className: "w-64", lg: "lg:w-64", px: 256 },
+  sm: { className: "w-24", sizes: "96px" },
+  md: { className: "w-40", sizes: "160px" },
+  lg: { className: "w-64", sizes: "256px" },
 } as const;
 
 export function Mascot({
   crop = "standing",
   size = "md",
-  sizeLg,
   alt,
   className,
 }: {
   crop?: keyof typeof CROP;
-  /** Width below the lg breakpoint. */
   size?: keyof typeof SIZE;
-  /**
-   * Width from lg up. Omit for one width at every viewport.
-   *
-   * IT IS A PROP RATHER THAN A CLASS ON PURPOSE. The obvious way to do this
-   * is `className="lg:w-64"` at the call site, and it silently halves the
-   * quality or doubles the bytes: `sizes` would still claim the phone width,
-   * so the browser would pick a candidate for 112px and stretch it across
-   * 256. Width and the size hint have to move together, and the only way to
-   * guarantee that is to derive both from the same token.
-   */
-  sizeLg?: keyof typeof SIZE;
   /**
    * OMIT THIS. Decorative is the default and should stay the answer.
    *
@@ -142,14 +126,7 @@ export function Mascot({
       src={CROP[crop].src}
       alt={alt ?? ""}
       aria-hidden={alt === undefined || undefined}
-      /* Derived from the SAME tokens as the width classes below, which is the
-         whole reason sizeLg exists. 1024px is the lg breakpoint; keep the two
-         in step if Tailwind's breakpoints are ever customised. */
-      sizes={
-        sizeLg
-          ? `(min-width: 1024px) ${SIZE[sizeLg].px}px, ${SIZE[size].px}px`
-          : `${SIZE[size].px}px`
-      }
+      sizes={SIZE[size].sizes}
       /* NO `priority`, and no prop to add one.
 
          The home page LCP element is the headline TEXT, which hero-home.tsx
@@ -169,12 +146,7 @@ export function Mascot({
          for a cut-out on a transparent ground is a grey-pink smear in the
          shape of a rectangle the figure does not have. The intrinsic
          dimensions already reserve the space, so there is nothing to cover. */
-      className={cn(
-        "h-auto",
-        SIZE[size].className,
-        sizeLg && SIZE[sizeLg].lg,
-        className,
-      )}
+      className={cn("h-auto", SIZE[size].className, className)}
     />
   );
 }
