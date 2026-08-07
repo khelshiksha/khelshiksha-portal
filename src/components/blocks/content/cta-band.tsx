@@ -47,20 +47,30 @@ export function CTABand({
            the corner off the feet, which reads as depth rather than as a
            sticker laid on top.
 
-           THE RIGHT PADDING IS THE COLLISION MARGIN, and it is worth the
-           arithmetic because the tightest case is the lg breakpoint itself,
-           where the figure appears and the panel is narrowest.
+           THE HEIGHT IS THE CONSTRAINT, and getting it wrong is visible from
+           across the room: the first version used the `lg` mascot, which is
+           528px tall, in a band whose content makes it about 315px. The same
+           overflow-hidden that crops the feet neatly then cropped the head
+           off at the neck.
 
-           At 1024px: Container is px-12, so the panel is 928 wide; its own
-           px-16 plus pr-72 leaves the centred content 576px, ending at x=640.
-           The figure is 256 wide at right-4, so it starts at x=656 - a 16px
-           gap. At pr-64 that gap is -16px and the second button can touch the
-           shoes. At 1280 the numbers are 832 against 856, so 24px.
+           So the figure is sized to the band rather than the band to the
+           figure. `md` is 160x330. min-h-[22rem] is 352px, which clears 330
+           with 22px to spare, and justify-center puts the copy in the middle
+           of that slightly taller box instead of leaving dead space beneath
+           it. The band grows by about 35px; the alternative was growing it by
+           215px to fit a full-height figure, which would have made the
+           closing band the tallest thing on the page.
 
-           Anything that changes Container's gutters, the panel's px, or the
-           lg size in ui/mascot.tsx changes these, so re-do the sum rather
-           than nudging until it looks right. */
-        mascot && "relative overflow-hidden lg:pr-72 xl:pr-80",
+           THE RIGHT PADDING IS THE COLLISION MARGIN. At 1024px the Container
+           is px-12, so the panel is 928 wide; px-16 plus pr-48 leaves the
+           centred copy ending at x=736, and the 160-wide figure at right-4
+           starts at x=752 - a 16px gap. At 1280 it is 928 against 952, so 24.
+
+           Every number here depends on Container's gutters, the panel's own
+           padding, and the size map in ui/mascot.tsx. Change any of them and
+           redo the sum rather than nudging until it looks right. */
+        mascot &&
+          "relative overflow-hidden lg:min-h-[22rem] lg:justify-center lg:pr-48 xl:pr-56",
       )}
     >
       <h2 className="text-h1 text-on-band-brand max-w-[20ch]">
@@ -112,7 +122,9 @@ export function CTABand({
       {mascot ? (
         <Mascot
           crop="standing"
-          size="lg"
+          /* md (160x330), not lg (256x528). See the height note above - lg
+             does not fit this band and gets its head clipped. */
+          size="md"
           className="absolute right-4 bottom-0 hidden lg:block xl:right-10"
         />
       ) : null}
