@@ -84,20 +84,30 @@ export async function AudiencePage({
 
   return (
     <>
-      {/* PARENTS ONLY. It is the one hub where the buyer and the child are on
-          the same side, and the copy already knows it - the parent enquiry
-          below asks about "your child", and there is a standing rule that NEP
-          and NCF framing never appears on this hub at all. The institutional
-          register is deliberately switched off here, and a friendly face is
-          what belongs in the gap that leaves.
+      {/* EVERY HUB, not just parents.
 
-          On /schools and /government it would work against the page: those
-          readers are evaluating a supplier, and the mascot's job there is to
-          stay out of the way. */}
+          It started on parents alone, on the reasoning that a principal or a
+          district officer is evaluating a supplier and wants the child-facing
+          brand out of the way. Half of that still holds and half of it does
+          not. What the mascot must stay away from is the PROOF - the ministry
+          and UNICEF marks in the logo rail, the audited numbers in the stat
+          band - because a cartoon next to a seal dilutes the seal and next to
+          a figure makes it look illustrative. None of that is here. This is
+          the top of the page, before any claim has been made, and what it
+          says is "this is a company that makes things for children", which is
+          true on all four hubs and is the reason any of these readers came.
+
+          The register still differs below the fold and that is handled where
+          it belongs: /government keeps its tender language, /schools its NEP
+          and NCF framing, and the enquiry forms still scale from three fields
+          for a parent to eight for a government proposal.
+
+          If it ever needs pulling back, this is one expression - the prop is
+          still per-hub, so `audienceKey !== "government"` is the whole edit. */}
       <HeroAudience
         hub={hub}
         trail={[{ name: hub.eyebrow, path: hub.slug }]}
-        mascot={audienceKey === "parents"}
+        mascot
       />
 
       <ComparisonSplit problem={hub.problem} outcome={hub.outcome} />
