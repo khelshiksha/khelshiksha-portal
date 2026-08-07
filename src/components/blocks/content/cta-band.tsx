@@ -45,8 +45,22 @@ export function CTABand({
            the artwork has no contact shadow, so it has to stand ON something.
            Here that is the panel's own bottom edge, and the 2xl radius takes
            the corner off the feet, which reads as depth rather than as a
-           sticker laid on top. */
-        mascot && "relative overflow-hidden lg:pr-64 xl:pr-72",
+           sticker laid on top.
+
+           THE RIGHT PADDING IS THE COLLISION MARGIN, and it is worth the
+           arithmetic because the tightest case is the lg breakpoint itself,
+           where the figure appears and the panel is narrowest.
+
+           At 1024px: Container is px-12, so the panel is 928 wide; its own
+           px-16 plus pr-72 leaves the centred content 576px, ending at x=640.
+           The figure is 256 wide at right-4, so it starts at x=656 - a 16px
+           gap. At pr-64 that gap is -16px and the second button can touch the
+           shoes. At 1280 the numbers are 832 against 856, so 24px.
+
+           Anything that changes Container's gutters, the panel's px, or the
+           lg size in ui/mascot.tsx changes these, so re-do the sum rather
+           than nudging until it looks right. */
+        mascot && "relative overflow-hidden lg:pr-72 xl:pr-80",
       )}
     >
       <h2 className="text-h1 text-on-band-brand max-w-[20ch]">
