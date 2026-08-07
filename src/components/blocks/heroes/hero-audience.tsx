@@ -17,12 +17,16 @@ export function HeroAudience({
   hub: AudienceHub;
   trail: Crumb[];
   /**
-   * OPT-IN, AND IT MUST STAY OPT-IN. This one template renders all four hubs,
-   * including /government, where the reader is a District Education Officer
-   * evaluating a tender - the single page on the site where the child-facing
-   * brand has to be invisible. A default of `true` here would put a cartoon at
-   * the top of it. Only /parents passes this, and the reason is in
+   * All four hubs pass this. It stays a PROP rather than becoming
+   * unconditional because this template is the natural place to decide that a
+   * particular audience should not get it - /government is the likeliest
+   * candidate, since its reader is a District Education Officer evaluating a
+   * tender - and a prop keeps that a one-line change instead of a refactor.
+   * The reasoning for turning it on everywhere is in
    * features/audiences/audience-page.tsx.
+   *
+   * Still defaults to false, so any future caller of this template opts in
+   * deliberately rather than inheriting a decision made for the hubs.
    */
   mascot?: boolean;
 }) {

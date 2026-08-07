@@ -1,5 +1,7 @@
 import { Panel } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
+import { Mascot } from "@/components/ui/mascot";
+import { cn } from "@/lib/utils";
 
 /**
  * The closing band. Every page ends in one - no dead ends, per the IA rules.
@@ -16,17 +18,60 @@ export function CTABand({
   lede,
   primary,
   secondary,
+  mascot = false,
 }: {
   title: string;
   accent?: string;
   lede?: string;
   primary: { label: string; href: string };
   secondary?: { label: string; href: string };
+  /**
+   * OPT-IN, AND IT HAS TO BE. This component closes NINE pages, including
+   * /impact - where the mascot would sit a screen below the audited numbers -
+   * and /government, where the reader is a District Education Officer
+   * evaluating a tender. A default of `true` would put a cartoon on all of
+   * them at once, which is the difference between a mascot and wallpaper.
+   *
+   * Only the home page passes it. The whole argument is in (marketing)/page.
+   */
+  mascot?: boolean;
 }) {
   return (
     <Panel
       tone="brand"
-      innerClassName="flex flex-col items-center gap-7 text-center"
+      innerClassName={cn(
+        "flex flex-col items-center gap-7 text-center",
+        /* Positioning context for the figure, and the clip that grounds it -
+           the artwork has no contact shadow, so it has to stand ON something.
+           Here that is the panel's own bottom edge, and the 2xl radius takes
+           the corner off the feet, which reads as depth rather than as a
+           sticker laid on top.
+
+           THE HEIGHT IS THE CONSTRAINT, and getting it wrong is visible from
+           across the room: the first version used the `lg` mascot, which is
+           528px tall, in a band whose content makes it about 315px. The same
+           overflow-hidden that crops the feet neatly then cropped the head
+           off at the neck.
+
+           So the figure is sized to the band rather than the band to the
+           figure. `md` is 160x330. min-h-[22rem] is 352px, which clears 330
+           with 22px to spare, and justify-center puts the copy in the middle
+           of that slightly taller box instead of leaving dead space beneath
+           it. The band grows by about 35px; the alternative was growing it by
+           215px to fit a full-height figure, which would have made the
+           closing band the tallest thing on the page.
+
+           THE RIGHT PADDING IS THE COLLISION MARGIN. At 1024px the Container
+           is px-12, so the panel is 928 wide; px-16 plus pr-48 leaves the
+           centred copy ending at x=736, and the 160-wide figure at right-4
+           starts at x=752 - a 16px gap. At 1280 it is 928 against 952, so 24.
+
+           Every number here depends on Container's gutters, the panel's own
+           padding, and the size map in ui/mascot.tsx. Change any of them and
+           redo the sum rather than nudging until it looks right. */
+        mascot &&
+          "relative overflow-hidden lg:min-h-[22rem] lg:justify-center lg:pr-48 xl:pr-56",
+      )}
     >
       <h2 className="text-h1 text-on-band-brand max-w-[20ch]">
         {title}
@@ -64,6 +109,25 @@ export function CTABand({
           </ButtonLink>
         ) : null}
       </div>
+
+      {/* Desktop only, and out of the flow on purpose: the centred headline,
+          lede and buttons are the composition, and they keep their exact
+          geometry whether or not the figure is there. The lg:pr-64 above is
+          what stops the two ever meeting - without it the second button would
+          run under the shoes at around 1100px.
+
+          Sits at the RIGHT edge because the eye leaves a centred block to the
+          right, so the figure is the last thing seen on the last section of
+          the page rather than something to read past on the way in. */}
+      {mascot ? (
+        <Mascot
+          crop="standing"
+          /* md (160x330), not lg (256x528). See the height note above - lg
+             does not fit this band and gets its head clipped. */
+          size="md"
+          className="absolute right-4 bottom-0 hidden lg:block xl:right-10"
+        />
+      ) : null}
     </Panel>
   );
 }

@@ -88,12 +88,29 @@ export default async function HomePage() {
         stats={stats}
         cta={{ label: "See our impact in full", href: "/impact" }}
       />
+      {/* THE ONE PAGE THAT GETS THE MASCOT, and the only one that asks for it.
+
+          This band closes nine pages. It carries the figure here because the
+          home page is the only one where the reader has not yet chosen who
+          they are - a principal reading /schools or an officer reading
+          /government has already self-selected into a register the mascot
+          works against, and /impact spends its whole length establishing that
+          the numbers are audited.
+
+          It is also the last thing on the page, which is the point. The hero
+          stays deliberately restrained - its LCP is the headline TEXT, and
+          KhelVerse already has a die character driving the rotating word, so
+          a second, glossier one in that viewport would be two characters
+          competing to be the same idea. Opening quiet and closing warm is the
+          right order for a page whose job is to be believed first and liked
+          second. */}
       <CTABand
         title="Let's transform"
         accent="Vidyalayas"
         lede="A model for future-ready education, starting with one classroom in your school."
         primary={{ label: "Book a Demo", href: "/contact?type=school-demo" }}
         secondary={{ label: "Explore the kits", href: "/products" }}
+        mascot
       />
     </>
   );
