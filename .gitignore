@@ -62,3 +62,23 @@ src/generated/
 # One-off audit harness pointed at the deployed site (screenshots, probes).
 # Kept out of the repo: it targets a specific URL and writes large PNGs.
 .audit/
+
+# Cloud-sync conflict copies. The sync client on this machine writes
+# "name 2.ext" beside a file it thinks diverged, and one of those was
+# committed by a `git add -A` before anyone noticed. They are never real
+# source, and an unreferenced stale copy of a component is worse than
+# useless - it is a second version for the next reader to reconcile.
+#
+# Anchored to the repo root and scoped to source and asset extensions, so a
+# genuine name containing " 2" is untouched: assets/source/logos/NCF 2023.webp
+# is a real file and must keep working.
+* 2.tsx
+* 2.ts
+* 2.mjs
+* 2.js
+* 2.json
+* 2.css
+* 2.png
+* 2.webp
+* 2.jpg
+* 2.svg
