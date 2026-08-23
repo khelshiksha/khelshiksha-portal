@@ -126,7 +126,15 @@ export function SiteHeader() {
               href={href(link.href)}
               aria-current={isActive(link.href) ? "page" : undefined}
               className={cn(
-                "relative rounded-[var(--radius-sm)] px-3 py-2 text-[0.9375rem] font-semibold transition-colors",
+                /* whitespace-nowrap is load bearing. Without it a flex item
+                   that does not fit wraps its own text instead of staying on
+                   one line, and because they all shrink together ONE long
+                   label puts EVERY item onto two lines - "For Parents"
+                   included. Keeping the labels short is the real fix (see
+                   nav.forSchools in i18n/dictionaries/en.ts); this makes the
+                   failure honest if one ever grows again, because the bar
+                   will visibly crowd rather than quietly double in height. */
+                "relative rounded-[var(--radius-sm)] px-3 py-2 text-[0.9375rem] font-semibold whitespace-nowrap transition-colors",
                 "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left",
                 "after:bg-accent after:scale-x-0 after:transition-transform after:duration-200",
                 "hover:after:scale-x-100",
@@ -225,7 +233,11 @@ export function SiteHeader() {
           id="what-we-do-menu"
           className="border-rule bg-surface absolute inset-x-0 top-full hidden border-y shadow-[var(--shadow-lg)] lg:block"
         >
-          <Container className="grid grid-cols-3 gap-10 py-10">
+          {/* Four columns since Company joined The Approach, Five Pillars and
+              Learning Kits. Fixed rather than auto-fit: these are a known,
+              small set, and a column count that changes with content makes
+              the menu's width jump between pages. */}
+          <Container className="grid grid-cols-4 gap-10 py-10">
             {whatWeDoMenu(t).map((group) => (
               <div key={group.heading} className="flex flex-col gap-3">
                 <p className="text-ink-subtle text-[0.6875rem] font-bold tracking-[0.14em] uppercase">

@@ -106,6 +106,31 @@ export function whatWeDoMenu(t: Dictionary): NavGroup[] {
         { label: "Brainy Bee", href: `${ROUTES.products}/brainy-bee` },
       ],
     },
+    /* ABOUT US WAS REACHABLE ONLY FROM THE FOOTER, which is to say only by
+       someone who had already scrolled a full page looking for it. It is one
+       of the sections the company brief leads with, and "who are these
+       people" is a question a principal asks BEFORE reading the programme,
+       not after.
+
+       It goes in this menu rather than the header bar because that bar is
+       already at its width limit - see nav.forSchools in
+       i18n/dictionaries/en.ts. The menu grid widens from three columns to
+       four to take it. */
+    {
+      heading: t.menu.company,
+      links: [
+        {
+          label: t.menu.aboutUs,
+          href: ROUTES.about,
+          description: t.menu.aboutUsDesc,
+        },
+        {
+          label: t.menu.ourImpact,
+          href: ROUTES.impact,
+          description: t.menu.ourImpactDesc,
+        },
+      ],
+    },
   ];
 }
 

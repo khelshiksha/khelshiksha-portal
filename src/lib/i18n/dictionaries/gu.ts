@@ -31,20 +31,19 @@ export const gu: Dictionary = {
     sections: "વિભાગો",
     breadcrumb: "તમે ક્યાં છો",
     home: "મુખ્ય પૃષ્ઠ",
-    /* ENGLISH ON PURPOSE, both of them, and they are the only two nav labels
-       that are.
+    /* forCorporate IS ENGLISH ON PURPOSE, and it is the only nav label that
+       is. "Corporate" has no settled Gujarati rendering in this context - it
+       is the English word everywhere a CSR officer actually meets it - and a
+       transliteration nobody uses would be worse than the term itself.
 
-       "CSR" has no settled Gujarati rendering - it is the English acronym
-       everywhere a CSR officer actually encounters it - and a transliteration
-       nobody uses would be worse than the term itself. The Schools label is
-       English to match: these two sit next to each other in the same menu,
-       and one translated label beside one untranslated one reads as an
-       oversight rather than a decision.
+       forSchools went back to Gujarati once the header bar forced the short
+       form: "શાળાઓ માટે" is the original attested string, not something
+       invented to pair with the label beside it.
 
-       Everything else in this file stays Gujarati. If a native speaker
-       settles on wording for these, they belong back in the language. */
-    forSchools: "For Schools & Teachers",
-    forCorporate: "For Corporate & CSR",
+       If a native speaker settles on wording for Corporate, it belongs back
+       in the language. */
+    forSchools: "શાળાઓ માટે",
+    forCorporate: "For Corporate",
     forParents: "વાલીઓ માટે",
     government: "સરકાર અને સંસ્થાઓ",
     whatWeDo: "અમે શું કરીએ છીએ",
@@ -144,6 +143,11 @@ export const gu: Dictionary = {
     company: "કંપની",
     ourImpact: "અમારો પ્રભાવ",
     aboutUs: "અમારા વિશે",
+    /* NEEDS A NATIVE SPEAKER. Written to match the register of the
+       neighbouring *Desc strings in this file, but unattested - unlike the
+       labels above, which were already here. */
+    aboutUsDesc: "અમે કોણ છીએ અને શા માટે આ બનાવીએ છીએ",
+    ourImpactDesc: "કેટલી કિટ પહોંચી, અને તેનું શું પરિણામ આવ્યું",
     privacy: "ગોપનીયતા",
     terms: "શરતો",
     /* English, for the reason on nav.forSchools above. */
