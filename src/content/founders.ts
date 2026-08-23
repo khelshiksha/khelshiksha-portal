@@ -61,12 +61,12 @@ export const founders: Founder[] = [
     },
   },
   {
-    /* NO PHOTOGRAPH SUPPLIED. The card falls back to initials rather than a
-       silhouette - see the note in blocks/content/founder-grid.tsx on why a
-       stock face is the wrong stand-in for a real person. Adding one here is
-       two lines and a run of scripts/build-section-images.mjs. */
     _id: "team-ankit",
     name: "Ankit Padshala",
     role: "Marketing Head",
+    image: {
+      src: "/images/founders/ankit-padshala.webp",
+      alt: "Headshot of Ankit Padshala",
+    },
   },
 ];

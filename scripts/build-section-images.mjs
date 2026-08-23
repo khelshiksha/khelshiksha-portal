@@ -110,6 +110,16 @@ const GROUPS = [
     sources: {
       "milan-sarvaiya": "assets/source/founders/milan-sarvaiya.jpeg",
       "kishan-hasani": "assets/source/founders/kishan-hasani.jpeg",
+      /* CROPPED HERE RATHER THAN BEFORE COMMITTING, so the decision is
+         reproducible and arguable instead of baked into a file nobody can
+         regenerate. The supplied photograph is a full-length shot of him
+         sitting in a chair: square, so it passes the ratio assertion, but
+         set in a 112px card it would be a small figure in a room beside two
+         face-filling headshots. These numbers frame head and shoulders. */
+      "ankit-padshala": {
+        src: "assets/source/founders/ankit-padshala.jpeg",
+        crop: { left: 614, top: 130, width: 880, height: 880 },
+      },
     },
   },
 ];
@@ -117,8 +127,15 @@ const GROUPS = [
 for (const { dest, ratio: expected, width: outWidth, sources } of GROUPS) {
   await mkdir(dest, { recursive: true });
 
-  for (const [name, src] of Object.entries(sources)) {
-    const { width, height } = await sharp(src).metadata();
+  for (const [name, entry] of Object.entries(sources)) {
+    /* A source is either a path, or a path plus a crop. See ankit-padshala
+       above for why the second form exists. */
+    const { src, crop } = typeof entry === "string" ? { src: entry } : entry;
+
+    /* Measured on the CROP where there is one, because the crop is what gets
+       served - a square source cropped to a rectangle would sail past an
+       assertion that only looked at the original. */
+    const { width, height } = crop ?? (await sharp(src).metadata());
     const ratio = width / height;
 
     if (Math.abs(ratio - expected) > TOLERANCE) {
@@ -134,7 +151,9 @@ for (const { dest, ratio: expected, width: outWidth, sources } of GROUPS) {
     }
 
     const out = `${dest}/${name}.webp`;
-    await sharp(src)
+    const pipeline = sharp(src);
+    if (crop) pipeline.extract(crop);
+    await pipeline
       .resize({ width: outWidth, withoutEnlargement: true })
       .webp({ quality: 82, effort: 6 })
       .toFile(out);
