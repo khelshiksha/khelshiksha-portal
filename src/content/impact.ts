@@ -17,25 +17,40 @@ export const impactStats: ImpactStat[] = [
     label: "Educational kits delivered",
     detail: "To PM SHRI schools across Gujarat",
   },
+  /* SUPPLIED BY THE CLIENT, 2026-08-23, and recorded here as the source in
+     the same way the 12,000 above is sourced to the company profile. The rule
+     on this file is that a number has a provenance, not that it came from any
+     particular document. */
   {
-    _id: "stat-unicef",
-    value: 1,
-    label: "UNICEF partnership",
-    detail: "Specialised learning modules developed",
+    _id: "stat-teachers",
+    value: 1000,
+    suffix: "+",
+    label: "Teachers trained",
+    detail: "Through orientation programmes run at their own schools",
   },
   {
-    _id: "stat-pillars",
-    value: 5,
-    label: "Learning pillars",
-    detail: "A complete ecosystem, not a product line",
-  },
-  {
-    _id: "stat-championship",
-    value: 1,
-    label: "World championship kit",
-    detail: "Veer's Yogasana Game Kit, built concept to product",
+    _id: "stat-students",
+    value: 40000,
+    suffix: "+",
+    label: "Students reached",
+    detail: "Playing the kits in classrooms across Gujarat",
   },
 ];
+
+/* WHAT LEFT THIS LIST, AND WHERE IT WENT.
+
+   "1 UNICEF partnership", "5 Learning pillars" and "1 World championship kit"
+   were here and are not any more. A stat band's whole job is scale, and a
+   band whose middle three figures are 1, 5 and 1 spends its largest type
+   making the smallest claims - the 12,000 next to them read as the exception
+   rather than the pattern.
+
+   None of the three facts is lost. UNICEF and the Veer's Yogasana kit are
+   both stated on /government under "Proven impact & credibility", where they
+   are claims in a sentence rather than a numeral, and UNICEF is in the
+   credential rail on the home page. The five pillars have an entire section
+   of their own on every page that matters. They were never carrying their
+   weight AS NUMBERS; they carry it as prose. */
 
 /**
  * Named credibility markers, sourced from the company profile brochure.

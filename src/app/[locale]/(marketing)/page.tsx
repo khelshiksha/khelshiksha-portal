@@ -7,6 +7,7 @@ import { PillarGrid } from "@/components/blocks/content/pillar-grid";
 import { FeaturedKits } from "@/components/blocks/product/featured-kits";
 import { GameCornerBand } from "@/components/blocks/content/game-corner-band";
 import { StatBand } from "@/components/blocks/proof/stat-band";
+import { PressRail } from "@/components/blocks/proof/press-rail";
 import { CTABand } from "@/components/blocks/content/cta-band";
 import { AssistantSection } from "@/features/assistant/components/assistant-section";
 import type { Metadata } from "next";
@@ -20,6 +21,7 @@ import {
   getCredentialGroups,
   getPillars,
   getAlignments,
+  getPressCuttings,
 } from "@/services/cms";
 
 /* CMS-driven, changes rarely, must be instant. Webhook revalidation will make
@@ -55,6 +57,7 @@ export default async function HomePage() {
     stats,
     alignments,
     credentials,
+    press,
   ] = await Promise.all([
     getAudienceHubs(),
     getBenefits(),
@@ -63,6 +66,7 @@ export default async function HomePage() {
     getImpactStats(),
     getAlignments(),
     getCredentialGroups(),
+    getPressCuttings(),
   ]);
 
   return (
@@ -87,6 +91,24 @@ export default async function HomePage() {
       <StatBand
         stats={stats}
         cta={{ label: "See our impact in full", href: "/impact" }}
+      />
+
+      {/* AFTER THE NUMBERS, BEFORE THE ASK, and that order is the argument.
+
+          The stat band is us saying what we delivered. This is other people
+          having looked at it and written about it, which is the only kind of
+          proof a reader cannot suspect us of having authored. Putting it
+          between the claim and the "Book a Demo" band means the last thing
+          before the ask is somebody else's word rather than ours.
+
+          The brief here was a scrolling band of customer feedback. There are
+          no testimonials to show - see the note in press-rail.tsx and the
+          empty array in content/impact.ts - so this shows the coverage that
+          genuinely exists instead of quotes that do not. */}
+      <PressRail
+        cuttings={press}
+        eyebrow="In the press"
+        title="What the papers have written about the work."
       />
       {/* THE ONE PAGE THAT GETS THE MASCOT, and the only one that asks for it.
 
