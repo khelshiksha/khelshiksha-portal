@@ -109,24 +109,21 @@ export function whatWeDoMenu(t: Dictionary): NavGroup[] {
         { label: "Brainy Bee", href: `${ROUTES.products}/brainy-bee` },
       ],
     },
-    /* ABOUT US WAS REACHABLE ONLY FROM THE FOOTER, which is to say only by
-       someone who had already scrolled a full page looking for it. It is one
-       of the sections the company brief leads with, and "who are these
-       people" is a question a principal asks BEFORE reading the programme,
-       not after.
+    /* ABOUT US IS NOT IN THIS MENU, deliberately, and this column is what is
+       left after it moved out.
 
-       It goes in this menu rather than the header bar because that bar is
-       already at its width limit - see nav.forSchools in
-       i18n/dictionaries/en.ts. The menu grid widens from three columns to
-       four to take it. */
+       It was here for one release, as a way to surface a page that had been
+       footer-only. It is now a top-level item in the bar instead, and listing
+       it in both places would mean the same link twice on one screen - the
+       thing that made the old hero's buttons redundant with the header.
+
+       Impact stays because the bar has no room for it, so this column is the
+       only place in the header it appears. One link is a thin column, and it
+       is still the right column: it is the only Company-register page in a
+       menu otherwise made of programme and product. */
     {
       heading: t.menu.company,
       links: [
-        {
-          label: t.menu.aboutUs,
-          href: ROUTES.about,
-          description: t.menu.aboutUsDesc,
-        },
         {
           label: t.menu.ourImpact,
           href: ROUTES.impact,

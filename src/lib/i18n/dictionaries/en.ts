@@ -43,10 +43,20 @@ export const en = {
        Gujarati site. See AUDIENCE_KEYS in lib/constants.ts. */
     forCorporate: "For Corporate",
     forParents: "For Parents",
-    /* The BAR's label. menu.governmentNgos keeps "Government & NGOs" for the
-       mega-menu and the footer, which have room for it. See the budget note
-       on forSchools above. */
-    government: "Government",
+    /* "& CSR", not "& NGOs" and not bare "Government". CSR is the word the
+       people this hub is for use about their own budgets, and dropping it
+       lost the half of the audience that arrives with money to place rather
+       than a department to run.
+
+       It does mean CSR appears twice in the bar, here and in For Corporate.
+       That is not a duplication to tidy away: a district officer and a
+       company's CSR lead are different readers arriving at different pages,
+       and the shared word is the one they each recognise themselves by.
+
+       menu.governmentNgos still says "Government & NGOs" in the mega-menu
+       and the footer, where NGOs are genuinely part of the audience and
+       there is room to name all three. */
+    government: "Government & CSR",
     whatWeDo: "What We Do",
     impact: "Impact",
     resources: "Resources",

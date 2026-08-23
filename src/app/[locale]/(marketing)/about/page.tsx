@@ -2,12 +2,17 @@ import type { Metadata } from "next";
 import { Container, Section } from "@/components/ui/container";
 import { SectionTitle } from "@/components/ui/section-title";
 import { SectionFigure } from "@/components/ui/section-figure";
+import { FounderGrid } from "@/components/blocks/content/founder-grid";
 import { Breadcrumbs } from "@/components/blocks/navigation/breadcrumbs";
 import { StatBand } from "@/components/blocks/proof/stat-band";
 import { CTABand } from "@/components/blocks/content/cta-band";
 import { Reveal } from "@/components/ui/reveal";
 import { staggerDelay } from "@/lib/motion";
-import { getImpactStats, getVisionAndMission } from "@/services/cms";
+import {
+  getFounders,
+  getImpactStats,
+  getVisionAndMission,
+} from "@/services/cms";
 import { buildMetadata } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -20,9 +25,10 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function AboutPage() {
-  const [{ vision, mission }, stats] = await Promise.all([
+  const [{ vision, mission }, stats, founders] = await Promise.all([
     getVisionAndMission(),
     getImpactStats(),
+    getFounders(),
   ]);
 
   return (
@@ -78,6 +84,14 @@ export default async function AboutPage() {
           </div>
         </Container>
       </Section>
+
+      {/* AFTER THE MISSION, BEFORE THE NUMBERS. The page argues what we are
+          for, then who is behind it, then what that has produced - which is
+          the order a reader asks those things in.
+
+          Renders nothing while content/founders.ts is empty, which it is
+          until real names and bios exist. See the note in that file. */}
+      <FounderGrid founders={founders} />
 
       <StatBand
         stats={stats}

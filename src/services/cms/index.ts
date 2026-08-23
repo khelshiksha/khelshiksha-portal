@@ -4,6 +4,7 @@ import { pillars } from "@/content/pillars";
 import { products } from "@/content/products";
 import { alignments, benefits, faqs, mission, vision } from "@/content/site";
 import { credentialGroups } from "@/content/credentials";
+import { founders } from "@/content/founders";
 import { pressCuttings } from "@/content/press";
 import type { AudienceKey, PillarKey } from "@/lib/constants";
 import type {
@@ -12,6 +13,7 @@ import type {
   PressCutting,
   Benefit,
   FaqItem,
+  Founder,
   ImpactStat,
   Partner,
   Pillar,
@@ -145,4 +147,15 @@ export async function getCredentialGroups(): Promise<CredentialGroup[]> {
 
 export async function getPressCuttings(): Promise<PressCutting[]> {
   return pressCuttings;
+}
+
+/* --- Founders ----------------------------------------------------------- */
+
+/**
+ * Empty until real names and bios exist - see content/founders.ts. Callers
+ * must handle the empty array by rendering nothing, the same contract
+ * getTestimonials has.
+ */
+export async function getFounders(): Promise<Founder[]> {
+  return founders;
 }

@@ -45,9 +45,10 @@ export const gu: Dictionary = {
     forSchools: "શાળાઓ અને શિક્ષકો માટે",
     forCorporate: "For Corporate",
     forParents: "વાલીઓ માટે",
-    /* Bar label, shortened like its English twin. menu.governmentNgos keeps
-       the full "સરકાર અને સંસ્થાઓ" for the mega-menu and footer. */
-    government: "સરકાર",
+    /* Bar label. "CSR" stays English for the reason forCorporate does - it
+       is the acronym the reader uses about their own budget. menu.governmentNgos
+       keeps the full "સરકાર અને સંસ્થાઓ" for the mega-menu and footer. */
+    government: "સરકાર અને CSR",
     whatWeDo: "અમે શું કરીએ છીએ",
     impact: "પ્રભાવ",
     resources: "સંસાધનો",

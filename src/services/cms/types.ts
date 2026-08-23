@@ -251,3 +251,22 @@ export interface PressCutting {
   publication: string | null;
   date: string | null;
 }
+
+/**
+ * A founder, for the About page.
+ *
+ * `image` is OPTIONAL, unlike the ImageRef on an audience hub. Photographs of
+ * real people arrive later than their names do, and a founders section that
+ * cannot render until everyone has been photographed is a section that does
+ * not ship. The card lays out with initials in place of a portrait.
+ *
+ * The array backing this is empty by default - see the note in
+ * content/founders.ts on why that is deliberate rather than unfinished.
+ */
+export interface Founder {
+  _id: string;
+  name: string;
+  role: string;
+  bio: string;
+  image?: ImageRef;
+}
