@@ -14,9 +14,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: url(ROUTES.home), changeFrequency: "weekly", priority: 1 },
     { url: url(ROUTES.schools), changeFrequency: "weekly", priority: 0.9 },
-    { url: url(ROUTES.teachers), changeFrequency: "weekly", priority: 0.9 },
     { url: url(ROUTES.parents), changeFrequency: "weekly", priority: 0.9 },
     { url: url(ROUTES.government), changeFrequency: "weekly", priority: 0.9 },
+    /* ROUTES.teachers is deliberately ABSENT: it is a 301 to /schools now,
+       and a sitemap that advertises a redirect asks a crawler to spend
+       budget discovering that. The redirect exists for inbound links, not
+       to be published. */
+    { url: url(ROUTES.corporate), changeFrequency: "weekly", priority: 0.9 },
     { url: url(ROUTES.products), changeFrequency: "monthly", priority: 0.8 },
     { url: url(ROUTES.approach), changeFrequency: "monthly", priority: 0.8 },
     {

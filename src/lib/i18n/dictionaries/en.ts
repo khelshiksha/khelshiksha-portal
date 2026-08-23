@@ -13,8 +13,12 @@ export const en = {
     sections: "Sections",
     breadcrumb: "Breadcrumb",
     home: "Home",
-    forSchools: "For Schools",
-    forTeachers: "For Teachers",
+    forSchools: "For Schools & Teachers",
+    /* Was `forTeachers`, pointing at a hub that no longer exists. Renamed
+       rather than deleted-and-added so that any dictionary key missing from
+       gu.ts is a type error rather than an English string leaking onto the
+       Gujarati site. See AUDIENCE_KEYS in lib/constants.ts. */
+    forCorporate: "For Corporate & CSR",
     forParents: "For Parents",
     government: "Government & NGOs",
     whatWeDo: "What We Do",
@@ -121,8 +125,8 @@ export const en = {
     aboutUs: "About us",
     privacy: "Privacy",
     terms: "Terms",
-    schools: "Schools",
-    teachers: "Teachers",
+    schools: "Schools & Teachers",
+    corporate: "Corporate & CSR",
     parents: "Parents",
     governmentNgos: "Government & NGOs",
   },

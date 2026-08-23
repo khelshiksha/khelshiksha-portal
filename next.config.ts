@@ -78,7 +78,17 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/for-schools", destination: "/schools", permanent: true },
-      { source: "/for-teachers", destination: "/teachers", permanent: true },
+      /* THE TEACHERS HUB IS GONE - see AUDIENCE_KEYS in lib/constants.ts.
+         Its material is the "Teacher Capacity Building" section of /schools.
+
+         Both of these point at /schools, and the second one is the reason
+         this comment exists: /for-teachers used to redirect to /teachers,
+         which was fine while that page existed and became a permanent
+         redirect INTO A 404 the moment it was deleted. A redirect chain is
+         only as live as its destination, so when a target page goes, grep
+         the redirect table for it before anything else. */
+      { source: "/teachers", destination: "/schools", permanent: true },
+      { source: "/for-teachers", destination: "/schools", permanent: true },
       { source: "/for-parents", destination: "/parents", permanent: true },
       { source: "/pillars", destination: "/approach/pillars", permanent: true },
       { source: "/kits", destination: "/products", permanent: true },
