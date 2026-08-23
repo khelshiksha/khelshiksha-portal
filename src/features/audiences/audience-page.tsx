@@ -8,6 +8,7 @@ import { FeaturedKits } from "@/components/blocks/product/featured-kits";
 import { FaqAccordion } from "@/components/blocks/utility/faq-accordion";
 import { InlineEnquiry } from "@/components/blocks/conversion/inline-enquiry";
 import { StatBand } from "@/components/blocks/proof/stat-band";
+import { FeatureBlock } from "@/components/blocks/content/feature-block";
 import { Container, Section } from "@/components/ui/container";
 import { SectionTitle } from "@/components/ui/section-title";
 import { Card } from "@/components/ui/card";
@@ -27,9 +28,9 @@ import type { LeadType } from "@/features/leads/schema";
 /** Each hub drives exactly ONE primary action - see the conversion table in the IA. */
 const LEAD_TYPE: Record<AudienceKey, LeadType> = {
   schools: "school-demo",
-  teachers: "teacher",
   parents: "parent",
   government: "government",
+  corporate: "corporate",
 };
 
 const ENQUIRY_COPY: Record<
@@ -42,12 +43,6 @@ const ENQUIRY_COPY: Record<
     lede: "Five fields. We'll call you within two working days to arrange a visit.",
     submitLabel: "Book a demo",
   },
-  teachers: {
-    title: "Questions about running these in",
-    accent: "your classroom?",
-    lede: "Tell us what you teach and we'll point you at the right kits and guides.",
-    submitLabel: "Send question",
-  },
   parents: {
     title: "Not sure which kit suits",
     accent: "your child?",
@@ -59,6 +54,12 @@ const ENQUIRY_COPY: Record<
     accent: "district scale.",
     lede: "Tell us the scope you're considering and we'll prepare a proposal.",
     submitLabel: "Request a proposal",
+  },
+  corporate: {
+    title: "Let's build something your board can",
+    accent: "actually read about.",
+    lede: "Tell us the scale you're considering and we'll come back with a programme and a reporting plan.",
+    submitLabel: "Partner with us",
   },
 };
 
@@ -79,35 +80,41 @@ export async function AudiencePage({
   ]);
 
   const copy = ENQUIRY_COPY[audienceKey];
-  const isInstitutional =
-    audienceKey === "schools" || audienceKey === "government";
+  /* Parents is the ONLY hub this is false for. NEP/NCF framing and the
+     audited stat band belong to a reader evaluating a supplier - a principal,
+     a district officer, a CSR lead - and land on a parent as a wall of
+     acronyms between them and a game for their eight-year-old. Corporate
+     joins the institutional side for the same reason government is on it. */
+  const isInstitutional = audienceKey !== "parents";
 
   return (
     <>
-      {/* EVERY HUB, not just parents.
+      {/* A FIGURE ON EVERY HUB, but not the same figure.
 
-          It started on parents alone, on the reasoning that a principal or a
-          district officer is evaluating a supplier and wants the child-facing
-          brand out of the way. Half of that still holds and half of it does
-          not. What the mascot must stay away from is the PROOF - the ministry
-          and UNICEF marks in the logo rail, the audited numbers in the stat
-          band - because a cartoon next to a seal dilutes the seal and next to
-          a figure makes it look illustrative. None of that is here. This is
-          the top of the page, before any claim has been made, and what it
-          says is "this is a company that makes things for children", which is
-          true on all four hubs and is the reason any of these readers came.
+          It started as the mascot on parents alone, on the reasoning that a
+          principal or a district officer is evaluating a supplier and wants
+          the child-facing brand out of the way. Half of that still holds.
+          What a cartoon must stay away from is the PROOF - the ministry and
+          UNICEF marks in the logo rail, the audited numbers in the stat band
+          - because a cartoon next to a seal dilutes the seal, and next to a
+          figure makes it look illustrative. None of that is here: this is the
+          top of the page, before any claim has been made.
 
-          The register still differs below the fold and that is handled where
-          it belongs: /government keeps its tender language, /schools its NEP
-          and NCF framing, and the enquiry forms still scale from three fields
-          for a parent to eight for a government proposal.
+          Schools now carries a PHOTOGRAPH instead, which does the same job
+          better for that reader - it shows the cart, the shelf of kits, the
+          uniforms and the courtyard, none of which the headline says. The
+          remaining hubs keep the mascot until their own photography exists;
+          the swap is one `image` field in content/audiences.ts, and
+          ui/section-figure.tsx explains why the two cases need two layouts.
 
-          If it ever needs pulling back, this is one expression - the prop is
-          still per-hub, so `audienceKey !== "government"` is the whole edit. */}
+          The register still differs below the fold, where it belongs:
+          /government keeps its tender language, /schools its NEP and NCF
+          framing, and the enquiry forms still scale from three fields for a
+          parent to eight for a government proposal. */}
       <HeroAudience
         hub={hub}
         trail={[{ name: hub.eyebrow, path: hub.slug }]}
-        mascot
+        figure
       />
 
       <ComparisonSplit problem={hub.problem} outcome={hub.outcome} />
@@ -138,6 +145,14 @@ export async function AudiencePage({
           </Container>
         </Section>
       ) : null}
+
+      {/* Between the programme contents and the framework alignment: the
+          reader has just seen what arrives, and these say what it does with
+          the campus, the staff and the funder's money. Index drives the
+          alternating ground - see content/feature-block.tsx. */}
+      {hub.features?.map((feature, i) => (
+        <FeatureBlock key={feature.eyebrow} feature={feature} index={i} />
+      ))}
 
       {/* NEP/NCF framing belongs to institutional audiences. It never appears
           on the parent hub - that is a UX, accessibility and conversion rule

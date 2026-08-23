@@ -29,9 +29,19 @@ export const SITE = {
 export const ROUTES = {
   home: "/",
   schools: "/schools",
+  /* Retired as a hub, kept as a constant: it is the SOURCE of the permanent
+     redirect in next.config.ts, and the assistant still recognises the path
+     in older conversation links.
+
+     NOTHING ELSE MAY REFERENCE THIS. It is not in the navigation, not in the
+     sitemap and not on the 404 page - all three pointed here for a while
+     after the hub was deleted, which made the nav advertise a 301 and the
+     sitemap publish one. If you are adding a use of ROUTES.teachers, you
+     almost certainly want ROUTES.schools. */
   teachers: "/teachers",
   parents: "/parents",
   government: "/government",
+  corporate: "/corporate",
   approach: "/approach",
   whyExperiential: "/approach/why-experiential",
   pillars: "/approach/pillars",
@@ -85,11 +95,30 @@ export const PILLAR_BORDER_CLASS: Record<PillarTint, string> = {
 
 /* --- Audiences ---------------------------------------------------------- */
 
+/**
+ * FOUR HUBS, AND "teachers" IS NO LONGER ONE OF THEM.
+ *
+ * Schools and Teachers were separate hubs reading the same programme from two
+ * sides - the principal's and the classroom's - and the split cost more than
+ * it bought. A principal evaluating the kits still wanted to know what lands
+ * on their staff's desks, and a head of department arriving on /teachers had
+ * to cross to /schools to find out what a rollout involves. The teacher
+ * material is now the "Teacher Capacity Building" section of /schools, which
+ * is where both readers were already ending up.
+ *
+ * /teachers still resolves - it is a permanent redirect to /schools, wired in
+ * next.config.ts, because the URL has been live and indexed.
+ *
+ * "corporate" replaces it. CSR is a different reader with a different
+ * decision (a grant, not a purchase) and different proof (alignment with
+ * national missions, inclusive design, reporting), which is exactly the test
+ * for whether something deserves its own hub.
+ */
 export const AUDIENCE_KEYS = [
   "schools",
-  "teachers",
   "parents",
   "government",
+  "corporate",
 ] as const;
 export type AudienceKey = (typeof AUDIENCE_KEYS)[number];
 

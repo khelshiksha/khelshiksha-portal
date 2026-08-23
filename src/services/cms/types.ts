@@ -152,6 +152,30 @@ export interface TimelineStep {
   order: number;
 }
 
+/**
+ * A titled block of prose plus a short list, rendered between the rollout
+ * timeline and the alignment strip on an audience hub.
+ *
+ * ONE SHAPE, FOUR USES, and that is the reason it exists rather than four
+ * bespoke sections: "Transform Your Campus" and "Teacher Capacity Building"
+ * on Schools, "Why Partner With Us" on Corporate, and "Our Proven Impact &
+ * Credibility" on Government are the same thing - a claim, a paragraph
+ * supporting it, and three to five specifics. Four components would have
+ * drifted apart within a term.
+ *
+ * `points` carries a title AND a description because a bare list of phrases
+ * reads as a brochure bullet. The title is the claim; the description is what
+ * makes it checkable.
+ */
+export interface HubFeature {
+  eyebrow: string;
+  title: string;
+  /** The italic Fraunces phrase inside the title. Exactly one per section. */
+  titleAccent?: string;
+  body?: string;
+  points: { title: string; description: string }[];
+}
+
 export interface AudienceHub {
   key: AudienceKey;
   slug: string;
@@ -160,6 +184,19 @@ export interface AudienceHub {
   /** The italic Fraunces phrase inside the title. Exactly one per section. */
   titleAccent?: string;
   lede: string;
+  /**
+   * The photograph beside the hub's headline.
+   *
+   * OPTIONAL, AND USUALLY ABSENT SO FAR. A hub without one falls back to the
+   * standing mascot, which is what all four hubs showed before section
+   * photography existed. Supplying one is the whole change - see
+   * ui/section-figure.tsx for why a cut-out and a photograph cannot share a
+   * layout, and scripts/build-section-images.mjs for how the file is built.
+   *
+   * `src` is a path under public/images/sections. The 4:5 ratio is asserted
+   * by that build script, because the layout crops rather than letterboxes.
+   */
+  image?: ImageRef;
   tint: PillarTint;
   primaryCta: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
@@ -167,6 +204,8 @@ export interface AudienceHub {
   outcome: { heading: string; items: string[] };
   timeline?: TimelineStep[];
   included?: { title: string; description: string }[];
+  /** Rendered in order, after `included`. See HubFeature. */
+  features?: HubFeature[];
 }
 
 /* --- Credibility -------------------------------------------------------- */

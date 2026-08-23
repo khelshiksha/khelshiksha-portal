@@ -59,6 +59,13 @@ const COPY: Record<
     lede: "Tell us the scope you're considering and we'll prepare a proposal.",
     submit: "Request a proposal",
   },
+  corporate: {
+    eyebrow: "Corporate & CSR",
+    title: "Partner for grassroots",
+    accent: "educational impact.",
+    lede: "Tell us the scale you're considering and we'll come back with a programme and a reporting plan.",
+    submit: "Partner with us",
+  },
   ngo: {
     eyebrow: "Partnerships",
     title: "Let's work",
