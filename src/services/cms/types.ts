@@ -267,6 +267,17 @@ export interface Founder {
   _id: string;
   name: string;
   role: string;
-  bio: string;
+  /**
+   * OPTIONAL, like `image` and for the same reason: a name and a role are
+   * facts the company can state immediately, and a bio is two or three
+   * sentences someone has to sit down and write. Requiring it would mean
+   * either holding the section back until all of them exist, or filling the
+   * gap with a sentence nobody approved - and a bio is a claim about a real
+   * person, so the second is not available.
+   *
+   * The card omits the paragraph entirely when this is absent rather than
+   * rendering an empty one.
+   */
+  bio?: string;
   image?: ImageRef;
 }

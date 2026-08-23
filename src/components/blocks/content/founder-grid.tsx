@@ -49,20 +49,32 @@ export function FounderGrid({ founders }: { founders: Founder[] }) {
   return (
     <Section className="pt-4">
       <Container className="flex flex-col gap-10">
+        {/* "THE PEOPLE BEHIND", NOT "WHO STARTED", because the list is not
+            only founders - the marketing lead is on it. A heading that said
+            "who started" over a name that did not start it would be a small
+            false claim about a real person, which is the same class of
+            problem as an invented bio, just quieter. */}
         <SectionTitle
-          eyebrow="The people behind it"
-          title="Who started"
+          eyebrow="Our team"
+          title="The people behind"
           accent="Khel Shiksha."
         />
 
-        {/* Two columns rather than three: a founder card carries a paragraph
-            of prose, and at a third of the width that sets to a column too
-            narrow to read comfortably. Three-up is right for the mission
-            cards above, which are one sentence each. */}
-        <div className="grid gap-6 sm:grid-cols-2">
+        {/* Three-up from lg, two from sm. With no bios yet the cards are a
+            name and a role, and two-up would set three short cards as a row
+            of two and an orphan. Three columns at 62rem is still about 20rem
+            each, which holds a two-or-three sentence bio comfortably when
+            they arrive - so this does not have to be revisited then. */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {founders.map((founder, i) => (
             <Reveal key={founder._id} delay={staggerDelay(i)}>
-              <div className="border-rule bg-surface flex h-full flex-col gap-5 rounded-[var(--radius-lg)] border p-6 sm:flex-row sm:gap-6">
+              {/* Stacked at every width, not a row that unstacks. At three
+                  columns the card is about 20rem, and an avatar beside the
+                  text leaves roughly 13rem for a name and a role - enough to
+                  fit, narrow enough that "Ankit Padshala" and "Marketing
+                  Head" each wrap. Portrait above name is also the
+                  conventional reading order for a team card. */}
+              <div className="border-rule bg-surface flex h-full flex-col gap-4 rounded-[var(--radius-lg)] border p-6">
                 {founder.image ? (
                   <Image
                     src={founder.image.src}
@@ -93,7 +105,13 @@ export function FounderGrid({ founders }: { founders: Founder[] }) {
                       {founder.role}
                     </p>
                   </div>
-                  <p className="text-body text-ink-muted">{founder.bio}</p>
+                  {/* Omitted, not rendered empty. An empty <p> still takes
+                      its line-height, so a card without a bio would carry a
+                      blank band where the prose goes and read as content
+                      that failed to load. */}
+                  {founder.bio ? (
+                    <p className="text-body text-ink-muted">{founder.bio}</p>
+                  ) : null}
                 </div>
               </div>
             </Reveal>
