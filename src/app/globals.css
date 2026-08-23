@@ -737,14 +737,20 @@
       /* THE PIXEL CAP RISES, THE vh BARELY DOES, and the split is the point.
 
          36vh/400px was set so a 1366x768 laptop kept the whole hero on one
-         screen. That constraint still holds and is why the vh only moves to
-         40 - at 768px tall that is 307px against 276px, a nudge.
+         screen. That constraint still holds and is why the vh moves only to
+         44 - at 768px tall that is 338px against an original 276px.
 
-         The 400px cap was the part doing harm. It binds only above ~1100px
-         of viewport height, i.e. on the large monitors where the campus was
-         a small island in a wide empty band, which is exactly the "make it
-         larger" complaint. 560px fills that band without touching laptops. */
-      height: min(40vh, 560px);
+         The pixel cap was the part doing harm. It binds only above ~1100px
+         of viewport height, i.e. on the large monitors where the campus sat
+         as a small island in a wide empty band. 760px fills that band.
+
+         THIS DOES NOT ENLARGE THE ZONE CARDS, which is the point. The
+         campus is an SVG scaled by this box, so it grows with it; the cards
+         are HTML positioned at percentages with their own fixed font sizes,
+         so they stay exactly the size they are. Bigger island, same labels -
+         which is also why they crowd it less at this size than they did at
+         400px. */
+      height: min(44vh, 760px);
       width: auto;
       max-width: 100%;
       margin-inline: auto;

@@ -170,17 +170,27 @@ export function SiteHeader() {
             />
           </button>
 
+          {/* ABOUT US SITS HERE, WHERE IMPACT USED TO.
+
+              The two swapped rather than one being added, because the bar
+              has no spare slot - see the width budget on nav.forSchools in
+              i18n/dictionaries/en.ts. Impact keeps its place in the What We
+              Do menu under Company, one click away.
+
+              The swap is also the right way round on merit: "who are these
+              people" is asked before "what have they delivered", and About
+              Us is the section the company brief leads with. */}
           <Link
-            href={href(ROUTES.impact)}
-            aria-current={isActive(ROUTES.impact) ? "page" : undefined}
+            href={href(ROUTES.about)}
+            aria-current={isActive(ROUTES.about) ? "page" : undefined}
             className={cn(
-              "rounded-[var(--radius-sm)] px-3 py-2 text-[0.9375rem] font-semibold transition-colors",
-              isActive(ROUTES.impact)
+              "rounded-[var(--radius-sm)] px-3 py-2 text-[0.9375rem] font-semibold whitespace-nowrap transition-colors",
+              isActive(ROUTES.about)
                 ? "text-brand-deep"
                 : "text-ink-muted hover:text-ink",
             )}
           >
-            {t.nav.impact}
+            {t.nav.about}
           </Link>
         </nav>
 
@@ -286,18 +296,23 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
       className="border-rule bg-paper fixed inset-x-0 top-18 bottom-0 z-40 overflow-y-auto border-t lg:hidden"
     >
       <Container className="flex flex-col gap-8 py-8">
-        {/* IMPACT BELONGS HERE TOO.
-            The desktop bar is audiences + What We Do + Impact; this panel was
-            audiences + What We Do and nothing else, so Impact - the page that
-            holds the logos, the newspaper coverage and the numbers, i.e. the
-            answer to "are these people real?" - was reachable on a laptop and
-            not on a phone. Two navigations claiming to be the same navigation
-            is the kind of gap nobody notices until a principal cannot find the
-            proof. Appended to the same list rather than given its own block so
-            the two menus stay demonstrably identical in content. */}
+        {/* THE TWO MENUS MUST OFFER THE SAME THINGS.
+            The desktop bar is audiences + What We Do + About Us; this panel
+            was audiences + What We Do and nothing else, so Impact - the page
+            that holds the logos, the newspaper coverage and the numbers,
+            i.e. the answer to "are these people real?" - was reachable on a
+            laptop and not on a phone. Two navigations claiming to be the same
+            navigation is the kind of gap nobody notices until a principal
+            cannot find the proof.
+
+            BOTH are appended here, not just the one the bar shows. A phone
+            panel has vertical room the bar does not, so there is no reason to
+            inherit the bar's budget - Impact stays reachable in one tap
+            rather than being demoted into the menu below it. */}
         <nav aria-label={t.nav.mobileMenu} className="flex flex-col gap-1">
           {[
             ...audienceNav(t),
+            { href: ROUTES.about, label: t.nav.about },
             { href: ROUTES.impact, label: t.nav.impact },
           ].map((link) => (
             <Link

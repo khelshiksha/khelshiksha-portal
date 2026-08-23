@@ -13,31 +13,44 @@ export const en = {
     sections: "Sections",
     breadcrumb: "Breadcrumb",
     home: "Home",
-    /* THESE ARE THE HEADER BAR, WHERE WIDTH IS THE BINDING CONSTRAINT.
+    /* THE HEADER BAR IS A FIXED WIDTH BUDGET, AND THIS IS HOW IT IS SPENT.
 
-       Four audience links, a dropdown, Impact, two toggles and the CTA share
-       one row. "For Schools & Teachers" and "For Corporate & CSR" put that
-       row over budget, and because the links have no whitespace-nowrap the
-       overflow came out as EVERY item wrapping to two lines - including
-       "For Parents", which is short. A too-long label does not damage only
-       itself.
+       Every label here competes with the others for one row shared with the
+       logo, a dropdown, two toggles and the CTA. Overspend it and the links
+       do not truncate, they WRAP - and because they shrink together, one
+       long label puts every item onto two lines, "For Parents" included.
 
-       So the bar keeps the short forms and the full names live where there
-       is room to set them: the hub's own eyebrow ("For Schools & Teachers"),
-       the footer, and the mega-menu below. Same reason the pillar names are
-       not spelled out here either. */
-    forSchools: "For Schools",
+       The merged hub is named in full because that is the point of having
+       merged it: a teacher scanning the bar has to see themselves in it.
+       That costs 11 characters over "For Schools", and About Us costs a
+       whole item, so the budget is balanced elsewhere rather than by
+       shaving the one label that carries meaning:
+
+         - Government drops "& NGOs". The hub's own eyebrow, the mega-menu
+           and the footer all still say "Government & NGOs"; the bar is an
+           index, not a title.
+         - Impact leaves the bar entirely. It is one click away in the What
+           We Do menu, under Company, where About Us used to be the only
+           entry - so the two effectively swapped places rather than one
+           being added.
+
+       If a future item needs a slot, the honest move is a "For You"
+       dropdown holding the four audiences, not another round of shaving. */
+    forSchools: "For Schools & Teachers",
     /* Was `forTeachers`, pointing at a hub that no longer exists. Renamed
        rather than deleted-and-added so that any dictionary key missing from
        gu.ts is a type error rather than an English string leaking onto the
        Gujarati site. See AUDIENCE_KEYS in lib/constants.ts. */
     forCorporate: "For Corporate",
     forParents: "For Parents",
-    government: "Government & NGOs",
+    /* The BAR's label. menu.governmentNgos keeps "Government & NGOs" for the
+       mega-menu and the footer, which have room for it. See the budget note
+       on forSchools above. */
+    government: "Government",
     whatWeDo: "What We Do",
     impact: "Impact",
     resources: "Resources",
-    about: "About",
+    about: "About Us",
     contact: "Contact",
     careers: "Careers",
   },
