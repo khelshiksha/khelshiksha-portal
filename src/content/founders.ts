@@ -1,48 +1,72 @@
 import type { Founder } from "@/services/cms/types";
 
 /**
- * The people who started Khel Shiksha.
+ * The people behind Khel Shiksha.
+ *
+ * NAMES AND ROLES ONLY, supplied by the company on 2026-08-23. Bios and
+ * photographs are deliberately absent rather than placeheld: a bio is a claim
+ * about a real, named person, and writing a plausible-sounding one is the
+ * same fabrication the note above `testimonials` in content/impact.ts
+ * refuses. A name and a role are facts the company stated; anything else here
+ * would be invented.
+ *
+ * The card renders correctly without either - initials stand in for a
+ * portrait, and the paragraph is omitted rather than left empty - so adding
+ * them later is a content edit that touches no layout.
  *
  * ---------------------------------------------------------------------------
- * THIS ARRAY IS EMPTY AND THAT IS NOT AN OVERSIGHT.
+ * TO ADD A BIO, 2-3 sentences on what they did BEFORE this and what they are
+ * responsible for now. Specifics beat adjectives: "taught Grade 4 maths for
+ * eleven years" says more than "passionate educator".
  *
- * A founder entry is a record about a real, named, identifiable person: their
- * name, their role in a real company, and a claim about what they did. Filling
- * this with invented people, or with a plausible-sounding biography attached
- * to a real name, would be fabrication - and unlike a placeholder in a layout,
- * it is fabrication that the rendered page presents as fact to a principal
- * deciding whether to trust the organisation.
+ * TO ADD A PHOTOGRAPH:
  *
- * The same rule already governs `testimonials` in content/impact.ts and every
- * figure in `impactStats`. It is the reason the numbers on this site can be
- * checked.
- *
- * SO THE SECTION RENDERS NOTHING UNTIL THIS IS FILLED. features/about/founders
- * returns null on an empty array, exactly as PressRail and the testimonial
- * section do, and the About page is complete without it - vision, mission and
- * the audited stat band all stand on their own.
- *
- * ---------------------------------------------------------------------------
- * TO FILL IT, one entry per founder:
- *
- *   {
- *     _id: "founder-1",
- *     name: "",           // as they would write it themselves
- *     role: "",           // "Founder", "Co-founder & Director", etc.
- *     bio: "",            // 2-3 sentences. What they did BEFORE this, and
- *                         // what they are responsible for now. Specifics beat
- *                         // adjectives: "taught Grade 4 maths for eleven
- *                         // years" says more than "passionate educator".
- *     image: {            // optional - the card lays out without one
- *       src: "/images/founders/<name>.webp",
- *       alt: "",          // what a reader who cannot see it needs: who, and
- *                         // the setting if it carries meaning
- *     },
+ *   image: {
+ *     src: "/images/founders/<name>.webp",
+ *     alt: "",   // who it is, and the setting if it carries meaning
  *   }
  *
  * Photographs go through scripts/build-section-images.mjs like the section
- * figures, so they are served as sized WebP rather than straight from a phone.
- * Square (1:1) rather than the sections' 4:5 - the aspect box in the component
- * assumes it.
+ * figures, so they are served as sized WebP rather than straight from a
+ * phone. SQUARE (1:1), not the sections' 4:5 - the card's box assumes it.
+ *
+ * ---------------------------------------------------------------------------
+ * NOT EVERYONE HERE IS A FOUNDER, which is why the section is headed "the
+ * people behind" rather than "who started". The type is still called Founder
+ * because renaming it would touch the CMS contract for no gain, but the list
+ * is the team the company wants named.
  */
-export const founders: Founder[] = [];
+export const founders: Founder[] = [
+  {
+    _id: "founder-milan",
+    name: "Milan Sarvaiya",
+    role: "Co-founder",
+    image: {
+      src: "/images/founders/milan-sarvaiya.webp",
+      /* A PORTRAIT'S ALT NAMES THE PERSON, and then stops. The card prints
+         the name and the role in text directly beneath, so describing the
+         shirt or the smile would only add noise for a screen reader that has
+         already been told who this is. "Headshot of" earns its place because
+         it says what KIND of image this is, which the text does not. */
+      alt: "Headshot of Milan Sarvaiya",
+    },
+  },
+  {
+    _id: "founder-kishan",
+    name: "Kishan Hasani",
+    role: "Co-founder",
+    image: {
+      src: "/images/founders/kishan-hasani.webp",
+      alt: "Headshot of Kishan Hasani",
+    },
+  },
+  {
+    /* NO PHOTOGRAPH SUPPLIED. The card falls back to initials rather than a
+       silhouette - see the note in blocks/content/founder-grid.tsx on why a
+       stock face is the wrong stand-in for a real person. Adding one here is
+       two lines and a run of scripts/build-section-images.mjs. */
+    _id: "team-ankit",
+    name: "Ankit Padshala",
+    role: "Marketing Head",
+  },
+];

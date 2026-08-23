@@ -50,16 +50,28 @@ import { mkdir, stat } from "node:fs/promises";
  * are never served.
  */
 
-const DEST = "public/images/sections";
-
-/* Expected aspect ratio, width / height. Portrait 4:5. */
-const RATIO = 0.8;
+/* A tolerance rather than an equality, because a generator asked for 4:5
+   returns 928x1152 (0.8055) and that is close enough to crop invisibly. */
 const TOLERANCE = 0.02;
 
-/* Sources are whatever the artwork arrived as - the extension is not load
-   bearing, sharp sniffs the format. The KEY is what matters: it becomes the
-   served filename, and content/audiences.ts references it. */
-const SOURCES = {
+/* TWO GROUPS, TWO SHAPES, ONE SCRIPT.
+   The section figures are portrait 4:5 and share a row with a headline. The
+   founder portraits are SQUARE, because the card in
+   blocks/content/founder-grid.tsx sets them in a size-24/size-28 box and a
+   4:5 source would crop a face off-centre in it. Keeping both here rather
+   than in two scripts means one command after any artwork lands, and one
+   place where a wrong ratio is caught. */
+const GROUPS = [
+  {
+    dest: "public/images/sections",
+    /* Portrait 4:5, width / height. */
+    ratio: 0.8,
+    /* Wide enough for the lg:w-96 panel at 2x. */
+    width: 1120,
+    /* Sources are whatever the artwork arrived as - the extension is not
+       load bearing, sharp sniffs the format. The KEY is what matters: it
+       becomes the served filename, and content/audiences.ts references it. */
+    sources: {
   /* The Khel Shiksha cart outside a Gujarat school, children choosing kits
      off the shelf. This is the Schools hub's figure: it shows the product,
      the setting and the age group in one frame, which is what the mascot
@@ -83,33 +95,51 @@ const SOURCES = {
      is meant to support. */
   "corporate-inclusive": "assets/source/sections/corporate-inclusive.png",
 
-  /* The people who make the games, at the bench. The About page's honest
-     subject is the company rather than the classroom. */
-  "about-workshop": "assets/source/sections/about-workshop.png",
-};
+    /* The people who make the games, at the bench. The About page's honest
+       subject is the company rather than the classroom. */
+      "about-workshop": "assets/source/sections/about-workshop.png",
+    },
+  },
+  {
+    dest: "public/images/founders",
+    /* Square. See the note on GROUPS above. */
+    ratio: 1,
+    /* 448 is the size-28 card box (112px) at 4x, which covers a retina
+       display without shipping a 1024px file for a 112px slot. */
+    width: 448,
+    sources: {
+      "milan-sarvaiya": "assets/source/founders/milan-sarvaiya.jpeg",
+      "kishan-hasani": "assets/source/founders/kishan-hasani.jpeg",
+    },
+  },
+];
 
-await mkdir(DEST, { recursive: true });
+for (const { dest, ratio: expected, width: outWidth, sources } of GROUPS) {
+  await mkdir(dest, { recursive: true });
 
-for (const [name, src] of Object.entries(SOURCES)) {
-  const { width, height } = await sharp(src).metadata();
-  const ratio = width / height;
+  for (const [name, src] of Object.entries(sources)) {
+    const { width, height } = await sharp(src).metadata();
+    const ratio = width / height;
 
-  if (Math.abs(ratio - RATIO) > TOLERANCE) {
-    console.error(
-      `${src}: expected a ${RATIO} (4:5) ratio, got ${ratio.toFixed(3)} ` +
-        `(${width}x${height}).\n` +
-        `Re-crop the source, or update RATIO here and the aspect box in ` +
-        `src/components/ui/section-figure.tsx together.`,
-    );
-    process.exit(1);
+    if (Math.abs(ratio - expected) > TOLERANCE) {
+      console.error(
+        `${src}: expected a ${expected} ratio, got ${ratio.toFixed(3)} ` +
+          `(${width}x${height}).\n` +
+          `Re-crop the source, or update the ratio for this group here and ` +
+          `the aspect box in the component that renders it - ` +
+          `ui/section-figure.tsx for sections, ` +
+          `blocks/content/founder-grid.tsx for founders.`,
+      );
+      process.exit(1);
+    }
+
+    const out = `${dest}/${name}.webp`;
+    await sharp(src)
+      .resize({ width: outWidth, withoutEnlargement: true })
+      .webp({ quality: 82, effort: 6 })
+      .toFile(out);
+
+    const { size } = await stat(out);
+    console.log(`${out}  ${width}x${height}  ${Math.round(size / 1024)}KB`);
   }
-
-  const out = `${DEST}/${name}.webp`;
-  await sharp(src)
-    .resize({ width: 1120, withoutEnlargement: true })
-    .webp({ quality: 82, effort: 6 })
-    .toFile(out);
-
-  const { size } = await stat(out);
-  console.log(`${out}  ${width}x${height}  ${Math.round(size / 1024)}KB`);
 }
