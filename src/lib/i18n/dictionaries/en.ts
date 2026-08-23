@@ -13,12 +13,25 @@ export const en = {
     sections: "Sections",
     breadcrumb: "Breadcrumb",
     home: "Home",
-    forSchools: "For Schools & Teachers",
+    /* THESE ARE THE HEADER BAR, WHERE WIDTH IS THE BINDING CONSTRAINT.
+
+       Four audience links, a dropdown, Impact, two toggles and the CTA share
+       one row. "For Schools & Teachers" and "For Corporate & CSR" put that
+       row over budget, and because the links have no whitespace-nowrap the
+       overflow came out as EVERY item wrapping to two lines - including
+       "For Parents", which is short. A too-long label does not damage only
+       itself.
+
+       So the bar keeps the short forms and the full names live where there
+       is room to set them: the hub's own eyebrow ("For Schools & Teachers"),
+       the footer, and the mega-menu below. Same reason the pillar names are
+       not spelled out here either. */
+    forSchools: "For Schools",
     /* Was `forTeachers`, pointing at a hub that no longer exists. Renamed
        rather than deleted-and-added so that any dictionary key missing from
        gu.ts is a type error rather than an English string leaking onto the
        Gujarati site. See AUDIENCE_KEYS in lib/constants.ts. */
-    forCorporate: "For Corporate & CSR",
+    forCorporate: "For Corporate",
     forParents: "For Parents",
     government: "Government & NGOs",
     whatWeDo: "What We Do",
@@ -123,6 +136,11 @@ export const en = {
     company: "Company",
     ourImpact: "Our Impact",
     aboutUs: "About us",
+    /* Descriptions, because this pair sits in the mega-menu alongside The
+       Approach, whose links carry them. A column of bare labels next to two
+       columns of annotated ones reads as unfinished. */
+    aboutUsDesc: "Who we are and why we build these",
+    ourImpactDesc: "Kits delivered, and what came of them",
     privacy: "Privacy",
     terms: "Terms",
     schools: "Schools & Teachers",
