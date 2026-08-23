@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/constants";
+import { FEATURES } from "@/lib/features";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -56,14 +57,27 @@ export default function PrivacyPage() {
         providers for hosting and email delivery, who process data only on our
         instructions.
       </p>
-      <p>
-        The one exception is the AI assistant on this site. If you type a
-        question into it, that question is sent to Google to generate the
-        answer, and Google may use it to improve their services. Do not put
-        anything into the assistant that you would not want processed that way.
-        If you would rather talk to us privately, use the enquiry form or call
-        us.
-      </p>
+      {/* TIED TO THE FEATURE FLAG, not written as a standing paragraph.
+
+          This disclosure is only true while the assistant is running. With
+          it switched off, nothing on this site sends anything to Google, and
+          a policy that still warned about it would be telling visitors not
+          to type sensitive things into a box that is not on the page -
+          confusing rather than merely over-cautious.
+
+          Conditioning it on the same flag the feature reads means the policy
+          cannot drift from what the site does: turning the assistant back on
+          restores this paragraph in the same deploy. */}
+      {FEATURES.assistant ? (
+        <p>
+          The one exception is the AI assistant on this site. If you type a
+          question into it, that question is sent to Google to generate the
+          answer, and Google may use it to improve their services. Do not put
+          anything into the assistant that you would not want processed that
+          way. If you would rather talk to us privately, use the enquiry form
+          or call us.
+        </p>
+      ) : null}
 
       <h2>How long we keep it</h2>
       <p>
