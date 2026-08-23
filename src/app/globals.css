@@ -214,6 +214,29 @@
     color: var(--brand);
   }
 
+  /* --- The brand voice, for one headline ---------------------------------
+     Baloo on the home page's H1 and nowhere else. The reasoning for the
+     scope is on `baloo` in lib/fonts.ts; the mechanics are here.
+
+     TIGHTER TRACKING AND LEADING THAN JAKARTA WOULD TAKE. Baloo's letters
+     are wide and round with short extenders, so at display size the default
+     spacing opens into gaps and the two sentences drift apart. -0.015em and
+     1.02 bring it back to reading as one block.
+
+     THIS IS SAFE ON /gu TODAY ONLY BECAUSE THE HEADLINE IS NOT TRANSLATED.
+     hero-home.tsx hardcodes the headline, the sub-headline and the rotating
+     words in English rather than reading them from a dictionary, so both
+     locales render the same Latin string and Baloo covers it. Translate that
+     copy and this rule starts falling back to Jakarta mid-headline on /gu -
+     add Baloo Bhai 2 in the same commit. */
+  .brand-display {
+    font-family: var(--font-baloo), var(--font-jakarta), ui-sans-serif,
+      system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.02;
+  }
+
   /* --- Rotating hero word ------------------------------------------------
      Every candidate word is stacked in ONE grid cell, so the box is as wide
      as the longest of them and swapping words cannot shift the headline.
@@ -481,6 +504,28 @@
     .kv-pin:hover {
       opacity: 1;
     }
+
+    /* WHILE THE WHOLE MAP IS SHOWN, THE CARDS COLLAPSE TO THEIR TITLES.
+
+       Revealing all five at once is the point of the rule above - you get
+       the whole map, not a guessing game. But a full card is a title, a
+       19ch blurb and a "go" row, roughly 90px tall, and five of those do
+       not fit: the zone anchors are close together, the back-row ones all
+       clamp to the same `top` in khelverse.tsx, and the result was five
+       overlapping cards with the top one reaching into the trust strip
+       above the campus.
+
+       Collapsed to titles they are ~30px and clear each other, so the map
+       reads as five named places. The one under the cursor keeps its blurb,
+       which is the only one being read anyway.
+
+       Not display:none - that would collapse the grid row and make the card
+       jump as the cursor crosses it. */
+    .kv-root:hover .kv-pin:not(:hover) .kv-pin-blurb {
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+    }
   }
 
   /* No JavaScript means no die and no is-current, so the labels would never
@@ -522,6 +567,13 @@
     line-height: 1.35;
     color: var(--ink-muted);
     max-width: 19ch;
+    /* Transitioned so the collapse above reads as the card settling rather
+       than as text vanishing. max-height rather than height because the
+       blurb wraps to one or two lines depending on the pillar. */
+    max-height: 4rem;
+    transition:
+      opacity 200ms var(--ease-out-quint),
+      max-height 200ms var(--ease-out-quint);
   }
 
   .kv-pin-go {
@@ -671,7 +723,17 @@
   @media (min-width: 1024px) {
     .kv-frame {
       aspect-ratio: var(--kv-ratio);
-      height: min(36vh, 400px);
+      /* THE PIXEL CAP RISES, THE vh BARELY DOES, and the split is the point.
+
+         36vh/400px was set so a 1366x768 laptop kept the whole hero on one
+         screen. That constraint still holds and is why the vh only moves to
+         40 - at 768px tall that is 307px against 276px, a nudge.
+
+         The 400px cap was the part doing harm. It binds only above ~1100px
+         of viewport height, i.e. on the large monitors where the campus was
+         a small island in a wide empty band, which is exactly the "make it
+         larger" complaint. 560px fills that band without touching laptops. */
+      height: min(40vh, 560px);
       width: auto;
       max-width: 100%;
       margin-inline: auto;
