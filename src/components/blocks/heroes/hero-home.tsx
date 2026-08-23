@@ -51,12 +51,23 @@ export function HeroHome() {
 
   return (
     <section className="kv-hero relative flex flex-col overflow-hidden">
-      <Container className="relative z-10 flex flex-col gap-4 pt-8 sm:gap-5 sm:pt-12 lg:max-w-[62rem] lg:gap-6 lg:pt-12">
+      {/* MORE AIR THAN THIS USED TO HAVE, on purpose.
+
+          The copy column grew by two rows when the CTAs and the rotating
+          word line arrived, and the old gap-6/pt-12 had been tuned for a
+          shorter stack - so the block read as crowded exactly where it
+          should feel most composed. The steps are per-breakpoint rather
+          than one larger number because vertical space is cheap on a
+          desktop and expensive on a phone, where the campus below still
+          has to be reachable without a long scroll. */}
+      <Container className="relative z-10 flex flex-col gap-5 pt-10 sm:gap-6 sm:pt-14 lg:max-w-[62rem] lg:gap-8 lg:pt-16">
         <p className="text-label text-ink-subtle font-bold tracking-[0.16em] uppercase">
           {SITE.tagline}
         </p>
 
-        <h1 className="text-display-1 text-ink max-sm:text-[2.35rem] max-sm:leading-[1.06]">
+        {/* brand-display is Baloo, and this is the ONLY heading on the site
+            that gets it - see lib/fonts.ts for why the scope is one line. */}
+        <h1 className="brand-display text-display-1 text-ink max-sm:text-[2.5rem] max-sm:leading-[1.02]">
           Play with Purpose.
           {/* The line break is desktop-only. On a 390px screen it forced the
               second sentence onto a line of its own and the headline ran to
@@ -129,13 +140,16 @@ export function HeroHome() {
           tall, and present-but-unreadable is worse than absent. The camera
           moves in instead, the island runs off both edges, and the section
           clips it so nothing scrolls sideways. */}
-      <div className="relative my-1 w-full sm:-mt-4 lg:my-0 lg:mt-2">
+      {/* The negative top margin on sm was pulling the campus up under the
+          trust strip, which is where the zone cards were colliding with it.
+          It goes, and lg gets real clearance instead of 2px. */}
+      <div className="relative my-2 w-full sm:mt-2 lg:my-0 lg:mt-8">
         <KhelVerse>
           <World />
         </KhelVerse>
       </div>
 
-      <Container className="relative z-10 mt-2 flex flex-col gap-4 pb-4 sm:gap-5 lg:mt-7 lg:max-w-[62rem] lg:gap-6">
+      <Container className="relative z-10 mt-4 flex flex-col gap-4 pb-10 sm:gap-5 sm:pb-12 lg:mt-8 lg:max-w-[62rem] lg:gap-6 lg:pb-16">
         <p className="measure text-body sm:text-body-lg text-ink-muted">
           Gamified experiential learning kits, a Game Corner for the classroom
           and teacher training. Built for Vidyalayas and aligned to NEP 2020 and
