@@ -494,44 +494,51 @@
     opacity: 1;
   }
 
-  /* Reveal-the-whole-map on hover is for pointers that REALLY hover.
-     A touch browser latches :hover on tap, and on a phone all five cards are
-     stacked in one place - so this rule made every one of them visible and
-     tappable at once, and the last in DOM order swallowed the tap. Whatever
-     the card said, the finger went to Life Skills. */
+  /* ONE CARD AT A TIME. NEVER FIVE.
+
+     A `.kv-root:hover .kv-pin { opacity: 1 }` rule used to reveal the whole
+     map at once, and it cannot be made to work. The arithmetic settles it:
+     in isometric projection the five zones span about 800px of island, and
+     five cards at roughly 250px each need 1250px. They overlap by
+     construction, at every viewport, whatever is done to their height -
+     collapsing the blurbs bought vertical room and changed nothing, because
+     the collision is horizontal.
+
+     What replaces it is nothing, and that is the point. The die already
+     visits all five zones on lib/play-beat, lighting each in turn, so a
+     visitor who touches nothing still sees every pillar named - one at a
+     time, with room to read it. Showing all five at once was never adding
+     information the cycle does not deliver; it was showing the same five
+     names in a pile instead of in sequence.
+
+     A pin is therefore visible when the die is on it (.is-current), or when
+     that particular pin is hovered or focused. Both are single-card states.
+
+     Kept inside the hover media query, for the reason the old rule was: a
+     touch browser latches :hover on tap, and the pins are stacked closely
+     enough that the last in DOM order would swallow the tap. */
   @media (hover: hover) and (pointer: fine) {
-    .kv-root:hover .kv-pin,
     .kv-pin:hover {
       opacity: 1;
-    }
-
-    /* WHILE THE WHOLE MAP IS SHOWN, THE CARDS COLLAPSE TO THEIR TITLES.
-
-       Revealing all five at once is the point of the rule above - you get
-       the whole map, not a guessing game. But a full card is a title, a
-       19ch blurb and a "go" row, roughly 90px tall, and five of those do
-       not fit: the zone anchors are close together, the back-row ones all
-       clamp to the same `top` in khelverse.tsx, and the result was five
-       overlapping cards with the top one reaching into the trust strip
-       above the campus.
-
-       Collapsed to titles they are ~30px and clear each other, so the map
-       reads as five named places. The one under the cursor keeps its blurb,
-       which is the only one being read anyway.
-
-       Not display:none - that would collapse the grid row and make the card
-       jump as the cursor crosses it. */
-    .kv-root:hover .kv-pin:not(:hover) .kv-pin-blurb {
-      opacity: 0;
-      max-height: 0;
-      overflow: hidden;
     }
   }
 
   /* No JavaScript means no die and no is-current, so the labels would never
-     appear at all. Show them permanently instead - the map is the fallback. */
+     appear at all. Show them permanently instead - the map is the fallback.
+
+     This is the ONE case where all five are on screen together, and it has
+     the collision described above. It stays anyway: without JavaScript these
+     links are the only route from the campus to the five pillar pages, and
+     five overlapping labels are navigable where zero labels are not.
+
+     The blurbs come off to make the pile as small as it can be - titles
+     alone are about a third the height, so more of each card clears its
+     neighbours. A no-JS visitor gets a crowded map rather than a broken one. */
   html:not([data-js]) .kv-pin {
     opacity: 1;
+  }
+  html:not([data-js]) .kv-pin-blurb {
+    display: none;
   }
 
   /* A tail, so a pin reads as pointing at the platform beneath it. Without one
@@ -567,13 +574,6 @@
     line-height: 1.35;
     color: var(--ink-muted);
     max-width: 19ch;
-    /* Transitioned so the collapse above reads as the card settling rather
-       than as text vanishing. max-height rather than height because the
-       blurb wraps to one or two lines depending on the pillar. */
-    max-height: 4rem;
-    transition:
-      opacity 200ms var(--ease-out-quint),
-      max-height 200ms var(--ease-out-quint);
   }
 
   .kv-pin-go {
@@ -614,6 +614,17 @@
     pointer-events: auto;
   }
 
+  /* THE `.kv-root:hover` HALF STAYS EVEN THOUGH ITS OPACITY TWIN WAS REMOVED,
+     and it is not a leftover. An opacity:0 element with pointer-events:none
+     cannot be hovered at all, so without this rule arming the pins the
+     moment the cursor is over the campus, `.kv-pin:hover` could never fire
+     and no pin but the die's own would ever be reachable by mouse.
+
+     It does not reintroduce the invisible-link hazard the comment above
+     describes. That hazard is a TAP landing on something unseen; a mouse has
+     to cross the pin to click it, and crossing it makes it visible. On touch
+     this whole block is inert - no (hover: hover) - so only the visible
+     .is-current pin takes a tap, which is the behaviour that fix established. */
   @media (hover: hover) and (pointer: fine) {
     .kv-root:hover .kv-pin,
     .kv-pin:hover {
