@@ -42,10 +42,12 @@ export const gu: Dictionary = {
 
        If a native speaker settles on wording for Corporate, it belongs back
        in the language. */
-    forSchools: "શાળાઓ માટે",
+    forSchools: "શાળાઓ અને શિક્ષકો માટે",
     forCorporate: "For Corporate",
     forParents: "વાલીઓ માટે",
-    government: "સરકાર અને સંસ્થાઓ",
+    /* Bar label, shortened like its English twin. menu.governmentNgos keeps
+       the full "સરકાર અને સંસ્થાઓ" for the mega-menu and footer. */
+    government: "સરકાર",
     whatWeDo: "અમે શું કરીએ છીએ",
     impact: "પ્રભાવ",
     resources: "સંસાધનો",

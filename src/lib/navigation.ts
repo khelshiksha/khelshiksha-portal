@@ -37,7 +37,10 @@ export function audienceNav(t: Dictionary): NavLink[] {
   return [
     { label: t.nav.forSchools, href: ROUTES.schools },
     { label: t.nav.forParents, href: ROUTES.parents },
-    { label: t.menu.governmentNgos, href: ROUTES.government },
+    /* nav.government, not menu.governmentNgos: the bar's copy is shorter
+       than the menu's and the footer's. See the width budget on
+       nav.forSchools in i18n/dictionaries/en.ts. */
+    { label: t.nav.government, href: ROUTES.government },
     /* Last, not in the Teachers slot it replaced. The first three are the
        readers who arrive looking for a product; CSR arrives looking for a
        programme to fund, and putting it second would push Parents down the
