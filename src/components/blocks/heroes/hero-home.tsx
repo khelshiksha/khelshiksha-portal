@@ -1,4 +1,5 @@
 import { Container } from "@/components/ui/container";
+import { ButtonLink } from "@/components/ui/button";
 import { SITE } from "@/lib/constants";
 import { TrustStrip } from "@/components/blocks/proof/trust-strip";
 import { getDictionary } from "@/lib/i18n";
@@ -56,35 +57,59 @@ export function HeroHome() {
         </p>
 
         <h1 className="text-display-1 text-ink max-sm:text-[2.35rem] max-sm:leading-[1.06]">
-          Learning through play.
-          {/* The line break is desktop-only. On a 390px screen it forced
-              "play." onto a line of its own and the headline ran to SIX lines,
-              which is most of the first screen spent on one sentence. Let it
-              flow and it settles into four. */}
-          <br className="max-sm:hidden" /> Every classroom a hub of{" "}
-          <RotatingWord words={WORDS} />
+          Play with Purpose.
+          {/* The line break is desktop-only. On a 390px screen it forced the
+              second sentence onto a line of its own and the headline ran to
+              SIX lines, which is most of the first screen spent on one
+              sentence. Let it flow and it settles into four.
+
+              NO ITALIC IN THE HEADLINE. This section spends its single
+              Fraunces phrase on the rotating word below, and two accent
+              phrases in one block is where a page starts shouting. */}
+          <br className="max-sm:hidden" /> Learn with Joy.
         </h1>
 
-        {/* NO BUTTONS HERE, and that is a decision rather than an omission.
-
-            "Book a Demo" and "Explore the approach" both used to sit in this
-            spot. They also sit in the header on every screen, in the mobile
-            menu, in the closing band of this page and of every other page,
-            and the campus below is itself five links. The pair here was the
-            fifth and sixth copy of the same two words above the fold, and a
-            page that asks before it has said anything is a page that reads
-            like a sales call.
-
-            What replaces them is a sentence. The hero's job at this point is
-            to make someone want the next screen, not to close them - the
-            header CTA is two inches away the whole time, and it is now
-            visible on phones too, which it was not while this button existed.
-
-            One line, no italic: the headline already spends this section's
-            single Fraunces phrase, and two italics in one block is where a
-            page starts shouting. */}
         <p className="text-h3 text-ink-muted max-w-[34ch] font-normal">
-          Children don&rsquo;t sit through the lesson. They play it.
+          Where learning feels like play, and play builds life.
+        </p>
+
+        {/* THE BUTTONS ARE BACK, and the pairing is not the header's.
+
+            They were removed once because "Book a Demo" and "Explore the
+            approach" were the fifth and sixth copy of the header's own two
+            words above the fold. That objection was about DUPLICATION rather
+            than about buttons, so these two deliberately do not repeat it:
+            the header closes ("Book a Demo"), and this pair opens the two
+            doors a first-time reader actually arrives through - the catalogue
+            and the partnership track. Neither label appears in the header.
+
+            Order is browse-then-commit. A visitor who has read four lines is
+            not ready to be closed, so the low-commitment door is primary and
+            the partnership one is secondary. */}
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <ButtonLink href="/products" size="lg">
+            Explore Our Games
+          </ButtonLink>
+          <ButtonLink href="/corporate" variant="secondary" size="lg">
+            Partner With Us
+          </ButtonLink>
+        </div>
+
+        {/* THE ROTATING WORD MOVED OUT OF THE <h1>, which is a real change and
+            not a reshuffle.
+
+            It used to end the headline. The client's headline is a fixed
+            two-sentence line with no slot for a cycling word, so rather than
+            lose the word - and with it the die's reason to hop, since the
+            board and this list are the same five-item sequence - it becomes
+            its own line beneath the CTAs.
+
+            What that costs: the LCP element is now this <h1> alone, which is
+            if anything better. What it must not cost is the SYNC - the word
+            still changes on lib/play-beat's impact event, so the die landing
+            and the word turning stay one event. See rotating-word.tsx. */}
+        <p className="text-h3 text-ink max-w-[34ch] font-normal">
+          Every classroom a hub of <RotatingWord words={WORDS} />
         </p>
 
         <TrustStrip items={[t.trust.nep, t.trust.ncf, t.trust.training]} />

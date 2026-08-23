@@ -31,8 +31,20 @@ export const gu: Dictionary = {
     sections: "વિભાગો",
     breadcrumb: "તમે ક્યાં છો",
     home: "મુખ્ય પૃષ્ઠ",
-    forSchools: "શાળાઓ માટે",
-    forTeachers: "શિક્ષકો માટે",
+    /* ENGLISH ON PURPOSE, both of them, and they are the only two nav labels
+       that are.
+
+       "CSR" has no settled Gujarati rendering - it is the English acronym
+       everywhere a CSR officer actually encounters it - and a transliteration
+       nobody uses would be worse than the term itself. The Schools label is
+       English to match: these two sit next to each other in the same menu,
+       and one translated label beside one untranslated one reads as an
+       oversight rather than a decision.
+
+       Everything else in this file stays Gujarati. If a native speaker
+       settles on wording for these, they belong back in the language. */
+    forSchools: "For Schools & Teachers",
+    forCorporate: "For Corporate & CSR",
     forParents: "વાલીઓ માટે",
     government: "સરકાર અને સંસ્થાઓ",
     whatWeDo: "અમે શું કરીએ છીએ",
@@ -134,8 +146,9 @@ export const gu: Dictionary = {
     aboutUs: "અમારા વિશે",
     privacy: "ગોપનીયતા",
     terms: "શરતો",
-    schools: "શાળાઓ",
-    teachers: "શિક્ષકો",
+    /* English, for the reason on nav.forSchools above. */
+    schools: "Schools & Teachers",
+    corporate: "Corporate & CSR",
     parents: "વાલીઓ",
     governmentNgos: "સરકાર અને સંસ્થાઓ",
   },

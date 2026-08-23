@@ -33,6 +33,24 @@ export class LeadStorageUnavailableError extends Error {
 
 /* --- Postgres ----------------------------------------------------------- */
 
+/**
+ * Typed as a total Record rather than left to inference on `as const`.
+ *
+ * It was inferred before, and that is how the Corporate & CSR hub shipped a
+ * lead type this map had no entry for: adding "corporate" to LEAD_TYPES
+ * produced no error here, so `LEAD_TYPE_MAP[input.type]` would have been
+ * undefined and Prisma would have rejected the write - losing the enquiry,
+ * which is the exact failure LeadStorageUnavailableError exists to prevent.
+ *
+ * The annotation makes the next added lead type a compile error in this file
+ * instead of a runtime one in production.
+ *
+ * `satisfies` rather than a type annotation, and the difference matters here:
+ * an annotation would widen every value to `string`, and Prisma's generated
+ * `type` field wants its own enum literal. `satisfies` checks the keys are
+ * exhaustive while leaving `as const`'s literal narrowing intact, so both
+ * properties hold at once.
+ */
 const LEAD_TYPE_MAP = {
   "school-demo": "SCHOOL_DEMO",
   "school-enquiry": "SCHOOL_ENQUIRY",
@@ -40,9 +58,10 @@ const LEAD_TYPE_MAP = {
   parent: "PARENT",
   government: "GOVERNMENT",
   ngo: "NGO",
+  corporate: "CORPORATE",
   "product-enquiry": "PRODUCT_ENQUIRY",
   general: "GENERAL",
-} as const;
+} as const satisfies Record<LeadType, string>;
 
 const SLOT_MAP = {
   morning: "MORNING",

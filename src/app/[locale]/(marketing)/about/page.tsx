@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Container, Section } from "@/components/ui/container";
 import { SectionTitle } from "@/components/ui/section-title";
+import { SectionFigure } from "@/components/ui/section-figure";
 import { Breadcrumbs } from "@/components/blocks/navigation/breadcrumbs";
 import { StatBand } from "@/components/blocks/proof/stat-band";
 import { CTABand } from "@/components/blocks/content/cta-band";
@@ -32,13 +33,36 @@ export default async function AboutPage() {
 
       <Section className="pt-10 sm:pt-12">
         <Container className="flex flex-col gap-12">
-          <SectionTitle
-            level={1}
-            eyebrow="About us"
-            title="We build curiosity, not"
-            accent="educational toys."
-            lede={vision}
-          />
+          {/* THE FIGURE SHOWS THE BENCH, NOT A CLASSROOM, and that is the
+              whole reason this page gets one.
+
+              Every other figure on the site is children using the product.
+              Here the reader is asking who we are, and the honest answer is
+              the three people designing the games - which is also the only
+              claim on this page a photograph can actually support. A
+              classroom shot here would just be the Schools hub again.
+
+              Laid out as a row rather than through HeroAudience: this page
+              has no hub, no eyebrow CTA pair and no tint band, so it borrows
+              only the figure component. `items-start` because the headline
+              column here is prose that keeps growing, and bottom-aligning it
+              against a fixed 4:5 box strands the lede. */}
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
+            <SectionTitle
+              level={1}
+              eyebrow="About us"
+              title="We build curiosity, not"
+              accent="educational toys."
+              lede={vision}
+            />
+
+            <SectionFigure
+              image={{
+                src: "/images/sections/about-workshop.webp",
+                alt: "Three Khel Shiksha designers at a workbench developing a board game, with printed game cards laid out, colour proofs, wooden tokens and a finished kit box on the table.",
+              }}
+            />
+          </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
             {mission.map((item, i) => (

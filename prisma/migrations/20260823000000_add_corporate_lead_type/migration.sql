@@ -1,0 +1,15 @@
+-- AlterEnum
+-- Adds the Corporate & CSR lead type. See LEAD_TYPES in
+-- src/features/leads/schema.ts and LEAD_TYPE_MAP in
+-- src/services/db/lead-repository.ts, which must agree with this enum -
+-- the map is `satisfies Record<LeadType, string>` so that they cannot drift
+-- silently again.
+--
+-- Additive and non-destructive: no existing row changes, and no value is
+-- removed. TEACHER stays in the enum even though /teachers is retired as a
+-- hub, because rows already carry it.
+--
+-- ALTER TYPE ... ADD VALUE runs inside Prisma's migration transaction, which
+-- Postgres permits from 12 onward provided the new value is not USED in the
+-- same transaction. Nothing here writes a CORPORATE row, so it is safe.
+ALTER TYPE "LeadType" ADD VALUE 'CORPORATE';

@@ -36,9 +36,13 @@ export interface NavGroup {
 export function audienceNav(t: Dictionary): NavLink[] {
   return [
     { label: t.nav.forSchools, href: ROUTES.schools },
-    { label: t.nav.forTeachers, href: ROUTES.teachers },
     { label: t.nav.forParents, href: ROUTES.parents },
     { label: t.menu.governmentNgos, href: ROUTES.government },
+    /* Last, not in the Teachers slot it replaced. The first three are the
+       readers who arrive looking for a product; CSR arrives looking for a
+       programme to fund, and putting it second would push Parents down the
+       list for the larger audience's benefit. */
+    { label: t.nav.forCorporate, href: ROUTES.corporate },
   ];
 }
 
@@ -121,9 +125,9 @@ export function footerGroups(t: Dictionary): NavGroup[] {
       heading: t.menu.forYou,
       links: [
         { label: t.menu.schools, href: ROUTES.schools },
-        { label: t.menu.teachers, href: ROUTES.teachers },
         { label: t.menu.parents, href: ROUTES.parents },
         { label: t.menu.governmentNgos, href: ROUTES.government },
+        { label: t.menu.corporate, href: ROUTES.corporate },
       ],
     },
     {

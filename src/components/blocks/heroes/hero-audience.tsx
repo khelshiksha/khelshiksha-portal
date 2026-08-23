@@ -1,6 +1,6 @@
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
-import { Mascot } from "@/components/ui/mascot";
+import { SectionFigure } from "@/components/ui/section-figure";
 import {
   Breadcrumbs,
   type Crumb,
@@ -12,23 +12,26 @@ import type { AudienceHub } from "@/services/cms/types";
 export function HeroAudience({
   hub,
   trail,
-  mascot = false,
+  figure = false,
 }: {
   hub: AudienceHub;
   trail: Crumb[];
   /**
-   * All four hubs pass this. It stays a PROP rather than becoming
-   * unconditional because this template is the natural place to decide that a
-   * particular audience should not get it - /government is the likeliest
-   * candidate, since its reader is a District Education Officer evaluating a
-   * tender - and a prop keeps that a one-line change instead of a refactor.
-   * The reasoning for turning it on everywhere is in
-   * features/audiences/audience-page.tsx.
+   * Show the figure beside the headline.
+   *
+   * It stays a PROP rather than becoming unconditional because this template
+   * is the natural place to decide that a particular audience should not get
+   * one - and a prop keeps that a one-line change instead of a refactor.
+   *
+   * WHAT IT RENDERS DEPENDS ON THE HUB. A hub carrying an `image` gets that
+   * photograph, framed; a hub without one keeps the standing mascot it has
+   * always had. Both cases live in ui/section-figure.tsx, which explains why
+   * a cut-out and a photograph cannot share one layout.
    *
    * Still defaults to false, so any future caller of this template opts in
    * deliberately rather than inheriting a decision made for the hubs.
    */
-  mascot?: boolean;
+  figure?: boolean;
 }) {
   return (
     <section className={PILLAR_TINT_CLASS[hub.tint]}>
@@ -69,33 +72,22 @@ export function HeroAudience({
             </div>
           </div>
 
-          {/* Feet on the bottom edge of the tint band, where it meets the paper
-              of the next section. The artwork has no contact shadow - the alpha
-              beneath the feet is 0 - so a figure floating in the middle of a
-              panel reads as a sticker. Standing it on the one horizontal line
-              the layout already has is the grounding.
+          {/* WHERE THE FIGURE GOES, AND WHY THE TWO CASES DIFFER.
 
-              -mb-20/-mb-24 is not a magic number: it cancels this div's pb-8
-              (lg:pb-12) plus the Container's py-8 (lg:py-12), which is exactly
-              the distance from here to the section edge. If either of those
-              paddings changes, this changes with it. */}
-          {mascot ? (
-            <Mascot
-              crop="standing"
-              size="sm"
-              sizeLg="lg"
-              /* self-end puts it at the right on a phone, where the column is
-                 stacked, and does nothing at lg where the row already handles
-                 alignment.
+              A hub with a photograph gets a framed 4:5 panel sitting in the
+              row beside the headline. A hub without one keeps the standing
+              mascot, whose feet stand on the boundary between this tint band
+              and the paper below - the artwork has no contact shadow (the
+              alpha beneath the feet is 0), so a cut-out floating in the
+              middle of a panel reads as a sticker.
 
-                 The negative margin is the distance from here to the section
-                 edge, and it differs by breakpoint because both paddings do:
-                 pb-8 + Container py-8 is 64px on a phone, pb-12 + py-12 is
-                 96px from lg. Get it wrong and the figure floats above the
-                 boundary or hangs into the next section. */
-              className="-mb-16 shrink-0 self-end lg:-mb-24"
-            />
-          ) : null}
+              The negative margin that does that grounding lives in
+              ui/section-figure.tsx, on the mascot branch only, and it is not
+              a magic number: it cancels this div's pb-8 (lg:pb-12) plus the
+              Container's py-8 (lg:py-12), which is exactly the distance from
+              here to the section edge. IF EITHER PADDING ON THIS FILE
+              CHANGES, that margin changes with it. */}
+          {figure ? <SectionFigure image={hub.image} /> : null}
         </div>
       </Container>
     </section>

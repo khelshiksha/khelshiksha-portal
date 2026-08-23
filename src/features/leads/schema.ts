@@ -15,6 +15,10 @@ export const LEAD_TYPES = [
   "parent",
   "government",
   "ngo",
+  /* CSR partnership enquiries. Separate from "ngo" because the reader and the
+     decision differ - a company funding a programme, not an organisation
+     running one - and the two route to different people internally. */
+  "corporate",
   "product-enquiry",
   "general",
 ] as const;

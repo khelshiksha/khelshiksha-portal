@@ -54,10 +54,10 @@ export function NotFoundContent() {
 
         <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
           {[
-            ["For Schools", ROUTES.schools],
-            ["For Teachers", ROUTES.teachers],
+            ["For Schools & Teachers", ROUTES.schools],
             ["For Parents", ROUTES.parents],
             ["Government & NGOs", ROUTES.government],
+            ["Corporate & CSR", ROUTES.corporate],
             ["Contact", ROUTES.contact],
           ].map(([label, href]) => (
             <li key={href}>

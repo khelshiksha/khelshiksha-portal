@@ -34,6 +34,10 @@ const LEAD_LABEL: Record<LeadInput["type"], string> = {
   parent: "Parent enquiry",
   government: "Government / proposal request",
   ngo: "NGO partnership",
+  /* Distinct from "NGO partnership" on purpose: this label is the subject
+     line someone triages on, and a company funding a programme goes to a
+     different person than an organisation running one. */
+  corporate: "Corporate / CSR partnership",
   "product-enquiry": "Kit enquiry",
   general: "General enquiry",
 };
