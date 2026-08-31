@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-/** "Project SURAKSHA" -> "project-suraksha" */
+/** "Brainy Bee" -> "brainy-bee" */
 export function slugify(input: string): string {
   return input
     .toLowerCase()

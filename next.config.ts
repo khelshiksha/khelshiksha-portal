@@ -92,6 +92,15 @@ const nextConfig: NextConfig = {
       { source: "/for-parents", destination: "/parents", permanent: true },
       { source: "/pillars", destination: "/approach/pillars", permanent: true },
       { source: "/kits", destination: "/products", permanent: true },
+      /* The kit was renamed from "Project SURAKSHA" to "Road Safety" and its
+         slug moved with it. This URL has been live and indexed, and product
+         pages are in the sitemap, so it must not become the 404 that
+         /teachers did - see the note above. */
+      {
+        source: "/products/project-suraksha",
+        destination: "/products/road-safety",
+        permanent: true,
+      },
       { source: "/games", destination: "/products", permanent: true },
     ];
   },

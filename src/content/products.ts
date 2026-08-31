@@ -15,9 +15,15 @@ import type { Product } from "@/services/cms/types";
  */
 export const products: Product[] = [
   {
+    /* RENAMED FROM "Project SURAKSHA" at the company's request, 2026-08-31.
+       The slug moved with the title rather than being left behind, because a
+       URL that says project-suraksha under a heading that says Road Safety is
+       the kind of mismatch that makes a page look stale to the one visitor
+       who notices. /products/project-suraksha is a permanent redirect in
+       next.config.ts - it has been live and indexed. */
     _id: "product-suraksha",
-    slug: "project-suraksha",
-    title: "Project SURAKSHA",
+    slug: "road-safety",
+    title: "Road Safety",
     tagline:
       "Road safety learned by rehearsing it, not by being warned about it.",
     descriptionInstitutional:
@@ -78,8 +84,8 @@ export const products: Product[] = [
       "Teacher facilitation guide",
     ],
     heroImage: {
-      src: "/images/products/project-suraksha.svg",
-      alt: "The Project SURAKSHA road safety game board with scenario cards and player tokens laid out",
+      src: "/images/products/road-safety.svg",
+      alt: "The Road Safety game board with scenario cards and player tokens laid out",
     },
     relatedSlugs: ["yoga-safari", "naturebola"],
     featured: true,
@@ -140,7 +146,7 @@ export const products: Product[] = [
       src: "/images/products/aryabhata.svg",
       alt: "Aryabhata maths game cards fanned out beside a sand timer and score pad",
     },
-    relatedSlugs: ["brainy-bee", "project-suraksha"],
+    relatedSlugs: ["brainy-bee", "road-safety"],
     featured: true,
     order: 2,
   },
@@ -259,7 +265,7 @@ export const products: Product[] = [
       src: "/images/products/yoga-safari.svg",
       alt: "Yoga Safari trail mat with animal pose cards and a foam die",
     },
-    relatedSlugs: ["aahar", "project-suraksha"],
+    relatedSlugs: ["aahar", "road-safety"],
     featured: true,
     order: 4,
   },
