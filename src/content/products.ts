@@ -83,9 +83,21 @@ export const products: Product[] = [
       "Traffic sign reference set",
       "Teacher facilitation guide",
     ],
+    /* ALL SIX heroImages ARE BROCHURE CROPS, and temporarily so. They are
+       photographs of the actual retail boxes, cut out of the printed company
+       profile because it was the only real product photography in the repo -
+       the placeholders they replaced were abstract SVG shapes that showed a
+       school nothing. They are soft: see the products group in
+       scripts/build-section-images.mjs for why, and for what replaces them.
+
+       THE ALT TEXT DESCRIBES A BOX, not a game laid out. It used to describe
+       boards, tokens and fanned cards, which is what the old placeholders
+       implied and what the real photographs do not show - alt text drifting
+       away from its image is the failure mode nobody sees, because the people
+       who can see the image never read it. */
     heroImage: {
-      src: "/images/products/road-safety.svg",
-      alt: "The Road Safety game board with scenario cards and player tokens laid out",
+      src: "/images/products/road-safety.webp",
+      alt: "The Road Safety retail box, navy blue, showing two schoolchildren crossing at a zebra crossing beside a traffic signal. The box itself is printed \"Project SURAKSHA\", the kit's earlier name",
     },
     relatedSlugs: ["yoga-safari", "naturebola"],
     featured: true,
@@ -143,8 +155,8 @@ export const products: Product[] = [
       "Teacher guide with difficulty variations",
     ],
     heroImage: {
-      src: "/images/products/aryabhata.svg",
-      alt: "Aryabhata maths game cards fanned out beside a sand timer and score pad",
+      src: "/images/products/aryabhata.webp",
+      alt: "The Aryabhata retail box, white and purple, showing a circular number wheel with an illustrated figure of the mathematician at its centre",
     },
     relatedSlugs: ["brainy-bee", "road-safety"],
     featured: true,
@@ -202,8 +214,8 @@ export const products: Product[] = [
       "Teacher guide",
     ],
     heroImage: {
-      src: "/images/products/aahar.svg",
-      alt: "Aahar nutrition cards arranged on a plate mat showing each food group",
+      src: "/images/products/aahar.webp",
+      alt: "The Aahar retail box, green, showing two children holding fanned-out nutrition cards above the title \"The Nutrition Card Game\"",
     },
     relatedSlugs: ["yoga-safari", "naturebola"],
     featured: true,
@@ -262,8 +274,8 @@ export const products: Product[] = [
       "Teacher sequence guide",
     ],
     heroImage: {
-      src: "/images/products/yoga-safari.svg",
-      alt: "Yoga Safari trail mat with animal pose cards and a foam die",
+      src: "/images/products/yoga-safari.webp",
+      alt: "The Yog-Safari flashcards box, cream and olive, showing a lion, a cat and a snake, labelled as 30 animal-inspired yoga cards for young minds",
     },
     relatedSlugs: ["aahar", "road-safety"],
     featured: true,
@@ -316,8 +328,8 @@ export const products: Product[] = [
       "Teacher guide with three difficulty levels",
     ],
     heroImage: {
-      src: "/images/products/brainy-bee.svg",
-      alt: "Brainy Bee letter tiles arranged in a word tray beside illustrated object cards",
+      src: "/images/products/brainy-bee.webp",
+      alt: "The Brainy Bee retail box, yellow, with a honeycomb grid of letters and small illustrated objects around the title",
     },
     relatedSlugs: ["aryabhata", "naturebola"],
     featured: true,
@@ -376,8 +388,8 @@ export const products: Product[] = [
       "Teacher guide",
     ],
     heroImage: {
-      src: "/images/products/naturebola.svg",
-      alt: "Naturebola habitat boards with creature tokens and the sound playback card",
+      src: "/images/products/naturebola.webp",
+      alt: "The Naturebola retail box, dark green, showing a jungle scene with a lion, a peacock and a monkey among trees",
     },
     relatedSlugs: ["aahar", "brainy-bee"],
     featured: false,
