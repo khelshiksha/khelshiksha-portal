@@ -279,5 +279,18 @@ export interface Founder {
    * rendering an empty one.
    */
   bio?: string;
+  /**
+   * A first-person line in their own words - a motto rather than a
+   * description. SEPARATE FROM `bio` because the two are different kinds of
+   * text and the card sets them differently: a bio is third-person prose
+   * about someone, a quote is something they said, and running the second
+   * through styling meant for the first makes it read as copy the company
+   * wrote about itself.
+   *
+   * STORED WITHOUT QUOTATION MARKS. The card supplies typographic ones, so
+   * they cannot drift between entries - straight quotes in one and curly in
+   * the next is the kind of thing nobody sees until it is printed.
+   */
+  quote?: string;
   image?: ImageRef;
 }
