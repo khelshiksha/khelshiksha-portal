@@ -152,9 +152,10 @@ export async function getPressCuttings(): Promise<PressCutting[]> {
 /* --- Founders ----------------------------------------------------------- */
 
 /**
- * Empty until real names and bios exist - see content/founders.ts. Callers
- * must handle the empty array by rendering nothing, the same contract
- * getTestimonials has.
+ * Callers must handle an EMPTY array by rendering nothing, the same contract
+ * getTestimonials has. The list is populated now, but that contract is what
+ * let the section ship before the names existed and is what keeps it safe to
+ * empty again - see content/founders.ts.
  */
 export async function getFounders(): Promise<Founder[]> {
   return founders;

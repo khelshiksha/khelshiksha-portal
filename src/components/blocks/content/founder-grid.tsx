@@ -8,15 +8,16 @@ import type { Founder } from "@/services/cms/types";
 /**
  * The founders, on the About page.
  *
- * RENDERS NOTHING WHILE content/founders.ts IS EMPTY, which it is by default
- * and deliberately - a founder entry is a record about a named real person,
- * and inventing one is fabrication the rendered page would present as fact.
- * The note in that file has the full reasoning and the shape to fill in.
- *
- * The empty-case contract is the same one PressRail and the testimonial
+ * RENDERS NOTHING ON AN EMPTY LIST, which is how it shipped and is worth
+ * keeping. The empty-case contract is the one PressRail and the testimonial
  * section keep: the surrounding page must be complete without this. On About
- * it is - vision, mission and the audited stat band all stand alone - so
- * adding real founders later is a content edit and touches no layout.
+ * it is - vision, mission and the audited stat band all stand alone - which
+ * is why filling content/founders.ts was a content edit that touched no
+ * layout, and why emptying it again would not break the page.
+ *
+ * EVERY FIELD BELOW NAME AND ROLE IS OPTIONAL for the same reason. A quote, a
+ * bio and a photograph each arrived on a different day; a card that required
+ * all three would have held the section back until the slowest one landed.
  *
  * ---------------------------------------------------------------------------
  * WHY INITIALS RATHER THAN A PLACEHOLDER PORTRAIT.
@@ -60,11 +61,10 @@ export function FounderGrid({ founders }: { founders: Founder[] }) {
           accent="Khel Shiksha."
         />
 
-        {/* Three-up from lg, two from sm. With no bios yet the cards are a
-            name and a role, and two-up would set three short cards as a row
-            of two and an orphan. Three columns at 62rem is still about 20rem
-            each, which holds a two-or-three sentence bio comfortably when
-            they arrive - so this does not have to be revisited then. */}
+        {/* Three-up from lg, two from sm. There are exactly three people, so
+            two-up would set them as a row of two and an orphan. Three columns
+            at 62rem is about 20rem each, which holds the one-line quotes now
+            and a two-or-three sentence bio later without revisiting this. */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {founders.map((founder, i) => (
             <Reveal key={founder._id} delay={staggerDelay(i)}>
@@ -105,6 +105,26 @@ export function FounderGrid({ founders }: { founders: Founder[] }) {
                       {founder.role}
                     </p>
                   </div>
+                  {/* A QUOTE, SET AS ONE. <blockquote> rather than <p>
+                      because it is someone speaking, and the element is what
+                      tells a screen reader that - the quotation marks are
+                      decoration a screen reader does not announce.
+
+                      The marks are supplied HERE, not stored in the content,
+                      so they cannot drift between entries: three people
+                      supplying three lines will not all use the same
+                      character, and straight quotes beside curly ones is the
+                      kind of thing nobody notices until it is printed.
+
+                      Italic and slightly tighter than body prose, which is
+                      what separates it from the bio underneath when a card
+                      carries both. */}
+                  {founder.quote ? (
+                    <blockquote className="text-body text-ink-muted italic">
+                      &ldquo;{founder.quote}&rdquo;
+                    </blockquote>
+                  ) : null}
+
                   {/* Omitted, not rendered empty. An empty <p> still takes
                       its line-height, so a card without a bio would carry a
                       blank band where the prose goes and read as content

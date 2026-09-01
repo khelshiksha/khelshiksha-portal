@@ -3,8 +3,15 @@ import type { Founder } from "@/services/cms/types";
 /**
  * The people behind Khel Shiksha.
  *
- * NAMES AND ROLES ONLY, supplied by the company on 2026-08-23. Bios and
- * photographs are deliberately absent rather than placeheld: a bio is a claim
+ * NAMES, ROLES AND ONE LINE EACH, supplied by the company - names and roles
+ * on 2026-08-23, the quotes on 2026-09-01.
+ *
+ * THE QUOTES ARE THEIRS, WORD FOR WORD. They are `quote` rather than `bio`
+ * because they are first-person statements, not descriptions of a person, and
+ * the card sets the two differently. Nothing here is edited beyond the
+ * apostrophe in Milan’s, which is typographic rather than straight so it
+ * matches every other apostrophe the site sets. Longer bios are
+ * deliberately absent rather than placeheld: a bio is a claim
  * about a real, named person, and writing a plausible-sounding one is the
  * same fabrication the note above `testimonials` in content/impact.ts
  * refuses. A name and a role are facts the company stated; anything else here
@@ -41,6 +48,7 @@ export const founders: Founder[] = [
     _id: "founder-milan",
     name: "Milan Sarvaiya",
     role: "Co-founder",
+    quote: "We don’t just create games; we create reasons to learn.",
     image: {
       src: "/images/founders/milan-sarvaiya.webp",
       /* A PORTRAIT'S ALT NAMES THE PERSON, and then stops. The card prints
@@ -55,6 +63,8 @@ export const founders: Founder[] = [
     _id: "founder-kishan",
     name: "Kishan Hasani",
     role: "Co-founder",
+    quote:
+      "Passionate about turning education into an experience children love.",
     image: {
       src: "/images/founders/kishan-hasani.webp",
       alt: "Headshot of Kishan Hasani",
@@ -64,6 +74,7 @@ export const founders: Founder[] = [
     _id: "team-ankit",
     name: "Ankit Padshala",
     role: "Marketing Head",
+    quote: "Building connections that help great ideas reach further.",
     image: {
       src: "/images/founders/ankit-padshala.webp",
       alt: "Headshot of Ankit Padshala",
