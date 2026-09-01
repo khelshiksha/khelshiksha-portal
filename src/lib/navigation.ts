@@ -28,10 +28,16 @@ export interface NavGroup {
  * Hrefs stay unprefixed. Locale prefixing happens at the point of rendering,
  * through localeHref, so this file never has to know which language it is in.
  *
- * Kit names are NOT translated. "Project SURAKSHA" and "Aryabhata" are the
+ * Kit names are NOT translated. "Aryabhata" and "Brainy Bee" are the
  * products' actual names, printed on the boxes that arrive at the school;
  * translating them would leave a teacher unable to match the site to the kit
  * in their hands.
+ *
+ * That reasoning now cuts the other way for one of them: the kit the company
+ * renamed to "Road Safety" is still boxed as "Project SURAKSHA". Until the
+ * printing catches up, a teacher holding the box will not find that name on
+ * this site. Flagged rather than worked around - a parenthetical here would
+ * be a website apologising for a label it does not control.
  */
 export function audienceNav(t: Dictionary): NavLink[] {
   return [
@@ -101,8 +107,8 @@ export function whatWeDoMenu(t: Dictionary): NavGroup[] {
       links: [
         { label: t.menu.allKits, href: ROUTES.products },
         {
-          label: "Project SURAKSHA",
-          href: `${ROUTES.products}/project-suraksha`,
+          label: "Road Safety",
+          href: `${ROUTES.products}/road-safety`,
         },
         { label: "Aryabhata", href: `${ROUTES.products}/aryabhata` },
         { label: "Yoga Safari", href: `${ROUTES.products}/yoga-safari` },

@@ -29,10 +29,17 @@ import { mkdir, stat } from "node:fs/promises";
  * ---------------------------------------------------------------------------
  * WHY NO UPSCALE, AND WHY THE RATIO IS ASSERTED.
  *
- * Each source is the full extent of the artwork that exists. Nothing here
- * enlarges: `withoutEnlargement` is on, so a smaller-than-expected source
+ * Each source is normally the full extent of the artwork that exists, so
+ * `withoutEnlargement` is on by default: a smaller-than-expected source
  * produces a smaller file rather than a soft one. next/image handles the
  * responsive candidates from the master below.
+ *
+ * A GROUP CAN OPT OUT with `upscale: true`, and exactly one does. The product
+ * box shots are cut out of a 150 DPI brochure page and are ~205px wide at
+ * source; serving them at that size would mean the browser upscaling them
+ * anyway, on every view, with no control over the kernel. Doing it once here
+ * with lanczos3 is the better of two imperfect options - and the group's
+ * comment says plainly that the real fix is the original photography.
  *
  * The ratio is asserted because section-figure.tsx lays these out against a
  * fixed aspect box. A re-export at a different shape would letterbox or crop
@@ -122,9 +129,67 @@ const GROUPS = [
       },
     },
   },
+
+  /* ---------------------------------------------------------------------
+     PRODUCT BOX SHOTS, CUT OUT OF THE PRINTED BROCHURE.
+
+     TEMPORARY, and the reason matters for whoever reads this next. The
+     company's graphic designer is producing proper product artwork; until it
+     arrives these are the only real photographs of the boxes that exist in
+     the repo, and they beat the abstract placeholder SVGs they replaced by a
+     wide margin - a school can now see the actual box that would arrive.
+
+     THEY ARE ALSO SOFT, unavoidably. The brochure is a flattened 150 DPI
+     print PDF: one JPEG per page, no embedded assets to pull, so each box is
+     about 205x155 px on the page and everything below is an upscale. Fine at
+     card size, visibly soft on a product hero.
+
+     THE ORIGINALS EXIST. Whoever laid out this brochure had full-resolution
+     box shots to place - they are one email away and would drop straight
+     into this group, replacing the crops with plain source paths.
+
+     Cropped HERE rather than committed pre-cut, same as ankit-padshala
+     above: the page is the source of truth, and the six rectangles are a
+     decision someone can argue with and re-run. */
+  {
+    dest: "public/images/products",
+    /* 4:3, matching the 800x600 placeholder SVGs these replace. */
+    ratio: 4 / 3,
+    /* 1024 is about 5x the source region. Past that the upscale stops adding
+       anything and only adds bytes. */
+    width: 1024,
+    /* The one group that enlarges - see the note at the top of the file. */
+    upscale: true,
+    sources: Object.fromEntries(
+      [
+        ["road-safety", 44],
+        ["aryabhata", 232],
+        ["aahar", 414],
+        ["yoga-safari", 588],
+        ["brainy-bee", 758],
+        ["naturebola", 932],
+      ].map(([name, top]) => [
+        name,
+        {
+          src: "assets/source/products/brochure-spread.jpg",
+          /* One column, evenly spaced down the page, so only `top` varies.
+             Written as a map rather than six literal objects because six
+             near-identical blocks invite a typo in the one field that is
+             actually different. */
+          crop: { left: 1192, top, width: 224, height: 168 },
+        },
+      ]),
+    ),
+  },
 ];
 
-for (const { dest, ratio: expected, width: outWidth, sources } of GROUPS) {
+for (const {
+  dest,
+  ratio: expected,
+  width: outWidth,
+  sources,
+  upscale,
+} of GROUPS) {
   await mkdir(dest, { recursive: true });
 
   for (const [name, entry] of Object.entries(sources)) {
@@ -154,11 +219,25 @@ for (const { dest, ratio: expected, width: outWidth, sources } of GROUPS) {
     const pipeline = sharp(src);
     if (crop) pipeline.extract(crop);
     await pipeline
-      .resize({ width: outWidth, withoutEnlargement: true })
+      .resize({
+        width: outWidth,
+        withoutEnlargement: !upscale,
+        /* Only matters when enlarging; lanczos3 is sharp's best-quality
+           kernel and the default anyway, stated here so the choice is
+           visible next to the flag that makes it relevant. */
+        kernel: "lanczos3",
+      })
       .webp({ quality: 82, effort: 6 })
       .toFile(out);
 
     const { size } = await stat(out);
-    console.log(`${out}  ${width}x${height}  ${Math.round(size / 1024)}KB`);
+    /* Reported from the WRITTEN file, not from the source or crop. Those
+       differ the moment a group upscales, and a log that says 224x168 for a
+       1024px file is worse than no log - it is a wrong answer to the exact
+       question someone runs this to check. */
+    const written = await sharp(out).metadata();
+    console.log(
+      `${out}  ${written.width}x${written.height}  ${Math.round(size / 1024)}KB`,
+    );
   }
 }
