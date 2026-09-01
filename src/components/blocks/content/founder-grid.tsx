@@ -68,20 +68,37 @@ export function FounderGrid({ founders }: { founders: Founder[] }) {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {founders.map((founder, i) => (
             <Reveal key={founder._id} delay={staggerDelay(i)}>
-              {/* Stacked at every width, not a row that unstacks. At three
-                  columns the card is about 20rem, and an avatar beside the
-                  text leaves roughly 13rem for a name and a role - enough to
-                  fit, narrow enough that "Ankit Padshala" and "Marketing
-                  Head" each wrap. Portrait above name is also the
-                  conventional reading order for a team card. */}
-              <div className="border-rule bg-surface flex h-full flex-col gap-4 rounded-[var(--radius-lg)] border p-6">
+              {/* CENTRED, AND THE PORTRAIT IS THE SIZE OF A PORTRAIT.
+
+                  It was size-24 (96px) and left-aligned. On a phone this card
+                  is the full width of the viewport, so a 96px square pinned
+                  to its top-left corner read as a thumbnail somebody forgot
+                  to finish - the card was 340px wide and the face was under
+                  a third of it.
+
+                  size-36/40 (144/160px) is about half the card's inner width
+                  at both the phone's one column and the desktop's three,
+                  which is the proportion that makes a face read as the
+                  subject rather than as an icon. Centring is what makes it
+                  look chosen: a small left-aligned square under centred-
+                  looking text is the layout you get by not deciding.
+
+                  radius-lg rather than md because a corner radius has to grow
+                  with the box it is on, or a bigger square looks squarer. */}
+              <div className="border-rule bg-surface flex h-full flex-col items-center gap-5 rounded-[var(--radius-lg)] border p-6 text-center">
                 {founder.image ? (
                   <Image
                     src={founder.image.src}
                     alt={founder.image.alt}
-                    width={112}
-                    height={112}
-                    className="size-24 shrink-0 rounded-[var(--radius-md)] object-cover sm:size-28"
+                    /* The LARGEST rendered size (sm:size-40 = 160px), not the
+                       old 112. next/image builds its srcset from these, so
+                       leaving them behind the CSS is how a portrait ends up
+                       served at 112 and upscaled by the browser into a 160px
+                       box on every retina phone. It emits 1x and 2x from
+                       here, and the 448px source covers both. */
+                    width={160}
+                    height={160}
+                    className="size-36 shrink-0 rounded-[var(--radius-lg)] object-cover sm:size-40"
                   />
                 ) : (
                   <div
@@ -89,7 +106,7 @@ export function FounderGrid({ founders }: { founders: Founder[] }) {
                     /* bg-brand-tint / text-brand-deep is the pairing the
                        numbered step markers on a product page use - the same
                        "typographic stand-in on a soft ground" job. */
-                    className="bg-brand-tint text-brand-deep flex size-24 shrink-0 items-center justify-center rounded-[var(--radius-md)] text-2xl font-bold sm:size-28"
+                    className="bg-brand-tint text-brand-deep flex size-36 shrink-0 items-center justify-center rounded-[var(--radius-lg)] text-3xl font-bold sm:size-40"
                   >
                     {initialsOf(founder.name)}
                   </div>
