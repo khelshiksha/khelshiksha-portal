@@ -785,6 +785,135 @@
     }
   }
 
+  /* --- The hero product stage --------------------------------------------
+     The panel is a white field because the photographs are shot on white and
+     padded with white by scripts/build-section-images.mjs - see the note in
+     that group on why the ground is not keyed out. On the hero's cream this
+     reads as a lightbox rather than as eleven images with square edges.
+
+     A FIXED SQUARE, not an intrinsic box. The sources are normalised to 1:1
+     so every kit occupies the same area, which is what stops the stage
+     jumping between a wide board game and a tall lacing set. */
+  .kv-stage-panel {
+    position: relative;
+    aspect-ratio: 1;
+    width: min(100%, 26rem);
+    overflow: hidden;
+    border-radius: var(--radius-2xl);
+    border: 1px solid var(--rule);
+    /* A FIXED LIGHT GROUND IN BOTH THEMES, and #fdfbf6 rather than pure
+       white because that is --paper's light value - the same constant
+       .logo-mark falls back to in dark mode, for the same reason.
+
+       The photographs are shot on white and padded with white. There is no
+       dark-mode version of them, and tinting them would tint the products
+       too, so the panel gives them back the paper they were shot on. A
+       theme-aware panel would put a white-backed photograph on a dark field
+       and render as a glowing rectangle with a hard edge. */
+    background: #fdfbf6;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Dark mode keeps the light panel and softens what frames it. A --rule
+     border is nearly invisible against #fdfbf6 on a dark page, and the
+     light-theme shadow does nothing on a dark ground - the panel needs a
+     defined edge and a shadow with enough depth to sit on the dark paper
+     rather than float above it. */
+  :root[data-theme="dark"] .kv-stage-panel {
+    border-color: rgb(0 0 0 / 0.35);
+    box-shadow:
+      0 18px 40px rgb(0 0 0 / 0.55),
+      0 2px 6px rgb(0 0 0 / 0.4);
+  }
+
+  /* Every mounted frame is absolutely positioned in the same square, so the
+     cross-fade has nothing to reflow. Only .is-current is opaque. */
+  .kv-stage-frame {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    padding: 6%;
+    opacity: 0;
+    transform: scale(1.03);
+    transition:
+      opacity 520ms var(--ease-out-quint),
+      transform 720ms var(--ease-out-quint);
+  }
+  .kv-stage-frame.is-current {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* The caption re-mounts on every beat (React key), so a plain entry
+     animation is all this needs - there is no outgoing node to cross against. */
+  .kv-stage-in {
+    animation: kv-stage-in 460ms var(--ease-out-quint) both;
+  }
+  @keyframes kv-stage-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* THE DIE SITS ON THE PANEL, half over its lower edge, so it reads as an
+     object ON the lightbox rather than a badge printed inside it - the same
+     grounding trick the mascot uses against a section boundary. */
+  .kv-stage-die {
+    position: absolute;
+    right: 6%;
+    bottom: 0;
+    width: 3.25rem;
+    height: 3.25rem;
+    translate: 0 34%;
+    filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.18));
+    transition: rotate 620ms var(--ease-out-quint);
+    /* The die STRADDLES the panel edge - two thirds on the light panel, one
+       third on the hero's own ground - so it cannot take a theme-aware fill.
+       On dark it would be a dark cube half-sunk into a light panel. It keeps
+       the panel's paper and the brand blue in both themes, which is what
+       makes it read as one object sitting on the lightbox. */
+  }
+  /* The rotation VALUE is set inline from an ever-increasing counter, so the
+     die always turns the same way - see the note in product-stage.tsx. Only
+     the timing lives here. 620ms is FLIGHT_MS in lib/play-beat, not a number
+     picked to look right: if that constant changes this has to change with
+     it, or the die will still be turning when the product has swapped. */
+
+  /* Reduced motion: the stage still CHANGES, because the product rotating is
+     content rather than decoration, but nothing travels. The die snaps to its
+     face, the frames swap without the scale, and the caption does not rise. */
+  @media (prefers-reduced-motion: reduce) {
+    .kv-stage-frame {
+      transform: none;
+      transition: opacity 200ms linear;
+    }
+    .kv-stage-frame.is-current {
+      transform: none;
+    }
+    /* The die still turns - it is the thing causing the change - but it
+       arrives instead of travelling. */
+    .kv-stage-die {
+      transition: none;
+    }
+    .kv-stage-in {
+      animation: none;
+    }
+  }
+
+  /* Narrower than `measure`, which is set for paragraphs. A blurb centred
+     under a 26rem panel wants to break at roughly the panel's width or the
+     stage stops reading as one object. */
+  .measure-tight {
+    max-width: 30ch;
+  }
+
   /* Nothing animates for a tab nobody is looking at. */
   .kv-root[data-paused="1"] * {
     animation-play-state: paused !important;
