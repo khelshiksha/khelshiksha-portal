@@ -89,14 +89,21 @@ const FACES: readonly (readonly [number, number])[][] = [
   ],
 ];
 
-function Die({ face, rolling }: { face: number; rolling: boolean }) {
+function Die({ face, turns }: { face: number; turns: number }) {
   return (
     <span
       aria-hidden="true"
-      className={`kv-stage-die${rolling ? "is-rolling" : ""}`}
-      /* The die is the brand's own mark - it is the dot on the i of Shiksha
+      className="kv-stage-die"
+      /* ROTATION ACCUMULATES, and is set here rather than toggled by a class.
+         A class flipping between 0 and 405deg turned the die forward on
+         launch and then UNWOUND it on impact, which is the one thing a die
+         never does. Multiplying an ever-increasing counter means every roll
+         turns the same way; the transition on the property carries it.
+
+         The die is the brand's own mark - it is the dot on the i of Shiksha
          in the logo - so it earns a place in the hero rather than being
          decoration bolted on to justify the animation. */
+      style={{ rotate: `${turns * 405}deg` }}
     >
       <svg viewBox="0 0 100 100" className="size-full">
         <rect
