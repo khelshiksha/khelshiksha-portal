@@ -228,18 +228,22 @@ export function ProductStage({ products }: { products: HeroProduct[] }) {
   return (
     <div ref={rootRef} className="flex w-full flex-col items-center gap-5">
       <div className="kv-stage-panel">
-        {mounted.map((n) => (
-          <Image
-            key={products[n]._id}
-            src={products[n].image.src}
-            alt={n === index ? products[n].image.alt : ""}
-            width={880}
-            height={880}
-            priority={n === 0}
-            className={`kv-stage-frame${n === index ? "is-current" : ""}`}
-            sizes="(min-width: 1024px) 440px, 90vw"
-          />
-        ))}
+        {/* The clip holds ONLY the photographs. The die is its sibling so it
+            can overhang the panel's edge - see .kv-stage-clip in globals.css. */}
+        <div className="kv-stage-clip">
+          {mounted.map((n) => (
+            <Image
+              key={products[n]._id}
+              src={products[n].image.src}
+              alt={n === index ? products[n].image.alt : ""}
+              width={880}
+              height={880}
+              priority={n === 0}
+              className={`kv-stage-frame${n === index ? "is-current" : ""}`}
+              sizes="(min-width: 1024px) 440px, 90vw"
+            />
+          ))}
+        </div>
 
         <Die face={index % 6} turns={turns} />
       </div>

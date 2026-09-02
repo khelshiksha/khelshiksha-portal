@@ -11,9 +11,9 @@
  */
 import { chromium } from "playwright";
 
-const [url, out, w = "390", h = "1400"] = process.argv.slice(2);
+const [url, out, w = "390", h = "1400", theme] = process.argv.slice(2);
 if (!url || !out) {
-  console.error("usage: node scripts/shoot.mjs <url> <out.png> [w] [h]");
+  console.error("usage: node scripts/shoot.mjs <url> <out.png> [w] [h] [light|dark]");
   process.exit(1);
 }
 
@@ -23,6 +23,12 @@ const page = await browser.newPage({
   deviceScaleFactor: 2,
 });
 await page.goto(url, { waitUntil: "networkidle", timeout: 60_000 });
+/* The theme is an attribute on <html>, not a media query - see the note in
+   styles/theme.css - so a colorScheme emulation alone would not switch it. */
+if (theme) {
+  await page.evaluate((t) => document.documentElement.setAttribute("data-theme", t), theme);
+  await page.waitForTimeout(300);
+}
 /* The reveal animations are scroll-triggered; without this the shot catches
    cards at opacity 0 and looks like a broken page rather than a styled one. */
 await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));

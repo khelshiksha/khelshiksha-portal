@@ -798,7 +798,12 @@
     position: relative;
     aspect-ratio: 1;
     width: min(100%, 26rem);
-    overflow: hidden;
+    /* NO overflow:hidden HERE, and that is the whole point of the inner clip
+       below. The die is positioned to straddle the panel's lower edge - two
+       thirds on the lightbox, one third on the hero's ground - which is what
+       makes it read as an object sitting ON the panel rather than a badge
+       printed inside it. Clipping at this level sheared it flat and it read
+       as a broken shape. */
     border-radius: var(--radius-2xl);
     border: 1px solid var(--rule);
     /* A FIXED LIGHT GROUND IN BOTH THEMES, and #fdfbf6 rather than pure
@@ -824,6 +829,17 @@
     box-shadow:
       0 18px 40px rgb(0 0 0 / 0.55),
       0 2px 6px rgb(0 0 0 / 0.4);
+  }
+
+  /* THE FRAMES ARE CLIPPED, THE DIE IS NOT. A photograph is a full-bleed
+     rectangle and would square off the panel's rounded corners without this;
+     the die has to escape the same box. One rounded, overflow-hidden layer
+     holding only the images gives both. */
+  .kv-stage-clip {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
   }
 
   /* Every mounted frame is absolutely positioned in the same square, so the

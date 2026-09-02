@@ -158,7 +158,13 @@ export async function HeroHome() {
         <ProductStage products={products} />
       </Container>
 
-      <Container className="relative z-10 flex flex-col gap-4 pb-10 sm:gap-5 sm:pb-12 lg:max-w-[62rem] lg:gap-6 lg:pb-16">
+      {/* No lg:max-w cap, so this aligns with the hero grid above it. The cap
+          was inherited from the old stacked layout, where the copy Container
+          carried the same 62rem; the grid does not, so a capped-and-centred
+          paragraph started 115px to the right of the headline it belongs
+          under. Two blocks of prose in one section have to share a left
+          edge. */}
+      <Container className="relative z-10 flex flex-col gap-4 pb-10 sm:gap-5 sm:pb-12 lg:gap-6 lg:pb-16">
         <p className="measure text-body sm:text-body-lg text-ink-muted">
           Gamified experiential learning kits, a Game Corner for the classroom
           and teacher training. Built for Vidyalayas and aligned to NEP 2020 and
