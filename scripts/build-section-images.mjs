@@ -181,6 +181,45 @@ const GROUPS = [
       ]),
     ),
   },
+
+  /* ---------------------------------------------------------------------
+     THE HERO SHOWCASE PRODUCTS.
+
+     Eleven photographs of the activity kits, on white, supplied as WhatsApp
+     exports. They drive the rotating stage in the home hero - see
+     blocks/heroes/product-stage.tsx - and are NOT the product catalogue:
+     content/products.ts is a separate, smaller set with its own pages.
+
+     `square: true` is doing real work here. These arrived as a mix of
+     portrait and landscape with generous, unequal white margins, so the
+     group trims each to its subject and letterboxes the result into one
+     square canvas. Without that the stage would show eleven products at
+     eleven apparent sizes, which is what makes a rotating showcase look
+     broken rather than varied.
+
+     880 because the stage is a 440px panel at its largest and these are the
+     only images in the hero, so they are worth serving at 2x. */
+  {
+    dest: "public/images/hero-products",
+    ratio: 1,
+    width: 880,
+    square: true,
+    sources: Object.fromEntries(
+      [
+        "abc-explorer-english",
+        "abc-explorer-gujarati",
+        "animal-match-up",
+        "color-carnival",
+        "flashlight-magic",
+        "hungry-bunny",
+        "know-your-shapes",
+        "speed-cups",
+        "string-in-sequence",
+        "sweet-secrets",
+        "wheel-of-emotions",
+      ].map((n) => [n, `assets/source/hero-products/${n}.jpeg`]),
+    ),
+  },
 ];
 
 for (const {
@@ -189,6 +228,7 @@ for (const {
   width: outWidth,
   sources,
   upscale,
+  square,
 } of GROUPS) {
   await mkdir(dest, { recursive: true });
 
@@ -203,7 +243,13 @@ for (const {
     const { width, height } = crop ?? (await sharp(src).metadata());
     const ratio = width / height;
 
-    if (Math.abs(ratio - expected) > TOLERANCE) {
+    /* A SQUARING GROUP HAS NOTHING TO ASSERT. It trims its own margins and
+       then letterboxes whatever is left into a square canvas, so the source
+       ratio is an input to that process rather than a contract - the eleven
+       hero products arrived as a mix of portrait and landscape and all of
+       them are correct. The assertion still guards every other group, where
+       the source ratio IS the contract. */
+    if (!square && Math.abs(ratio - expected) > TOLERANCE) {
       console.error(
         `${src}: expected a ${expected} ratio, got ${ratio.toFixed(3)} ` +
           `(${width}x${height}).\n` +
@@ -218,17 +264,43 @@ for (const {
     const out = `${dest}/${name}.webp`;
     const pipeline = sharp(src);
     if (crop) pipeline.extract(crop);
-    await pipeline
-      .resize({
+
+    if (square) {
+      /* TRIM FIRST, THEN LETTERBOX. The photographs arrive with generous and
+         UNEQUAL white margins, so resizing them as they came would render
+         eleven products at eleven apparent sizes - the one failure that makes
+         a rotating showcase look broken rather than varied. Trimming to the
+         subject and then fitting every subject into the same square is what
+         makes them read as one set.
+
+         The threshold is high because the ground is 252-254, not 255; too low
+         and it eats the white game cards that several of these products are
+         made of.
+
+         PADDED WITH WHITE, NOT MADE TRANSPARENT. Keying the ground out would
+         punch holes straight through those same white cards - the background
+         and the product are the same colour, and no threshold separates them.
+         The stage renders these on a white panel, where the padding is
+         invisible. */
+      pipeline
+        .trim({ background: "#ffffff", threshold: 12 })
+        .resize(outWidth, outWidth, {
+          fit: "contain",
+          background: "#ffffff",
+          kernel: "lanczos3",
+        });
+    } else {
+      pipeline.resize({
         width: outWidth,
         withoutEnlargement: !upscale,
         /* Only matters when enlarging; lanczos3 is sharp's best-quality
            kernel and the default anyway, stated here so the choice is
            visible next to the flag that makes it relevant. */
         kernel: "lanczos3",
-      })
-      .webp({ quality: 82, effort: 6 })
-      .toFile(out);
+      });
+    }
+
+    await pipeline.webp({ quality: 82, effort: 6 }).toFile(out);
 
     const { size } = await stat(out);
     /* Reported from the WRITTEN file, not from the source or crop. Those

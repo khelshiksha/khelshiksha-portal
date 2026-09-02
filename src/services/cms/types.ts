@@ -294,3 +294,22 @@ export interface Founder {
   quote?: string;
   image?: ImageRef;
 }
+
+/**
+ * A kit shown in the home hero's rotating stage.
+ *
+ * DELIBERATELY NOT A `Product`. A Product carries a slug, curriculum
+ * mappings, learning outcomes, grade bands and a box-contents list, because
+ * it has a page that has to justify itself to a principal. A HeroProduct is a
+ * photograph and a sentence. Forcing the showcase through the catalogue type
+ * would mean inventing eight fields per kit to satisfy a contract nothing
+ * reads - see the note in content/hero-products.ts.
+ */
+export interface HeroProduct {
+  _id: string;
+  name: string;
+  /** One line. The stage sets it under the photograph, at a size read in the
+   *  two seconds before the next beat. */
+  blurb: string;
+  image: ImageRef;
+}

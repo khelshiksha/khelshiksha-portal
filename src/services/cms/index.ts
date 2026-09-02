@@ -5,6 +5,7 @@ import { products } from "@/content/products";
 import { alignments, benefits, faqs, mission, vision } from "@/content/site";
 import { credentialGroups } from "@/content/credentials";
 import { founders } from "@/content/founders";
+import { heroProducts } from "@/content/hero-products";
 import { pressCuttings } from "@/content/press";
 import type { AudienceKey, PillarKey } from "@/lib/constants";
 import type {
@@ -14,6 +15,7 @@ import type {
   Benefit,
   FaqItem,
   Founder,
+  HeroProduct,
   ImpactStat,
   Partner,
   Pillar,
@@ -159,4 +161,14 @@ export async function getPressCuttings(): Promise<PressCutting[]> {
  */
 export async function getFounders(): Promise<Founder[]> {
   return founders;
+}
+
+/* --- Hero showcase ------------------------------------------------------ */
+
+/**
+ * The kits that rotate through the home hero. A different, larger set than
+ * getProducts - see the note at the top of content/hero-products.ts.
+ */
+export async function getHeroProducts(): Promise<HeroProduct[]> {
+  return heroProducts;
 }

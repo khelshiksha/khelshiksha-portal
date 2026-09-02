@@ -1,10 +1,10 @@
 import { Container } from "@/components/ui/container";
+import { getHeroProducts } from "@/services/cms";
 import { ButtonLink } from "@/components/ui/button";
 import { SITE } from "@/lib/constants";
 import { TrustStrip } from "@/components/blocks/proof/trust-strip";
 import { getDictionary } from "@/lib/i18n";
-import { KhelVerse } from "./khelverse/khelverse";
-import { World } from "./khelverse/world";
+import { ProductStage } from "./product-stage";
 import { RotatingWord, type HeroWords } from "./rotating-word";
 
 /**
@@ -46,11 +46,29 @@ const WORDS: HeroWords = [
   "wonder.",
 ];
 
-export function HeroHome() {
+export async function HeroHome() {
   const t = getDictionary();
+  const products = await getHeroProducts();
 
   return (
     <section className="kv-hero relative flex flex-col overflow-hidden">
+      {/* TWO COLUMNS FROM lg, AND THAT IS THE REAL CHANGE HERE.
+
+          The hero used to stack: copy, then a full-width isometric campus,
+          then a paragraph. It read top-to-bottom as one long column and spent
+          most of a laptop screen before the first product appeared.
+
+          Proposition left, product right is the arrangement this content
+          actually wants. The reader gets the claim and the two doors out of
+          it in one glance, and the thing being claimed about is beside them
+          rather than a scroll away. Below lg it stacks in that same order,
+          because a phone has no second column and the copy must still come
+          first.
+
+          items-center rather than items-start: the stage is a fixed square
+          and the copy column varies with the headline's wrap, so aligning
+          their tops would leave the square hanging in whitespace whenever the
+          copy is short. */}
       {/* MORE AIR THAN THIS USED TO HAVE, on purpose.
 
           The copy column grew by two rows when the CTAs and the rotating
@@ -60,16 +78,17 @@ export function HeroHome() {
           than one larger number because vertical space is cheap on a
           desktop and expensive on a phone, where the campus below still
           has to be reachable without a long scroll. */}
-      <Container className="relative z-10 flex flex-col gap-5 pt-10 sm:gap-6 sm:pt-14 lg:max-w-[62rem] lg:gap-8 lg:pt-16">
-        <p className="text-label text-ink-subtle font-bold tracking-[0.16em] uppercase">
-          {SITE.tagline}
-        </p>
+      <Container className="relative z-10 grid items-center gap-10 pt-10 pb-8 sm:pt-14 lg:grid-cols-[minmax(0,1fr)_26rem] lg:gap-16 lg:pt-16 lg:pb-12">
+        <div className="flex flex-col gap-5 sm:gap-6 lg:gap-8">
+          <p className="text-label text-ink-subtle font-bold tracking-[0.16em] uppercase">
+            {SITE.tagline}
+          </p>
 
-        {/* brand-display is Baloo, and this is the ONLY heading on the site
+          {/* brand-display is Baloo, and this is the ONLY heading on the site
             that gets it - see lib/fonts.ts for why the scope is one line. */}
-        <h1 className="brand-display text-display-1 text-ink max-sm:text-[2.5rem] max-sm:leading-[1.02]">
-          Play with Purpose.
-          {/* The line break is desktop-only. On a 390px screen it forced the
+          <h1 className="brand-display text-display-1 text-ink max-sm:text-[2.5rem] max-sm:leading-[1.02]">
+            Play with Purpose.
+            {/* The line break is desktop-only. On a 390px screen it forced the
               second sentence onto a line of its own and the headline ran to
               SIX lines, which is most of the first screen spent on one
               sentence. Let it flow and it settles into four.
@@ -77,14 +96,14 @@ export function HeroHome() {
               NO ITALIC IN THE HEADLINE. This section spends its single
               Fraunces phrase on the rotating word below, and two accent
               phrases in one block is where a page starts shouting. */}
-          <br className="max-sm:hidden" /> Learn with Joy.
-        </h1>
+            <br className="max-sm:hidden" /> Learn with Joy.
+          </h1>
 
-        <p className="text-h3 text-ink-muted max-w-[34ch] font-normal">
-          Where learning feels like play, and play builds life.
-        </p>
+          <p className="text-h3 text-ink-muted max-w-[34ch] font-normal">
+            Where learning feels like play, and play builds life.
+          </p>
 
-        {/* THE BUTTONS ARE BACK, and the pairing is not the header's.
+          {/* THE BUTTONS ARE BACK, and the pairing is not the header's.
 
             They were removed once because "Book a Demo" and "Explore the
             approach" were the fifth and sixth copy of the header's own two
@@ -97,16 +116,16 @@ export function HeroHome() {
             Order is browse-then-commit. A visitor who has read four lines is
             not ready to be closed, so the low-commitment door is primary and
             the partnership one is secondary. */}
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <ButtonLink href="/products" size="lg">
-            Explore Our Games
-          </ButtonLink>
-          <ButtonLink href="/corporate" variant="secondary" size="lg">
-            Partner With Us
-          </ButtonLink>
-        </div>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <ButtonLink href="/products" size="lg">
+              Explore Our Games
+            </ButtonLink>
+            <ButtonLink href="/corporate" variant="secondary" size="lg">
+              Partner With Us
+            </ButtonLink>
+          </div>
 
-        {/* THE ROTATING WORD MOVED OUT OF THE <h1>, which is a real change and
+          {/* THE ROTATING WORD MOVED OUT OF THE <h1>, which is a real change and
             not a reshuffle.
 
             It used to end the headline. The client's headline is a fixed
@@ -119,37 +138,27 @@ export function HeroHome() {
             if anything better. What it must not cost is the SYNC - the word
             still changes on lib/play-beat's impact event, so the die landing
             and the word turning stay one event. See rotating-word.tsx. */}
-        <p className="text-h3 text-ink max-w-[34ch] font-normal">
-          Every classroom a hub of <RotatingWord words={WORDS} />
-        </p>
+          <p className="text-h3 text-ink max-w-[34ch] font-normal">
+            Every classroom a hub of <RotatingWord words={WORDS} />
+          </p>
 
-        <TrustStrip items={[t.trust.nep, t.trust.ncf, t.trust.training]} />
+          <TrustStrip items={[t.trust.nep, t.trust.ncf, t.trust.training]} />
+        </div>
+
+        {/* THE STAGE REPLACES THE ISOMETRIC CAMPUS.
+
+            The campus was a beautiful thing that showed no product. Its die
+            hopped between five painted zones and the headline word changed
+            where it landed; the kits it was standing in for were nowhere on
+            the screen. This keeps the mechanism exactly - same beat, same
+            die, same causality - and puts the actual kits under it.
+
+            khelverse/ is still in the tree and still builds. Reverting is
+            this block and two imports. */}
+        <ProductStage products={products} />
       </Container>
 
-      {/* THE CAMPUS SITS BETWEEN THE ACTION AND THE PROSE, on every screen.
-
-          Order is: headline, what you can do, why you can trust it, what it
-          is, and only then the paragraph. The illustration is doing the
-          explaining, so it belongs above the sentence that would otherwise
-          have to. It used to be order-last on desktop, which put the prose
-          between the trust signals and the campus and left the zone tooltip
-          overlapping the paragraph.
-
-          Wider than the viewport on small screens on purpose: fitting the
-          whole island into 390px made every landmark about twelve pixels
-          tall, and present-but-unreadable is worse than absent. The camera
-          moves in instead, the island runs off both edges, and the section
-          clips it so nothing scrolls sideways. */}
-      {/* The negative top margin on sm was pulling the campus up under the
-          trust strip, which is where the zone cards were colliding with it.
-          It goes, and lg gets real clearance instead of 2px. */}
-      <div className="relative my-2 w-full sm:mt-2 lg:my-0 lg:mt-8">
-        <KhelVerse>
-          <World />
-        </KhelVerse>
-      </div>
-
-      <Container className="relative z-10 mt-4 flex flex-col gap-4 pb-10 sm:gap-5 sm:pb-12 lg:mt-8 lg:max-w-[62rem] lg:gap-6 lg:pb-16">
+      <Container className="relative z-10 flex flex-col gap-4 pb-10 sm:gap-5 sm:pb-12 lg:max-w-[62rem] lg:gap-6 lg:pb-16">
         <p className="measure text-body sm:text-body-lg text-ink-muted">
           Gamified experiential learning kits, a Game Corner for the classroom
           and teacher training. Built for Vidyalayas and aligned to NEP 2020 and
