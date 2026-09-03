@@ -44,21 +44,31 @@ import type { Founder } from "@/services/cms/types";
  * is the team the company wants named.
  */
 export const founders: Founder[] = [
-  {
-    _id: "founder-milan",
-    name: "Milan Sarvaiya",
-    role: "Co-founder",
-    quote: "We don’t just create games; we create reasons to learn.",
-    image: {
-      src: "/images/founders/milan-sarvaiya.webp",
-      /* A PORTRAIT'S ALT NAMES THE PERSON, and then stops. The card prints
-         the name and the role in text directly beneath, so describing the
-         shirt or the smile would only add noise for a screen reader that has
-         already been told who this is. "Headshot of" earns its place because
-         it says what KIND of image this is, which the text does not. */
-      alt: "Headshot of Milan Sarvaiya",
-    },
-  },
+  /* MILAN SARVAIYA IS COMMENTED OUT, NOT DELETED, at the company's request on
+     2026-09-03 - to be shown later. Everything he needs is here and correct:
+     name, role, quote and portrait. Restoring him is uncommenting this block,
+     and nothing else - the photograph is still built and still served at
+     public/images/founders/milan-sarvaiya.webp, and its source is still in
+     assets/source/founders.
+
+     LEFT IN PLACE RATHER THAN REMOVED because a deleted entry is a research
+     job to recover: the quote came from the company by message and the crop
+     was tuned by hand. A commented block costs nothing and is a one-line
+     restore.
+
+     The grid handles two cards without changes - it is
+     sm:grid-cols-2 lg:grid-cols-3, so two sit side by side rather than
+     leaving a hole. */
+  // {
+  //   _id: "founder-milan",
+  //   name: "Milan Sarvaiya",
+  //   role: "Co-founder",
+  //   quote: "We don’t just create games; we create reasons to learn.",
+  //   image: {
+  //     src: "/images/founders/milan-sarvaiya.webp",
+  //     alt: "Headshot of Milan Sarvaiya",
+  //   },
+  // },
   {
     _id: "founder-kishan",
     name: "Kishan Hasani",
