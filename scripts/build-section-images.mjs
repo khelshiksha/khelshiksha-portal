@@ -133,33 +133,34 @@ const GROUPS = [
   /* ---------------------------------------------------------------------
      PRODUCT BOX SHOTS, CUT OUT OF THE PRINTED BROCHURE.
 
-     TEMPORARY, and the reason matters for whoever reads this next. The
-     company's graphic designer is producing proper product artwork; until it
-     arrives these are the only real photographs of the boxes that exist in
-     the repo, and they beat the abstract placeholder SVGs they replaced by a
-     wide margin - a school can now see the actual box that would arrive.
+     TEMPORARY, until the graphic designer delivers artwork - but no longer
+     soft. The first version of this group cut them out of the PDF, which is
+     a flattened 150 DPI print file: one JPEG per page, each box about 205px
+     across, and everything served was an upscale of that. They shipped
+     visibly blurred.
 
-     THEY ARE ALSO SOFT, unavoidably. The brochure is a flattened 150 DPI
-     print PDF: one JPEG per page, no embedded assets to pull, so each box is
-     about 205x155 px on the page and everything below is an upscale. Fine at
-     card size, visibly soft on a product hero.
+     THE PNG EXPORT OF THE SAME SPREAD IS 3600x5400 - three times the linear
+     resolution, nine times the pixels, and it was sitting beside the PDF the
+     whole time. Each box is now ~690px of real detail rather than 205px of
+     upscale: the ministry line, the "WHAT'S INSIDE" component labels and the
+     kit strapline all resolve, where before they were grey smudges.
 
-     THE ORIGINALS EXIST. Whoever laid out this brochure had full-resolution
-     box shots to place - they are one email away and would drop straight
-     into this group, replacing the crops with plain source paths.
+     Cropped here rather than committed pre-cut, same as everywhere else in
+     this file. The coordinates are the PDF-era ones multiplied by 5400/1754,
+     because the spread is the same artwork at a different scale.
 
-     Cropped HERE rather than committed pre-cut, same as ankit-padshala
-     above: the page is the source of truth, and the six rectangles are a
-     decision someone can argue with and re-run. */
+     quality 88 rather than the file default of 82, and a light unsharp mask:
+     these are the only images on the site that have been through a print
+     screen, and they are the ones a school looks at longest. */
   {
     dest: "public/images/products",
-    /* 4:3, matching the 800x600 placeholder SVGs these replace. */
     ratio: 4 / 3,
-    /* 1024 is about 5x the source region. Past that the upscale stops adding
-       anything and only adds bytes. */
-    width: 1024,
-    /* The one group that enlarges - see the note at the top of the file. */
+    /* ~1.7x the 690px native crop. Past that the upscale adds bytes and no
+       detail; below it the product page's own hero is being downscaled. */
+    width: 1200,
     upscale: true,
+    sharpen: true,
+    quality: 88,
     sources: Object.fromEntries(
       [
         ["road-safety", 44],
@@ -168,17 +169,24 @@ const GROUPS = [
         ["yoga-safari", 588],
         ["brainy-bee", 758],
         ["naturebola", 932],
-      ].map(([name, top]) => [
-        name,
-        {
-          src: "assets/source/products/brochure-spread.jpg",
-          /* One column, evenly spaced down the page, so only `top` varies.
-             Written as a map rather than six literal objects because six
-             near-identical blocks invite a typo in the one field that is
-             actually different. */
-          crop: { left: 1192, top, width: 224, height: 168 },
-        },
-      ]),
+      ].map(([name, top]) => {
+        /* The spread is 3.079x the page the original coordinates were read
+           off, so the whole rectangle scales rather than being re-measured -
+           re-measuring six boxes by eye would drift them apart. */
+        const S = 5400 / 1754;
+        return [
+          name,
+          {
+            src: "assets/source/products/brochure-spread-hires.jpg",
+            crop: {
+              left: Math.round(1192 * S),
+              top: Math.round(top * S),
+              width: Math.round(224 * S),
+              height: Math.round(168 * S),
+            },
+          },
+        ];
+      }),
     ),
   },
 
@@ -229,6 +237,8 @@ for (const {
   sources,
   upscale,
   square,
+  sharpen,
+  quality,
 } of GROUPS) {
   await mkdir(dest, { recursive: true });
 
@@ -300,7 +310,14 @@ for (const {
       });
     }
 
-    await pipeline.webp({ quality: 82, effort: 6 }).toFile(out);
+    /* SHARPEN ONLY WHERE A GROUP ASKS FOR IT. Every resample softens, and a
+       crop lifted out of a printed page has been through a press screen and a
+       JPEG before it ever reaches here. A light unsharp mask puts back the
+       edge the resample took and nothing more - enough that box lettering
+       resolves, short of the halo that makes an image look processed. */
+    if (sharpen) pipeline.sharpen({ sigma: 0.8, m1: 0.6, m2: 0.9 });
+
+    await pipeline.webp({ quality: quality ?? 82, effort: 6 }).toFile(out);
 
     const { size } = await stat(out);
     /* Reported from the WRITTEN file, not from the source or crop. Those
