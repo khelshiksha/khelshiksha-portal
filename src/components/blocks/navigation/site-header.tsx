@@ -96,7 +96,7 @@ export function SiteHeader() {
       className={cn(
         "sticky top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-200",
         scrolled
-          ? /* Opaque on phones, frosted only from lg up.
+          ? /* Opaque wherever the HAMBURGER exists, frosted only above it.
                The blur used to apply at every width, and it was the ONLY
                thing that changed when the page scrolled - which matches the
                reported bug exactly: the menu opened at the top of the page
@@ -104,10 +104,17 @@ export function SiteHeader() {
                compositing bugs where a backdrop-filter layer swallows touches
                aimed at its own descendants, and the menu button is a
                descendant of this header.
+
+               THIS BREAKPOINT IS TIED TO THE MENU BUTTON, NOT TO "PHONES",
+               which is why it moved from lg to xl with the nav below. The
+               hamburger now exists up to 1279px, and an iPad at 1100px is
+               exactly the device that bug was reported on - leaving the blur
+               at lg would have re-armed it on tablets while fixing the layout.
+
                --glass is 0.92 alpha, so an opaque background is visually
                near-identical, and dropping a full-width blur is a real
-               rendering saving on a mid-range phone. */
-            "bg-paper shadow-[var(--shadow-sm)] lg:bg-[var(--glass)] lg:backdrop-blur-xl lg:backdrop-saturate-150"
+               rendering saving on a mid-range device. */
+            "bg-paper shadow-[var(--shadow-sm)] xl:bg-[var(--glass)] xl:backdrop-blur-xl xl:backdrop-saturate-150"
           : "bg-paper",
       )}
     >
@@ -118,7 +125,18 @@ export function SiteHeader() {
 
         <nav
           aria-label={t.nav.primary}
-          className="hidden items-center gap-1 lg:flex"
+          /* xl, NOT lg. The bar carries six labels, two of them long
+              ("For Schools & Teachers", "Government & CSR"), plus a dropdown,
+              two toggles and the CTA. At the lg breakpoint of 1024px that
+              does not fit: measured at 1024 and 1180, "What We Do" wrapped to
+              two lines and the row collided with the logo.
+
+              Raising the switch to xl (1280px) gives the bar the width its
+              content actually needs and hands 1024-1279 the mobile menu,
+              which is the right control for a tablet anyway. The alternative
+              - shaving the labels again - is what produced the labels the
+              company asked to have restored. */
+          className="hidden items-center gap-1 xl:flex"
         >
           {audienceNav(t).map((link) => (
             <Link
@@ -130,10 +148,10 @@ export function SiteHeader() {
                    that does not fit wraps its own text instead of staying on
                    one line, and because they all shrink together ONE long
                    label puts EVERY item onto two lines - "For Parents"
-                   included. Keeping the labels short is the real fix (see
-                   nav.forSchools in i18n/dictionaries/en.ts); this makes the
-                   failure honest if one ever grows again, because the bar
-                   will visibly crowd rather than quietly double in height. */
+                   included. The real fix was giving the bar the width its
+                   labels need - see the xl note on the <nav> above - and this
+                   keeps any future overflow honest, because the bar will
+                   visibly crowd rather than quietly double in height. */
                 "relative rounded-[var(--radius-sm)] px-3 py-2 text-[0.9375rem] font-semibold whitespace-nowrap transition-colors",
                 "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left",
                 "after:bg-accent after:scale-x-0 after:transition-transform after:duration-200",
@@ -219,7 +237,7 @@ export function SiteHeader() {
           <details
             open={mobileOpen}
             onToggle={(e) => setMobileOpen(e.currentTarget.open)}
-            className="lg:hidden"
+            className="xl:hidden"
           >
             <summary
               aria-label={mobileOpen ? t.nav.closeMenu : t.nav.openMenu}
@@ -241,7 +259,7 @@ export function SiteHeader() {
         <div
           ref={menuRef}
           id="what-we-do-menu"
-          className="border-rule bg-surface absolute inset-x-0 top-full hidden border-y shadow-[var(--shadow-lg)] lg:block"
+          className="border-rule bg-surface absolute inset-x-0 top-full hidden border-y shadow-[var(--shadow-lg)] xl:block"
         >
           {/* Four columns since Company joined The Approach, Five Pillars and
               Learning Kits. Fixed rather than auto-fit: these are a known,
@@ -293,7 +311,7 @@ function MobileNav({ onNavigate }: { onNavigate: () => void }) {
          mispositioning (iOS resizes the viewport as its toolbars collapse)
          would put a full-screen opaque panel on top of the button that closes
          it. The header must always win. */
-      className="border-rule bg-paper fixed inset-x-0 top-18 bottom-0 z-40 overflow-y-auto border-t lg:hidden"
+      className="border-rule bg-paper fixed inset-x-0 top-18 bottom-0 z-40 overflow-y-auto border-t xl:hidden"
     >
       <Container className="flex flex-col gap-8 py-8">
         {/* THE TWO MENUS MUST OFFER THE SAME THINGS.
