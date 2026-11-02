@@ -107,7 +107,7 @@ navbharatonline.com, and a Gujarati-script wordmark.
 
 ## Contact
 
-- **Phone:** +91 97798 73333, +91 91731 48292
+- **Phone:** +91 99798 73333, +91 98795 10663
 - **Email:** adminkhelshiksha@gmail.com
 - **Social:** @khelshiksha (Instagram, Facebook, X)
 

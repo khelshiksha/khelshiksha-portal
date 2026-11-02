@@ -122,7 +122,7 @@ Every emitted schema is validated in CI against the Rich Results Test.
   logo: `${SITE_URL}/logo.png`,
   slogan: 'Build • Play • Learn',
   description: 'Gamified experiential learning kits and teacher training for schools in India.',
-  telephone: ['+91-97798-73333', '+91-91731-48292'],
+  telephone: ['+91-99798-73333', '+91-98795-10663'],
   email: 'adminkhelshiksha@gmail.com',
   areaServed: { '@type': 'State', name: 'Gujarat' },
   sameAs: [

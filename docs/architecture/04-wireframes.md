@@ -78,7 +78,7 @@ Notation: `[▓]` image/video · `[▸]` CTA button · `{…}` dynamic/CMS · `�
 │   [▸ Book a Demo]   [ Download the brochure ]                              │
 ├────────────────────────────────────────────────────────────────────────────┤
 │   FOOTER — 4 cols: Explore · For You · Resources · Contact                 │
-│   +91 97798 73333 · adminkhelshiksha@gmail.com · @khelshiksha             │
+│   +91 99798 73333 · adminkhelshiksha@gmail.com · @khelshiksha             │
 │   newsletter inline form · legal row                                       │
 └────────────────────────────────────────────────────────────────────────────┘
 ```

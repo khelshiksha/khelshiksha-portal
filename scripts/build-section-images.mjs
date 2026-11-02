@@ -117,6 +117,13 @@ const GROUPS = [
     sources: {
       "milan-sarvaiya": "assets/source/founders/milan-sarvaiya.jpeg",
       "kishan-hasani": "assets/source/founders/kishan-hasani.jpeg",
+      /* A studio headshot, 1312x1199 - near-square, so the crop only trims
+         the white margins at either side. Centred, full height: the photo is
+         already framed head and shoulders, the same as Kishan's. */
+      "disha-hasani": {
+        src: "assets/source/founders/disha-hasani.jpeg",
+        crop: { left: 56, top: 0, width: 1199, height: 1199 },
+      },
       /* CROPPED HERE RATHER THAN BEFORE COMMITTING, so the decision is
          reproducible and arguable instead of baked into a file nobody can
          regenerate. The supplied photograph is a full-length shot of him
