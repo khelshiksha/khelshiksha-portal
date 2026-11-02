@@ -9,7 +9,7 @@ export const SITE = {
   secondary: "Learning Through Play",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://khelshiksha.com",
   locale: "en_IN",
-  phones: ["+91 99798 73333", "+91 91731 48292"],
+  phones: ["+91 99798 73333", "+91 98795 10663"],
   email: "adminkhelshiksha@gmail.com",
   /* EVERY URL HERE IS ONE THE COMPANY CONFIRMED. The Instagram handle used to
      be `khelshiksha`, which was a guess and was wrong - the real one is
