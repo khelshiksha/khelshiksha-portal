@@ -80,13 +80,14 @@ export const founders: Founder[] = [
       alt: "Headshot of Kishan Hasani",
     },
   },
-  /* Added 2026-11-02. No quote yet - the company supplied a name, a role and
-     a photograph, and the card omits the paragraph rather than leaving it
-     empty. Add hers here when she sends one, word for word like the others. */
+  /* Added 2026-11-02, quote supplied the same day. It is the same line Milan's
+     hidden card above carries - the company asked for it on Disha's. If Milan
+     is restored, check with them before two cards show the same quote. */
   {
     _id: "founder-disha",
     name: "Disha Hasani",
     role: "Co-founder",
+    quote: "We don’t just create games; we create reasons to learn.",
     image: {
       src: "/images/founders/disha-hasani.webp",
       alt: "Headshot of Disha Hasani",
